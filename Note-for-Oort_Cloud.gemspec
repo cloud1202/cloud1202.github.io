@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Gem::Specification.new do |spec|
-  spec.name          = "Note for Oort_Cloud"
+  spec.name          = "Note-for-Oort_Cloud"
   spec.version       = "0.1.0"
   spec.authors       = ["Oort_Cloud"]
   spec.email         = ["oort_cloud98@naver.com"]
