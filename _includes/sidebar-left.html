@@ -39,4 +39,17 @@
       </ul>
     </div>
   {%- endif %}
+  {% if site.data.category -%}
+    <div class="social pure-menu pure-menu-horizontal">
+      <ul class="social-icons pure-menu-list">
+      {% for category in site.data.category -%}
+        <li class="pure-menu-item">
+          <a class="social-icon pure-menu-link" href="{{ category.url }}">
+            {{category.title}}
+          </a>
+        </li>
+      {%- endfor %}
+      </ul>
+    </div>
+  {%- endif %}
 </header>
