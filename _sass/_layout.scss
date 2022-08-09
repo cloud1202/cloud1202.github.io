@@ -23,7 +23,8 @@
 
 .sidebar-left {
   display: flex;
-  padding: var(--spacer);
+  padding-top: var(--spacer);
+  padding-bottom: var(--spacer);
   background: center / cover;
   height: 100vh;
 }

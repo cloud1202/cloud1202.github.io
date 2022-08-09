@@ -4,22 +4,30 @@
 
 .masthead {
   text-align: center;
-  margin: auto;
+  margin-top: 10px;
   width: 100%;
-
   a {
     color: inherit;
     text-decoration: none;
   }
 }
 
+.user{
+  padding-left: var(--spacer);
+  padding-right: var(--spacer);
+  display: flex;
+}
+
 .avatar-image {
-  width: 30%;
-  height: auto;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   display: block;
+  margin-top: auto;
+  margin-bottom: auto;
   margin-right: auto;
   margin-left: auto;
+  
 }
 
 .masthead-title {
@@ -27,6 +35,7 @@
   margin: 0;
   font-size: 2rem;
   font-weight: 900;
+  font-family: 'Title-Bold';
 
   a:hover,
   a:focus {
@@ -37,10 +46,20 @@
 .masthead-tagline {
   padding: 0;
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.75vw;
   font-weight: 400;
-  opacity: .7;
+  font-family: 'Post-Bold';
+  opacity: .85;
 }
+
+.masthead-email {
+  padding: 0;
+  margin: 0;
+  font-size: 1.55vw;
+  font-weight: 400;
+  font-family: 'Title';
+}
+
 
 .navigation-list {
   margin-top: var(--spacer-2);
@@ -57,10 +76,10 @@
   background: transparent;
   color: inherit;
   letter-spacing: 0.05em;
-  font-size: 90%;
+  font-size: 110%;
   border-bottom: 2px solid;
   border-color: inherit;
-
+  font-family: 'Title';
   &:hover,
   &:focus {
     color: var(--link-hover-color);
@@ -68,13 +87,15 @@
 }
 
 .social {
-  margin-top: var(--spacer-2);
+  margin-top: 0px;
   font-size: 150%;
   white-space: normal;
   line-height: .5;
 }
 
 .social-icon {
+  width: 30%;
+  height: 30%;
   padding: var(--spacer);
   &:hover,
   &:focus {
@@ -83,8 +104,63 @@
   }
 }
 
+.category {
+  padding-top: var(--spacer);
+  padding-bottom: var(--spacer);
+  width: 100%;
+  height: 72%;
+  background-color: rgba($color: #000000, $alpha: 0.9);
+  overflow-y: auto;
+}
+
+.category-scroll::-webkit-scrollbar{
+  display: none;
+}
+
+.category-icons {
+  text-align: center;
+  width: 100%;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.category-icon {
+  text-align: left;
+  font-size : 1.5rem;
+  font-family: 'Title';
+  margin-top: 10px;
+  width: 100%;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
 @media (max-width: $md-width) {
   .avatar-image {
-    width: 15%;
+    width: 70px;
+    height: 70px;
+  }
+
+  .user{
+    display: inherit;
+  }
+
+  .masthead-tagline {
+    font-size: 1.75rem;
+  }
+  
+  .masthead-email {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: $md-width) {
+  .category {
+    height: 100%;
   }
 }
