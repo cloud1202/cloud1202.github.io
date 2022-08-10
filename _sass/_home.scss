@@ -1,11 +1,21 @@
-// Posts and pages
+// Home
 //
-// Each post is wrapped in `.post` and is used on default and post layouts. Each
-// page is wrapped in `.page` and is only used on the page layout.
+// 메인 홈 관련 scss
 
+.posts{
+
+}
+
+.posts,
 .post-entry {
   border-bottom: 1px solid var(--border-color);
   margin-bottom: var(--spacer-1);
+}
+
+.posts,
+.post-title{
+  color: var(--heading-color);
+  margin-top: 0;
 }
 
 .page,
@@ -41,7 +51,7 @@
   }
 }
 
-// Meta data line below post title
+.posts,
 .post-meta {
   display: inline;
   margin-top: .5rem;

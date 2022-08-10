@@ -9,12 +9,11 @@ layout: default
   <section class="post-entry">
     <h2 class="post-title">
       <a href="{{ post.url | relative_url }}">
-        {{ post.title }}
+        <span>[{{ post.category}}]</span>&nbsp;{{ post.title }}
       </a>
     </h2>
-
     <div class="post-meta">
-      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_string }}</time>
+      <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%y-%m-%d" }}</time>
       {%- if jekyll.environment == "production" and site.disqus -%}
         <span> • </span>
         <a class="comment-count" href="{{ post.url | relative_url }}#disqus_thread">
@@ -22,8 +21,6 @@ layout: default
         </a>
       {%- endif -%}
     </div>
-
-    <p>{{ post.excerpt | strip_html }}</p>
   </section>
   {% endfor %}
   {%- if jekyll.environment == "production" and site.disqus -%}

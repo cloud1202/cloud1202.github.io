@@ -42,7 +42,7 @@
 .masthead-tagline {
   padding: 0;
   margin: 0;
-  font-size: 1.75vw;
+  font-size: 2.25vw;
   font-weight: 400;
   font-family: 'Post-Bold';
   opacity: .85;
@@ -108,6 +108,7 @@
   flex-grow: 1;
   background-color: rgba($color: #000000, $alpha: 0.9);
   overflow-y: scroll;
+  font-family: 'Title';
 }
 
 .category-scroll::-webkit-scrollbar{
@@ -116,7 +117,7 @@
 
 .category-icons {
   text-align: left;
-  font-size : 1.5rem;
+  font-size : 2vw;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -130,8 +131,7 @@
 
 .category-icon {
   text-align: left;
-  font-size : 1.25rem;
-  font-family: 'Title';
+  font-size : 1.5vw;
   margin-top: 10px;
   width: 100%;
   padding-left: var(--spacer) ;
@@ -156,6 +156,12 @@
   }
   
   .masthead-email {
+    font-size: 1.25rem;
+  }
+  .category-icons{
+    font-size: 1.5rem;
+  }
+  .category-icon{
     font-size: 1.25rem;
   }
 }
