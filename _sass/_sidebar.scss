@@ -6,16 +6,12 @@
   text-align: center;
   margin-top: 10px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   a {
     color: inherit;
     text-decoration: none;
   }
-}
-
-.user{
-  padding-left: var(--spacer);
-  padding-right: var(--spacer);
-  display: flex;
 }
 
 .avatar-image {
@@ -108,9 +104,10 @@
   padding-top: var(--spacer);
   padding-bottom: var(--spacer);
   width: 100%;
-  height: 72%;
+  height: 100%;
+  flex-grow: 1;
   background-color: rgba($color: #000000, $alpha: 0.9);
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .category-scroll::-webkit-scrollbar{
@@ -118,9 +115,13 @@
 }
 
 .category-icons {
-  text-align: center;
+  text-align: left;
+  font-size : 1.5rem;
   width: 100%;
-
+  display: flex;
+  flex-direction: column;
+  padding-left: var(--spacer);
+  
   a {
     color: inherit;
     text-decoration: none;
@@ -129,11 +130,11 @@
 
 .category-icon {
   text-align: left;
-  font-size : 1.5rem;
+  font-size : 1.25rem;
   font-family: 'Title';
   margin-top: 10px;
   width: 100%;
-
+  padding-left: var(--spacer) ;
   a {
     color: inherit;
     text-decoration: none;
