@@ -12,7 +12,7 @@ plugins:
   - jekyll-gist
   - jekyll-paginate
   - jekyll-seo-tag
-  - jekyll-feed
+ # - jekyll-feed
   - jekyll-sitemap
 
 # Optimize Jekyll
