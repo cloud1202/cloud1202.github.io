@@ -1,14 +1,6 @@
 <script src="{{ 'assets/js/sidebar_left.js' | relative_url }}" type="text/javascript"></script>
 
 <header class="masthead " id="sidebar-left">
-  {% if site.avatar -%}
-  {%- if site.avatar contains "://" -%}
-  {%- assign avatar = site.avatar -%}
-  {%- else -%}
-  {%- assign avatar = site.avatar | relative_url -%}
-  {%- endif -%}
-  <img src="{{ avatar }}" class="avatar-image" alt="{{ site.author.name }}">
-  {%- endif %}
   <div class="info">
     <div class="masthead-tagline">
       <small>{{ site.introduce }}</small>
@@ -30,7 +22,7 @@
   <div class="masthead-email">
     <small>{{ site.author.email }}</small>
   </div>
-  {% if site.data.category -%}
+  <!--{% if site.data.category -%}
   <header class="category pure-menu category-scroll">
     {% for category in site.data.category -%}
     <div class="category-icons">
@@ -43,6 +35,6 @@
     </div>
     {%- endfor %}
   </header>
-  {%- endif %}
+  {%- endif %}-->
 </header>
   
