@@ -68,3 +68,13 @@ mark {
   background-color: var(--yellow-100);
   border-radius: .125rem;
 }
+
+::-webkit-scrollbar{
+
+  background-color:#08007e;
+  width: 10px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb{
+  background-color:#fffb00;
+}

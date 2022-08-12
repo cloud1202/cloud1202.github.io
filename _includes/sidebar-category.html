@@ -1,17 +1,16 @@
 <script src="{{ 'assets/js/sidebar_left.js' | relative_url }}" type="text/javascript"></script>
-카테고리
-  <!--{% if site.data.category -%}
-  <header class="category pure-menu category-scroll">
+
+{% if site.data.category -%}
+  <div class="category pure-menu category-scroll">
     {% for category in site.data.category -%}
     <div class="category-icons">
       {{category.title}}
       <div class="pure-menu-item">
         <a class="category-icon pure-menu-link" href="{{ category.url }}">
-          ┖ {{category.title}}
+          {{category.title}}
         </a>
       </div>
     </div>
     {%- endfor %}
-  </header>
-  {%- endif %}-->
-  
+  </div>
+{%- endif %}

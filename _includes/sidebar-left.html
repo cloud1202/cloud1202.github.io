@@ -20,21 +20,14 @@
     {%- endif %}
   </div>
   <div class="masthead-email">
-    <small>{{ site.author.email }}</small>
-  </div>
-  <!--{% if site.data.category -%}
-  <header class="category pure-menu category-scroll">
-    {% for category in site.data.category -%}
-    <div class="category-icons">
-      {{category.title}}
-      <div class="pure-menu-item">
-        <a class="category-icon pure-menu-link" href="{{ category.url }}">
-          ┖ {{category.title}}
-        </a>
-      </div>
+    E-Mail
+    <div>
+      {{ site.author.email }}
     </div>
-    {%- endfor %}
-  </header>
-  {%- endif %}-->
+  </div>
+  <div class="sidebar-category pure-u-1 pure-u-md-1-6" id ="sidebar-category" >
+    {%- include sidebar-category.html -%}
+  </div >
 </header>
+
   

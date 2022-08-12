@@ -3,6 +3,9 @@
 // Styles for the sidebar.
 
 .masthead {
+  position: sticky;
+  top:100px;
+  letter-spacing: 0;
   text-align: center;
   width: 100%;
   display: flex;
@@ -48,9 +51,10 @@
 }
 
 .masthead-email {
-  padding: 0;
+  padding-left: var(--spacer);
   margin: 0;
-  font-size: 1.55vw;
+  text-align: left;
+  font-size: 1.25vw;
   font-weight: 400;
   font-family: 'Title';
 }
@@ -105,14 +109,16 @@
   padding-bottom: var(--spacer);
   width: 100%;
   height: 100%;
-  flex-grow: 1;
-  background-color: rgba($color: #000000, $alpha: 0.9);
-  overflow-y: scroll;
+  border: solid rgba($color: #08007e, $alpha: 1.0);
+  overflow-y: auto;
   font-family: 'Title';
 }
 
+
 .category-scroll::-webkit-scrollbar{
-  display: none;
+  background-color:#08007e;
+  width: 5px;
+  height: 8px;
 }
 
 .category-icons {
@@ -141,39 +147,9 @@
   }
 }
 
-@media (max-width: $md-width) {
-  .avatar-image {
-    width: 70px;
-    height: 70px;
-  }
-
-  .masthead-tagline {
-    font-size: 1.75rem;
-  }
-  
-  .masthead-email {
-    font-size: 1.25rem;
-  }
-  .category-icons{
-    font-size: 1.5rem;
-  }
-  .category-icon{
-    font-size: 1.25rem;
-  }
-}
 
 @media (min-width: $md-width) {
   .category {
     height: 100%;
-  }
-}
-
-@media (min-width: $lg-width) {
-  .masthead-tagline {
-    font-size: 1.75rem;
-  }
-  
-  .masthead-email {
-    font-size: 1.25rem;
   }
 }
