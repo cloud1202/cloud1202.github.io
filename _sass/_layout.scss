@@ -37,12 +37,12 @@
   padding-top: var(--spacer);
   margin-bottom: auto;
   background: center / cover;
+  height: 100vh;
 }
 
 .sidebar-category {
   width: 100%;
-  height: 50vh;
-  padding-left: var(--spacer);
+  max-height: 50vh;
   padding-right: 2%;
   margin-bottom: auto;
 }

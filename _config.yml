@@ -3,9 +3,9 @@ title: Note for Oort_Cloud
 introduce: 개발자 요모조모
 url: https://cloud1202.github.io/
 avatar: /avatar.jpeg
-paginate: 5
 permalink: pretty
 cover_image: /bg.jpeg
+timezione: Asia/Seoul
 
 # Gems
 plugins:

@@ -50,8 +50,20 @@
   opacity: .85;
 }
 
-.masthead-email {
+.masthead-dropdown{
   padding-left: var(--spacer);
+  margin-bottom: 1vh;
+  text-align: left;
+  font-size: 1.3vw;
+  font-weight: 400;
+  font-family: 'Title';
+}
+
+.masthead-dropdown>div{
+  display: none;
+}
+
+.masthead-email {
   margin: 0;
   text-align: left;
   font-size: 1.25vw;
@@ -105,7 +117,6 @@
 }
 
 .category {
-  padding-top: var(--spacer);
   padding-bottom: var(--spacer);
   width: 100%;
   height: 100%;
@@ -127,7 +138,6 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding-left: var(--spacer);
   
   a {
     color: inherit;
@@ -147,6 +157,10 @@
   }
 }
 
+.sidebar-left-dropdown{
+  margin: 0%;
+  padding: 0%;
+}
 
 @media (min-width: $md-width) {
   .category {

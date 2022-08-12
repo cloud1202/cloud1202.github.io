@@ -36,6 +36,16 @@ window.onload = function(e){
     
 }
 
+window.onbeforeunload = function(e){
+    
+    var body = document.body,
+        html = document.documentElement;
+
+    var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    document.getElementById("sidebar-left").style.height = height+"px";
+    
+}
+
 window.addEventListener('resize', function(){
     var icons =document.getElementsByTagName('svg');
     for(let i = 0; i < icons.length;i++)

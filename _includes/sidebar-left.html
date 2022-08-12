@@ -19,15 +19,25 @@
     </div>
     {%- endif %}
   </div>
-  <div class="masthead-email">
-    E-Mail
-    <div>
-      {{ site.author.email }}
+  {% if site.data.dropdown -%}
+    {% for dropdown in site.data.dropdown -%}
+    <div class="masthead-dropdown">
+      <p class="sidebar-left-dropdown" name="{{ dropdown.title }}" state="0" onclick="OnClickDropdown(this)" >{{ dropdown.title }} &#x1F53D</p>
+      {% case dropdown.title %}
+        {% when "E-mail" %}
+          <div class="masthead-email">
+            {{ site.author.email }}
+          </div>
+        {% when "Category" %}
+          <div class="sidebar-category pure-u-1 pure-u-md-1-6" id ="sidebar-category" >
+            {%- include sidebar-category.html -%}
+          </div >
+        {% else %}
+          정의 되지 않은 값 입니다.
+      {% endcase%}
     </div>
-  </div>
-  <div class="sidebar-category pure-u-1 pure-u-md-1-6" id ="sidebar-category" >
-    {%- include sidebar-category.html -%}
-  </div >
+    {%- endfor %}
+  {%- endif %}
 </header>
 
   
