@@ -20,23 +20,26 @@
     {%- endif %}
   </div>
   {% if site.data.dropdown -%}
-    {% for dropdown in site.data.dropdown -%}
-    <div class="masthead-dropdown">
-      <p class="sidebar-left-dropdown" name="{{ dropdown.title }}" state="0" onclick="OnClickDropdown(this)" >{{ dropdown.title }} &#x1F53D</p>
-      {% case dropdown.title %}
-        {% when "E-mail" %}
-          <div class="masthead-email">
-            {{ site.author.email }}
-          </div>
-        {% when "Category" %}
-          <div class="sidebar-category pure-u-1 pure-u-md-1-6" id ="sidebar-category" >
-            {%- include sidebar-category.html -%}
-          </div >
-        {% else %}
-          정의 되지 않은 값 입니다.
-      {% endcase%}
+  {% assign index = 0 %}
+  {% for dropdown in site.data.dropdown -%}
+  <div class="masthead-dropdown">
+    <p class="sidebar-left-dropdown" name="{{ dropdown.title }}" state=0 onclick="OnClickDropdown(this, {{ index }})">  {{ dropdown.title }} &#x1F53D</p>
+    {% assign title = dropdown.title %}
+    {% case title %}
+    {% when "E-mail" %}
+    <div class="masthead-email dropdown-item" id="dropdown-item-{{index}}">
+      {{ site.author.email }}
     </div>
-    {%- endfor %}
+    {% when "Category" %}
+    <div class="sidebar-category dropdown-item pure-u-1 pure-u-md-1-6" id="dropdown-item-{{index}}">
+      {%- include sidebar-category.html -%}
+    </div>
+    {% else %}
+    정의 되지 않은 값 입니다.
+    {% endcase%}
+  </div>
+  {% assign index = index | plus:1 %}
+  {%- endfor %}
   {%- endif %}
 </header>
 

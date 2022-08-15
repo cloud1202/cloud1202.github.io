@@ -59,10 +59,6 @@
   font-family: 'Title';
 }
 
-.masthead-dropdown>div{
-  display: none;
-}
-
 .masthead-email {
   margin: 0;
   text-align: left;
@@ -160,7 +156,13 @@
 .sidebar-left-dropdown{
   margin: 0%;
   padding: 0%;
+  display:inline;
 }
+
+.dropdown-item {
+  display: none;
+}
+
 
 @media (min-width: $md-width) {
   .category {
