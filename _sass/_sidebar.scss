@@ -33,7 +33,7 @@
   margin: 0;
   font-size: 2rem;
   font-weight: 900;
-  font-family: 'Title-Bold';
+  font-family: var(--text-hard-bold);
   a:hover,
   a:focus {
     color: var(--link-hover-color);
@@ -45,7 +45,7 @@
   margin: 0;
   font-size: 2.25rem;
   font-weight: 400;
-  font-family: 'Post-Bold';
+  font-family: var(--text-soft-bold);
   opacity: .85;
   color:var(--blue);
 }
@@ -56,7 +56,7 @@
   text-align: left;
   font-size: 1.4rem;
   font-weight: 400;
-  font-family: 'Title';
+  font-family: var(--text-hard);
 }
 
 .masthead-email {
@@ -64,7 +64,6 @@
   text-align: left;
   font-size: 1.2rem;
   font-weight: 400;
-  font-family: 'Title';
   word-break: break-all;
   padding-right: var(--spacer);
 }

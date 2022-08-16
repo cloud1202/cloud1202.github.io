@@ -3,15 +3,20 @@
 // 메인 홈 관련 scss
 
 .posts{
-
+  font-family: var(--text-hard-bold);
 }
 
 .posts,
 .post-entry {
+  border-bottom: 3px solid var(--border-color);
+  margin-bottom: var(--spacer-1);
+  margin-top: var(--spacer-2);
+}
+.post-box {
   border-bottom: 1px solid var(--border-color);
   margin-bottom: var(--spacer-1);
+  margin-top: var(--spacer-2);
 }
-
 .posts,
 .post-title{
   color: var(--heading-color);
@@ -20,11 +25,11 @@
 
 .page,
 .post {
-  font-family: var(--text-font);
+  font-family: var(--text-hard-medium);
   margin-bottom: 4em;
 
   h1, h2, h3, h4, h5, h6, .post-meta {
-    font-family: var(--body-font);
+    font-family: var(--text-hard-bold);
   }
 
   li + li {
@@ -57,7 +62,7 @@
   margin-top: .5rem;
   margin-bottom: var(--spacer);
   color: var(--gray-600);
-  font-family: 'Title';
+  font-family: var(--text-title);
 }
 
 .comment-count {
@@ -101,7 +106,7 @@
   display: block;
   padding: var(--spacer) 0;
   color: var(--gray-600);
-  font-family: var(--body-font);
+  font-family: var(--text-post-bold);
 }
 
 .post-tags-icon {

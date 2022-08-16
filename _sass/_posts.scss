@@ -3,17 +3,6 @@
 // Each post is wrapped in `.post` and is used on default and post layouts. Each
 // page is wrapped in `.page` and is only used on the page layout.
 
-.post-entry {
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: var(--spacer-1);
-  margin-top: var(--spacer-2);
-}
-
-.post-box {
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: var(--spacer-1);
-  margin-top: var(--spacer-2);
-}
 
 .page,
 .post {
@@ -21,7 +10,7 @@
   margin-bottom: 4em;
 
   h1, h2, h3, h4, h5, h6, .post-meta {
-    font-family: var(--body-font);
+    font-family: var(--text-hard-bold);
   }
 
   li + li {

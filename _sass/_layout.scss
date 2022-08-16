@@ -9,7 +9,7 @@
 
 .header {
   position: relative;
-  font-family: 'Title-Bold';
+  font-family: var(--text-title-bold);
   padding-left: var(--spacer-2);
   padding-right: 5px;
   margin-left:  auto;
@@ -20,13 +20,11 @@
 
 .content {
   position: relative;
-  padding-top: var(--spacer-2);
-  padding-left: var(--spacer-2);
-  padding-right: var(--spacer-2);
+  padding-top: var(--spacer);
+  padding-left: var(--spacer);
+  padding-right: var(--spacer);
   margin-left:  auto;
   margin-right: auto;
-  border-top: solid rgba($color: #08007e, $alpha: 1.0);
-  border-left: solid rgba($color: #08007e, $alpha: 1.0);
   min-height: 100vh;
   width: 60%;
 }
@@ -63,9 +61,9 @@ footer {
 
 @media (min-width: $md-width) {
   .content {
-    padding-top: var(--spacer-3);
-    padding-left: var(--spacer-3);
-    padding-right: var(--spacer-3);
+    padding-top: var(--spacer);
+    padding-left: var(--spacer);
+    padding-right: var(--spacer);
     margin-left: 16.6667%;
   }
 
