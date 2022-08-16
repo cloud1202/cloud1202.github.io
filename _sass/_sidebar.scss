@@ -44,7 +44,7 @@
 .masthead-tagline {
   padding: 0;
   margin: 0;
-  font-size: 2.25vw;
+  font-size: 2.25rem;
   font-weight: 400;
   font-family: 'Post-Bold';
   opacity: .85;
@@ -54,7 +54,7 @@
   padding-left: var(--spacer);
   margin-bottom: 1vh;
   text-align: left;
-  font-size: 1.3vw;
+  font-size: 1.3rem;
   font-weight: 400;
   font-family: 'Title';
 }
@@ -62,9 +62,10 @@
 .masthead-email {
   margin: 0;
   text-align: left;
-  font-size: 1.25vw;
+  font-size: 1.1rem;
   font-weight: 400;
   font-family: 'Title';
+  word-break: break-all;
 }
 
 
