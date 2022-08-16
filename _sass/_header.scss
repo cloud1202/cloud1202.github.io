@@ -5,25 +5,40 @@
 .header-bar {
   width: 100%;
   height: 100%;
-  color :#08007e;
-
+  padding-top: var(--spacer-2);
+  display: flex;
   -webkit-box-shadow: 0 1em 1em -.9em var(--border-color);
      -moz-box-shadow: 0 1em 1em -.9em var(--border-color);
           box-shadow: 0 1em 1em -.9em var(--border-color);
 }
 
-.header-menu {
-  a {
-    border-bottom: 1px solid rgba(0, 0, 0, 0);
-    &:hover,
-    &:focus {
-      color: inherit;
-      background-color: inherit;
-      border-bottom-color: var(--link-color);
-    }
-  }
+.search-box{
+  margin-top: var(--spacer);
+  flex: 1 1 35%;
+  text-align: right;
+  height: 30px;
+  border: 2px solid var(--blue-400);
+  --mybox: 10%;
+}
 
-  .current-item {
-    border-bottom-color: var(--link-color);
-  }
+.tag-box{
+  flex: 1 1 65%;
+  text-align: right;
+  height: 50px;
+  width: 20%;
+}
+
+.input-box{
+  float:left;
+  height: 100%;
+  width: 80%;
+  border: none
+}
+
+.search-icon{
+  color:var(--blue);
+  margin-top:4px;
+  margin-right:4px;
+  margin-bottom:4px;
+  width:20%;
 }

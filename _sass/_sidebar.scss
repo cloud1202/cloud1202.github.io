@@ -34,7 +34,6 @@
   font-size: 2rem;
   font-weight: 900;
   font-family: 'Title-Bold';
-
   a:hover,
   a:focus {
     color: var(--link-hover-color);
@@ -48,13 +47,14 @@
   font-weight: 400;
   font-family: 'Post-Bold';
   opacity: .85;
+  color:var(--blue);
 }
 
 .masthead-dropdown{
   padding-left: var(--spacer);
   margin-bottom: 1vh;
   text-align: left;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 400;
   font-family: 'Title';
 }
@@ -62,10 +62,11 @@
 .masthead-email {
   margin: 0;
   text-align: left;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 400;
   font-family: 'Title';
   word-break: break-all;
+  padding-right: var(--spacer);
 }
 
 
@@ -117,21 +118,20 @@
   padding-bottom: var(--spacer);
   width: 100%;
   height: 100%;
-  border: solid rgba($color: #08007e, $alpha: 1.0);
   overflow-y: auto;
   font-family: 'Title';
 }
 
 
 .category-scroll::-webkit-scrollbar{
-  background-color:#08007e;
+  background-color: var(--teal);
   width: 5px;
   height: 8px;
 }
 
 .category-icons {
   text-align: left;
-  font-size : 2vw;
+  font-size : 1.6vw;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -158,6 +158,11 @@
   margin: 0%;
   padding: 0%;
   display:inline;
+}
+
+.sidebar-left-outline{
+  margin: 0;
+  padding: 0;
 }
 
 .dropdown-item {

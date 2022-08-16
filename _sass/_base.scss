@@ -71,10 +71,10 @@ mark {
 
 ::-webkit-scrollbar{
 
-  background-color:#08007e;
+  background-color:var(--indigo);
   width: 10px;
   height: 8px;
 }
 ::-webkit-scrollbar-thumb{
-  background-color:#fffb00;
+  background-color: var(--gray-300);
 }

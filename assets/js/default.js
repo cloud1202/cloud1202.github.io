@@ -4,6 +4,11 @@ window.onload = function(e){
     var icons =document.getElementsByTagName('svg');
     for(let i = 0; i < icons.length;i++)
     {
+        if(icons[i].parentElement.classList.contains('social-icon') == false)
+        {
+            continue;
+        }
+
         if(window.matchMedia('(max-width: 768px)').matches)
         {
             icons[i].classList.remove('fa-2x');
@@ -50,6 +55,10 @@ window.addEventListener('resize', function(){
     var icons =document.getElementsByTagName('svg');
     for(let i = 0; i < icons.length;i++)
     {
+        if(icons[i].parentElement.classList.contains('social-icon') == false)
+        {
+            continue;
+        }
         if(window.matchMedia('(max-width: 768px)').matches)
         {
             icons[i].classList.remove('fa-2x');

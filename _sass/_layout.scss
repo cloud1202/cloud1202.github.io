@@ -11,12 +11,11 @@
   position: relative;
   font-family: 'Title-Bold';
   padding-left: var(--spacer-2);
-  padding-right: var(--spacer-2);
+  padding-right: 5px;
   margin-left:  auto;
   margin-right: auto;
-  height: 100px;
+  height: 80px;
   width: 60%;
-  border: solid rgba($color: #08007e, $alpha: 1.0);
 }
 
 .content {
@@ -26,14 +25,14 @@
   padding-right: var(--spacer-2);
   margin-left:  auto;
   margin-right: auto;
-  border: solid rgba($color: #08007e, $alpha: 1.0);
+  border-top: solid rgba($color: #08007e, $alpha: 1.0);
+  border-left: solid rgba($color: #08007e, $alpha: 1.0);
   min-height: 100vh;
   width: 60%;
 }
 
 .sidebar-left {
   position: absolute;
-  border:1px solid #08007e;
   padding-top: var(--spacer);
   margin-bottom: auto;
   background: center / cover;
@@ -71,8 +70,6 @@ footer {
   }
 
   .header{
-    padding-left: var(--spacer-3);
-    padding-right: var(--spacer-3);
     margin-left: 16.6667%;
   }
 }

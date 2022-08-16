@@ -28,14 +28,16 @@
     {% case title %}
     {% when "E-mail" %}
     <div class="masthead-email dropdown-item" id="dropdown-item-{{index}}">
+      <hr class="sidebar-left-outline">
       {{ site.author.email }}
     </div>
     {% when "Category" %}
     <div class="sidebar-category dropdown-item pure-u-1 pure-u-md-1-6" id="dropdown-item-{{index}}">
+      <hr class="sidebar-left-outline">
       {%- include sidebar-category.html -%}
     </div>
     {% else %}
-    정의 되지 않은 값 입니다.
+      {{ site.error }}
     {% endcase%}
   </div>
   {% assign index = index | plus:1 %}
