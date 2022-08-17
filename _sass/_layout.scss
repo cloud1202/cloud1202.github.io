@@ -31,10 +31,6 @@
 
 .sidebar-left {
   position: absolute;
-  padding-top: var(--spacer);
-  margin-bottom: auto;
-  background: center / cover;
-  height: 100vh;
 }
 
 .sidebar-category {
@@ -45,11 +41,9 @@
 }
 
 .sidebar-right {
-  display: none;
-  position: sticky;
-  border: solid rgba($color: #08007e, $alpha: 1.0);
-  top: 50px;
-  max-height: 160px;
+  position: absolute;
+  right: 0px;
+  padding-left: var(--spacer-2);
 }
 
 footer {
@@ -65,10 +59,12 @@ footer {
     padding-left: var(--spacer);
     padding-right: var(--spacer);
     margin-left: 16.6667%;
+    margin-right: 25%;
   }
 
   .header{
     margin-left: 16.6667%;
+    margin-right: 25%;
   }
 }
 
@@ -103,8 +99,4 @@ footer {
 
 @media (min-width: $md-width) and (max-width: $lg-width) {
   
-
-  .sidebar-right {
-    display: none;
-  }
 }
