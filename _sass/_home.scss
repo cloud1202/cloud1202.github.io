@@ -52,7 +52,7 @@
 
   &:hover,
   &:focus {
-    text-decoration: underline;
+    color: inherit;
   }
 }
 
@@ -62,8 +62,9 @@
   margin-top: .5rem;
   margin-bottom: var(--spacer);
   color: var(--gray-600);
-  font-family: var(--text-title);
+  font-family: var(--text-soft-bold);
 }
+
 
 .comment-count {
   color: inherit;
@@ -72,7 +73,6 @@
   &:hover,
   &:focus {
     color: inherit;
-    text-decoration: underline;
   }
 }
 

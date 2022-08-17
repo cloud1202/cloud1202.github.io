@@ -15,7 +15,10 @@
   text-align: right;
   height: 30px;
   border: 2px solid var(--blue-400);
-  --mybox: 10%;
+}
+
+.search-box:focus-within{
+  outline: 2px solid var(--blue-400);
 }
 
 .tag-box{
@@ -26,10 +29,15 @@
 }
 
 .input-box{
+  font-family: var(--text-soft-bold);
   float:left;
   height: 100%;
   width: 80%;
   border: none
+}
+
+.input-box:focus{
+  outline:none;
 }
 
 .search-icon{
