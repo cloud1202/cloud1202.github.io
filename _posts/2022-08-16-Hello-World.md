@@ -3,7 +3,7 @@ layout: post
 title: 추가 해야 할 것
 tags: javascript html jekyll githubpage ruby 
 math: true
-date: 2022-08-16 11:10 +0800
+date: 2022-08-16 11:10 +0900
 category: Blog
 
 ---
