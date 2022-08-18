@@ -1,11 +1,12 @@
 // Table of Contents
 
+
 .toc-wrapper {
   display: inline-block;
   position: sticky;
-  top: calc(var(--spacer-3) * 2.5);
-  width: 95%;
-  padding-left: var(--spacer);
+  top: calc(var(--spacer-3) * 1.7);
+  right: 0px;
+  width: 80%;
   padding-right: var(--spacer);
 }
 
@@ -13,7 +14,8 @@
   text-align: left;
   font-size: 1rem;
   font-family: var(--text-title-bold);
-  border-bottom: 2px double var(--body-color);
+  border-left: 2px solid var(--body-color);
+  border-bottom: 2px solid var(--body-color);
   padding: 0.5rem;
   margin: 0;
   color: var(--mycolor-400);

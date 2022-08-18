@@ -10,12 +10,14 @@
 .header {
   position: relative;
   font-family: var(--text-title-bold);
-  padding-left: var(--spacer-2);
-  padding-right: 5px;
+  padding-left: var(--spacer);
+  padding-right: var(--spacer-2);
   margin-left:  auto;
   margin-right: auto;
-  height: 80px;
+  height: calc(var(--spacer-3) * 1.7);
   width: 60%;
+  border-bottom: 2px solid var(--body-color);
+  box-sizing: content-box;
 }
 
 .content {
@@ -43,7 +45,6 @@
 .sidebar-right {
   position: absolute;
   right: 0px;
-  padding-left: var(--spacer-2);
 }
 
 footer {
@@ -57,9 +58,9 @@ footer {
   .content {
     padding-top: var(--spacer);
     padding-left: var(--spacer);
-    padding-right: var(--spacer);
+    padding-right: var(--spacer-3);
     margin-left: 16.6667%;
-    margin-right: 25%;
+    margin-right: 20%;
   }
 
   .header{

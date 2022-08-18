@@ -4,7 +4,7 @@
 
 .masthead {
   position: sticky;
-  top:calc(var(--spacer-3) * 2.5);
+  top:calc(var(--spacer-3) * 1.7);
   letter-spacing: 0;
   text-align: center;
   width: 100%;
@@ -14,6 +14,8 @@
     color: inherit;
     text-decoration: none;
   }
+  box-sizing: content-box;
+  border-top: 2px solid var(--body-color);
 }
 
 .avatar-image {
