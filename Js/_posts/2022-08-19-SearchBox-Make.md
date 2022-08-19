@@ -1,20 +1,19 @@
 ---
 layout: post
-title: Github Page Jekyll Theme Favicon 만들기, 적용 방법
-tags: html jekyll githubpage ruby blog design favicon
+title: Blog Post 검색상자 만들기(JS 사용)
+tags: html jekyll githubpage ruby blog javascript
 toc: true
-date: 2022-08-17 15:00 +0900
-category: Blog
-
+date: 2022-08-25 12:00 +0900
+category: JS
 ---
 
 ## Favicon
 Favicon은 즐겨찾기 아이콘(Favorites icon)의 줄임말로 웹사이트 탭 또는 주소 옆에 있는 작은 아이콘을 의미하는데, 각각 사이트를 상징하는 아이콘으로 하는 것이 일반적인 것 같다. 
 흔히들 찾는 사이트인 **네이버**, **구글**, **다음**, **깃허브**, Note for Oort_Cloud 에도 Favicon이 적용된 모습을 볼 수 있는데 어디서 많이 본 듯한 아이콘들인데 
 
-![Favicon_Example_01](/assets/img/2022-08-17-Favicon-01/Favicon_Example_01.png "Chrome Tab 웹 사이트 파비콘[설정]")  
+![Favicon_Example_01](/assets/img/Favicon_Example_01.png "Chrome Tab 웹 사이트 파비콘[설정]")  
 
-![Favicon_Example_02](/assets/img/2022-08-17-Favicon-01/Favicon_Example_02.png "Chrome Tab 웹 사이트 파비콘[미설정]")  
+![Favicon_Example_02](/assets/img/Favicon_Example_02.png "Chrome Tab 웹 사이트 파비콘[미설정]")  
 반대로 Favicon을 적용하지 않은 사이트는 이렇게 표기되는 것을 볼 수 있었다.  
 Jekyll Theme 사이트 같이 Favicon을 설정하지 않았을 때는 브라우저마다 기본으로 설정된 Favicon이 나오는 것 같은데...(Chrome만 써서 정확한 사실인지는 모른다..ㅎㅎ)
 
@@ -33,7 +32,7 @@ Favicon을 만드는 방법은 매우매우매우 **Simple** 그 자체로 간�
 
 1. [favicon.io](https://favicon.io/)  
 해당 사이트를 들어가보시면 Favicon을 만드는 방법 3가지가 메인에 큼지막하게 적혀 있는걸 볼 수 있는데 순서대로 설명하자면  
-![Favicon.io](/assets/img/2022-08-17-Favicon-01/Favicon_Favicon_io.png "Favicon.io 메인 화면")
+![Favicon.io](/assets/img/Favicon_Favicon_io.png "Favicon.io 메인 화면")
 - PNG -> ICO : *.png 파일을 Favicon으로 변경해주는 기능.  
 사진을 압축해서 작은 크기의 .ico로 변경하는 작업이기 때문에 크기가 큰 사진을 변경하게 되면 그만큼 원본 이미지와 괴리감이 많이 든다.  
 - Text -> ICO : Favicon은 작은 아이콘의 형태라 꽤나 압축된 의미 또는 상징적인 글자 하나를 사용하는 경우가 많은데,  
@@ -47,7 +46,7 @@ Favicon을 만드는 방법은 매우매우매우 **Simple** 그 자체로 간�
 이러한 Emoji를 Favicon으로 만들어 사용할 수 있게 변환해 주는 기능으로 Category에 따라 다양한 Emoji를 선택할 수 있어요. 평소 자주 사용하던 Emoji 혹은 마음에 드는 Emoji를 Favicon으로 만들어도 좋을 것 같다.  
 2. [favicon.cc](https://www.favicon.cc/)  
 Favicon을 직접 그리고 다른 사람이 그린 파비콘을 다운로드 할 수 있는 사이트.
-![Favicon.cc](/assets/img/2022-08-17-Favicon-01/Favicon_Favicon_cc.png "Favicon.cc 메인 화면")
+![Favicon.cc](/assets/img/Favicon_Favicon_cc.png "Favicon.cc 메인 화면")
 - 직접 그린다는 말을 보고 그림판과 뭐가 다른가 싶기도한데, 기본 **16X16** 크기의 캔버스에 픽셀단위로 색을 넣는 형식이라 그림판과는 사뭇 느낌이 다르다.  
 간단한 그림을 그리는 경우에 사용하면 좋을 것 같은 사이트.
 - 다른 사람이 그린 Favicon을 구경할 수 도 있고, 사용할 수 도 있다. 자신이 만든 Favicon을 업로드하는 방법도 가능.
@@ -57,7 +56,7 @@ Favicon을 직접 그리고 다른 사람이 그린 파비콘을 다운로드 �
 이미지를 Favicon으로 만들어주거나, SVG아이콘을 Favicon으로 만들어 주는 사이트.  
 뒤이어 소개할 두 기능은 Demo 기능이 있어서 아직 변환할 사진 또는 SVG 아이콘이 없어도 대략 이런 식으로 변환되고 수정이 가능한지 볼 수 있어 편리하다.  
 사이트의 다크테마, 라이트테마 데스크톱이나 모바일 환경에 따라 보여지는 경우를 전부 볼 수 있어 편리한 사이트에요. 자신의 사이트에 적용한 Favicon을 여러 플랫폼에서 보고 싶다면 추천한다.
-![realfavicongenerator.net](/assets/img/2022-08-17-Favicon-01/Favicon_realfavicongenerator_net.png "realfavicongenerator.net 메인 화면")
+![realfavicongenerator.net](/assets/img/Favicon_realfavicongenerator_net.png "realfavicongenerator.net 메인 화면")
 - 이미지를 Favicon으로 만들어주는 기능은 앞선 사이트에서도 설명 했었는데, 이 사이트는 좀 더 깔끔하게 만드는 것 같다.  
 자신의 이미지를 Favicon으로 만들고 싶으신 분은 해당 사이트를 더 추천한다.
 - SVG 아이콘을 Favicon으로 만들어 주는 기능은 앞서 설명 드린 Emoji와 비슷해 보이는데 비슷하다.  
