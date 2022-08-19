@@ -1,4 +1,4 @@
 function OnClickSearchButton(baseURL)
 {
-  alert(baseURL);
+  alert(baseURL+"\n"+document.location.href);
 }
