@@ -154,9 +154,13 @@
   font-size : 1.5vw;
   margin-top: 10px;
   width: 100%;
-  padding-left: var(--spacer) ;
-  a {
-    color: inherit;
+  border:none;
+  background-color: var(--body-bg);
+  &:hover,
+  &:focus{
+    cursor: pointer;
+    color: var(--link-hover-color);
+    background-color: var(--yellow-100);
     text-decoration: none;
   }
 }

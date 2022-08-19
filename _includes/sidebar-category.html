@@ -7,9 +7,9 @@
       {{category.title}}
       {% for child in category.child -%}
       <div class="pure-menu-item">
-        <a class="category-icon pure-menu-link" href="{{ category.url }}">
-          {{child.name}}
-        </a>
+        <button class="category-icon" onclick="OnClickCategory({{ child.name }})">
+          {{ child.name }}
+        </button>
       </div>
       {%- endfor %}
     </div>
