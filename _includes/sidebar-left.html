@@ -27,7 +27,7 @@
     {% assign title = dropdown.title %}
     {% case title %}
     {% when "E-mail" %}
-    <div class="masthead-email dropdown-item" id="dropdown-item-{{index}}">
+    <div class="masthead-email dropdown-item" id="dropdown-item-{{index}}" onclick="OnClickTextCopy(this, event)" title="Copy">
       <hr class="sidebar-left-outline">
       {{ site.author.email }}
     </div>

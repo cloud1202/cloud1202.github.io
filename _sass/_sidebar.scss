@@ -68,6 +68,12 @@
   font-weight: 400;
   word-break: break-all;
   padding-right: var(--spacer);
+
+  &:hover,
+  &:focus{
+    cursor: pointer;
+    color: var(--link-hover-color);
+  }
 }
 
 
@@ -159,6 +165,11 @@
   margin: 0%;
   padding: 0%;
   display:inline;
+
+  &:hover,
+  &:focus{
+    cursor: pointer;
+  }
 }
 
 .sidebar-left-outline{
@@ -169,7 +180,6 @@
 .dropdown-item {
   display: none;
 }
-
 
 @media (min-width: $md-width) {
   .category {

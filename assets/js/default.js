@@ -78,3 +78,22 @@ window.addEventListener('resize', function(){
     setSocialIcon();
 
 }, true);
+
+function OnClickTextCopy(text, event){
+    var removeBox = document.getElementById('copy-message');
+    if(removeBox)
+    {
+        removeBox.remove();
+    }
+    var selectText = text.innerText;
+    var copyBox = document.createElement('p');
+    console.log(text);
+    copyBox.innerHTML = "복사가 완료되었습니다.";
+    copyBox.setAttribute("class", "copy-message");
+    copyBox.setAttribute("id", "copy-message");
+    copyBox.style.top = event.layerY + "px";
+    navigator.clipboard.writeText(selectText);
+    text.appendChild(copyBox);
+    
+    $(copyBox).fadeOut(1500);
+}

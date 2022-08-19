@@ -5,11 +5,13 @@
     {% for category in site.data.category -%}
     <div class="category-icons">
       {{category.title}}
+      {% for child in category.child -%}
       <div class="pure-menu-item">
         <a class="category-icon pure-menu-link" href="{{ category.url }}">
-          {{category.title}}
+          {{child.name}}
         </a>
       </div>
+      {%- endfor %}
     </div>
     {%- endfor %}
   </div>
