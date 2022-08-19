@@ -53,7 +53,8 @@
   width: 11%; 
   height: 100%; 
   padding: 0px;
-  &:hover{
-    cursor:pointe;
+  &:hover,
+  &:focus {
+    cursor:pointer;
   }
 }
