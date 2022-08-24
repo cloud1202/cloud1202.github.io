@@ -56,3 +56,16 @@ pre {
 .gist .markdown-body {
   padding: 15px !important;
 }
+
+.highlighter-rouge{
+  background-color: var(--code-bg);
+  font-family: var(--text-hard-bold);
+  pre {
+    margin-bottom: 0;
+  }
+
+  // Triple backticks (code fencing) doubles the .highlight elements
+  .highlight {
+    padding: 0;
+  }
+}
