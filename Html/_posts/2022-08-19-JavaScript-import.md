@@ -38,7 +38,7 @@ category: Html
 
 ### 웹에서 Console 창 보는 법
 웹에서의 Console창은 `F12` 키를 누르면 볼 수 있다.
-![ConsoleView](/assets/img/2022-08-19-JavaScript-import/Console.png "ConsoleView")
+![ConsoleView](/assets/img/2022-08-19-JavaScript-import/Console.PNG "ConsoleView")
 
 붉은 네모박스 안에 표시된 것들은 웹에서 바로 볼 수 있는 개발툴 같은 것이다.  
 이것을 설명하는 것은 해당 포스트의 주제와 어긋나 자세히는 설명하지 않을 예정이다.
