@@ -138,7 +138,7 @@
 
 .category-icons {
   text-align: left;
-  font-size : 1.6vw;
+  font-size : 1.2rem;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -151,7 +151,7 @@
 
 .category-icon {
   text-align: left;
-  font-size : 1.5vw;
+  font-size : 1.0rem;
   margin-top: 10px;
   width: 100%;
   border:none;
@@ -188,5 +188,15 @@
 @media (min-width: $md-width) {
   .category {
     height: 100%;
+  }
+}
+
+@media (min-width: $lg-width) {
+  .category-icons {
+    font-size : 24px;
+  }
+
+  .category-icon {
+    font-size : 22px;
   }
 }
