@@ -1,5 +1,3 @@
-
-
 <header class="masthead " id="sidebar-left">
   <div class="info">
     <div class="masthead-tagline">
@@ -23,7 +21,7 @@
   {% assign index = 0 %}
   {% for dropdown in site.data.dropdown -%}
   <div class="masthead-dropdown">
-    <p class="sidebar-left-dropdown" name="{{ dropdown.title }}" state=0 onclick="OnClickDropdown(this, {{ index }})">  {{ dropdown.title }} &#x1F53D</p>
+    <p class="sidebar-left-dropdown" name="{{ dropdown.title }}" state=0 onclick="OnClickDropdown(this, '{{ index }}')">  {{ dropdown.title }} &#x1F53D</p>
     {% assign title = dropdown.title %}
     {% case title %}
     {% when "E-mail" %}

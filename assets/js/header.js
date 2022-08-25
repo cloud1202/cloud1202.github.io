@@ -23,6 +23,7 @@ function OnClickSearchButton(baseURL)
   {
     localStorage.setItem('search_text', searchText);
     document.location.href = baseURL;
+    return;
   }
 
   searchPost(searchText);

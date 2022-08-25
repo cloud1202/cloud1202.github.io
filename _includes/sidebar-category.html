@@ -3,13 +3,15 @@
 {% if site.data.category -%}
   <div class="category pure-menu category-scroll">
     {% for category in site.data.category -%}
-    <div class="category-icons">
+    <div >
+      <button class="category-icons" href="{{category.url}}">
       {{category.title}}
+    </button>
       {% for child in category.child -%}
       <div class="pure-menu-item">
-        <button class="category-icon" onclick="OnClickCategory({{ child.name }})">
-          {{ child.name }}
-        </button>
+        <a class="category-icon" href="{{child.url}}">
+          {{ child.title }}
+        </a>
       </div>
       {%- endfor %}
     </div>

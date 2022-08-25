@@ -2,7 +2,6 @@
 title: Note for Oort_Cloud
 introduce: 개발자 요모조모
 url: https://cloud1202.github.io/
-avatar: /avatar.jpeg
 permalink: pretty
 cover_image: /bg.jpeg
 timezione: Asia/Seoul
@@ -35,10 +34,9 @@ logo: logo.png
 social:
   name: cloud1202
   links:
-    - https://twitter.com/vszhub
     - https://github.com/cloud1202
 google_site_verification: xxxxx
-lang: en
+lang: ko-Kr
 
 sass:
   sass_dir: _sass
