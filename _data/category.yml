@@ -1,17 +1,17 @@
 - title: Unity
-  url: /Unity/
+  url: /unity/
   child:
   - title: Development
-    url: /Unity/Development
+    url: /unity/development
 - title: Web
-  url: /Web/
+  url: /web/
   child:
   - title: Html
-    url: /Web/Html
+    url: /web/html
   - title: Js
-    url: /Web/Js
+    url: /web/js
   - title: Css
-    url: /Web/Css
+    url: /web/css
 - title: Blog
-  url: /Blog/
+  url: /blog/
   child:

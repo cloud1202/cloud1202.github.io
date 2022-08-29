@@ -4,9 +4,9 @@
   <div class="category pure-menu category-scroll">
     {% for category in site.data.category -%}
     <div >
-      <button class="category-icons" href="{{category.url}}">
+      <a class="category-icons" href="{{category.url}}">
       {{category.title}}
-    </button>
+      </a>
       {% for child in category.child -%}
       <div class="pure-menu-item">
         <a class="category-icon" href="{{child.url}}">

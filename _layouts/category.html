@@ -3,7 +3,9 @@ layout: default
 ---
 
 <div class="posts">
+  {% assign category = page.title %}
   {% for page in site.posts %}
+  {% if category == page.category or category == page.parent %}
   <section class="post-entry">
     <h2 class="post-title">
       <a href="{{ page.url | relative_url }}">
@@ -22,8 +24,9 @@ layout: default
     </div>
     {% if page.tags %}
     {% include post-tags.html %}
-  {% endif %}
+    {% endif %}
   </section>
+  {% endif %}
   {% endfor %}
   {%- if jekyll.environment == "production" and site.disqus -%}
     <script id="dsq-count-scr" src="//{{ site.disqus }}.disqus.com/count.js" async></script>
