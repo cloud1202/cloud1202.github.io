@@ -15,3 +15,8 @@ function OnClickDropdown(dropdown, index){
   }
   $("#dropdown-item-" + index).slideToggle("fast");
 }
+
+function OnClickSocialIcon(url){
+  localStorage.removeItem('search_text');
+  document.location.href = url;
+}

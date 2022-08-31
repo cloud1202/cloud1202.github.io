@@ -8,7 +8,7 @@
       <ul class="social-icons pure-menu-list">
         {% for social in site.data.social -%}
         <li class="pure-menu-item">
-          <a class="social-icon pure-menu-link" href="{{ social.url }}">
+          <a class="social-icon pure-menu-link" href="#" onclick="OnClickSocialIcon('{{ social.url }}')">
             <i class="{{ social.icon | default: 'fas fa-link' }}" title="{{ social.title }}"></i>
           </a>
         </li>

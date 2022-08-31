@@ -4,10 +4,10 @@
 // page is wrapped in `.page` and is only used on the page layout.
 
 .post a{
-  color: inherit;
+  color: var(--link-color);
   text-decoration: none;
   &:hover{
-    color: var(--blue-300);
+    color: var(--link-hover-color);
   }
 }
 .page,
