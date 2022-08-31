@@ -63,7 +63,7 @@ function setSidebarHeight()
     var body = document.body,
         html = document.documentElement;
 
-    var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    var height = Math.max(body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
     document.getElementById("sidebar-left").style.height = height + "px";
     document.getElementById("sidebar-right").style.height = height + "px";
 }
