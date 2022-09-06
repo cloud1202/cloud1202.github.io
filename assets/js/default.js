@@ -6,13 +6,6 @@ window.onload = function(e){
     setSocialIcon();
 
     setSidebarHeight();
-    for(var a =1; a<5; a++){
-        var b = a;
-        console.log(a);
-        
-        }
-        
-        console.log(b);
 }
 
 function setSearchBox()
