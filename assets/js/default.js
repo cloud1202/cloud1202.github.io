@@ -1,6 +1,10 @@
 // sidebar-left social icon size change
 // la-width : 1024 , md-width : 768
 window.onload = function(e){
+    let a=b=c=0;
+    console.log(a);
+    console.log(b);
+    console.log(c);
     setSearchBox();
 
     setSocialIcon();
