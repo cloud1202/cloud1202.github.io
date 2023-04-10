@@ -96,7 +96,7 @@ function OnClickTextCopy(text, event){
     copyBox.setAttribute("class", "copy-message");
     copyBox.setAttribute("id", "copy-message");
     copyBox.style.top = event.layerY + "px";
-    navigator.clipboard.writeText(selectText);
+    window.navigator.clipboard.writeText(selectText);
     text.appendChild(copyBox);
     
     $(copyBox).fadeOut(1500);
