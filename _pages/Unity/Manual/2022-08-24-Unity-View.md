@@ -7,7 +7,7 @@ thumbnail: "/assets/img/thumbnail/book.jpg"
 ---
 ## Unity 기본 구성화면
 **Unity**의 기본 구성화면은 아래와 같이 되어있다.
-!["Default_View.png"](/cloud1202.github.io/assets/img/2022-08-24-Unity-View/All_View.png "유니티 기본 구성화면")  
+!["Default_View.png"](/assets/img/2022-08-24-Unity-View/All_View.png "유니티 기본 구성화면")  
 
 ### Hierarchy View
 이미지의 1번에 해당하는 **Hierarchy View**는 추후 설명될 **Scene View**에 있는 오브젝트들의 리스트를 보여주는 창으로 **계층 창** 이라고도 한다.  
@@ -51,11 +51,11 @@ thumbnail: "/assets/img/thumbnail/book.jpg"
 
 ## Unity 구성화면 변경하기
 앞서 기술한 사항들은 Unity의 Default 구성 화면이다. 하지만, 사용자에 따라 원하는 View의 종류나 위치를 변경할 수 있도록 Unity는 배려해줬다.  
-우선 파일집의 네임택 같은 부분을 !["Name_Tag.png"](/cloud1202.github.io/assets/img/2022-08-24-Unity-View/NameTag.png "View Name Tag")   
+우선 파일집의 네임택 같은 부분을 !["Name_Tag.png"](/assets/img/2022-08-24-Unity-View/NameTag.png "View Name Tag")   
 Drag & Drop으로 옮길 수 있다. 옮길 수 있는 위치가 꽤나 다양하고 상단 도구 중 [Window] 에서 필요한 View들을 선택해 마구 추가해도 무관하다.  
 열심히 공들여 변경한 구성화면을 다른 프로젝트에서도 사용하고 싶다면 상단 도구 중 [Window] - [Layouts] - [Save Layout...] 을 사용해 현재 구성화면을 저장하도록 하자.  
-!["My_Layout.png"](/cloud1202.github.io/assets/img/2022-08-24-Unity-View/My_Layout.png "My Layout")   
+!["My_Layout.png"](/assets/img/2022-08-24-Unity-View/My_Layout.png "My Layout")   
 현재 세개정도의 나만의 Layout을 만들어 사용중에 있다. 작업마다 필요한 도구나, 배치가 달라 자주 작업하는 Layout을 만들어 놓고 사용하면 편리하다.  
 <br>현재 프로젝트를 작업하는 경우에는 해당 **Layout**을 사용한다.
-!["Change_Layout.png"](/cloud1202.github.io/assets/img/2022-08-24-Unity-View/Change_Layout.png "Change Layout")   
+!["Change_Layout.png"](/assets/img/2022-08-24-Unity-View/Change_Layout.png "Change Layout")   
 Layout을 저장할 때 보였겠지만 Unity에서 제공하는 Layout이 여러가지가 있다. 처음에 감이 잡히지 않는 다면 해당 Layout을 사용하면서 점차 자신만의 Layout을 만들면 될 것 같다.
