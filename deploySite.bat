@@ -10,8 +10,10 @@ set COMMITMSG=Update site %date% %time%
 git add .
 git commit -m "%COMMITMSG%"
 git push origin main
+pause
 
 bundle exec jekyll clean
+pause
 bundle exec jekyll build
 
 pause
