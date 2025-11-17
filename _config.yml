@@ -1,11 +1,12 @@
 title: DeveloperOC.com
 description: "Satellite - jekyll blog theme"
-logo_img: "/assets/img/favicon.webp"
+logo_img: "/assets/img/favicon.ico"
 profile_img: "/assets/img/profile.webp"
 
 # Social Links
-email: example@gmail.com
-github_username: github
+email: "oortcloud98@gmail.com"
+github_username: cloud1202
+notion: 2a85819b9aa780a29229dac0038335df
 twitter_username: twitter
 instagram_username: instagram
 linkedin_username: linkedin
@@ -17,7 +18,7 @@ giscus_repoId: "R_kgDOHxWNpQ"
 giscus_category: "Q&A"
 giscus_categoryId: "DIC_kwDOHxWNpc4Cx4YL"
 goatcounter_code: cloud1202
-google_analytics:
+google_analytics: G-0JYDGDVPBB
 
 # If your repo name follows the format "<user-name>.github.io", then leave the below blank.
 # Otherwise, set its value as "/<repo-name>". ex) baseurl: /myblog
