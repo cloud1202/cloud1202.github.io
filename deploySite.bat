@@ -11,4 +11,3 @@ git add .
 git commit -m "%COMMITMSG%"
 git push origin main
 
-pause
