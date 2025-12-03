@@ -2,13 +2,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>
-    {% if page.url == "/index.html" %}
-        Home
-    {% elsif page_type == "category" %}
-        {{ category_title }}
-    {% else %}
-        {{ page.title }}
-    {% endif %}
+	{{ site.title }}
 </title>
 {% seo %}
 
@@ -57,6 +51,8 @@
     });
 </script>
 
+<meta name="google-site-verification" content="4bTbaLB2q_z3v8-iUBwskiRH4UKmUl87XOu8MSOtV8o">
+<meta name="naver-site-verification" content="6f63212c134b283e78510c2be59825a04ed95b49">
 <meta name="baseurl" content="{{ site.baseurl }}">
 <meta
 name="description"
