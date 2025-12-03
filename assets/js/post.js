@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function(){
         itemLink.classList.add("toc-link");
         itemLink.id = "toc-id-" + heading.textContent;
         itemLink.textContent = heading.textContent;
-
+		
         tocItem.append(itemLink);
 
         itemLink.addEventListener('click', function(){
