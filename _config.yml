@@ -1,5 +1,6 @@
 title: DeveloperOC
 description: "Oort_Cloud98 Note"
+url: "https://cloud1202.github.io"
 logo_img: "/assets/img/favicon.ico"
 profile_img: "/assets/img/Profile.JPG"
 
@@ -22,7 +23,7 @@ google_analytics: G-0JYDGDVPBB
 
 # If your repo name follows the format "<user-name>.github.io", then leave the below blank.
 # Otherwise, set its value as "/<repo-name>". ex) baseurl: /myblog
-baseurl: ""
+baseurl: "https://cloud1202.github.io/"
 
 # Build settings
 plugins:
