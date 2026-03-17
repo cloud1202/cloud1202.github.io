@@ -31,6 +31,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll-loading-lazy
+  - jekyll-last-modified-at
 
 exclude:
   - docs/
@@ -47,7 +48,7 @@ defaults:
       type: "pages"
     values:
       layout: "page"
-      date: "1900-01-01"
+      #date: "1900-01-01"
 
 # Markdown newline activator 
 kramdown:
