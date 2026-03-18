@@ -5,6 +5,7 @@ tags:
 date: "2025-12-03"
 thumbnail: "/assets/img/thumbnail/book.jpg"
 imgAddress: "/assets/img/2025-12-03-Assembly-Definition/"
+is_post: true
 ---
 ## 🚀 Unity 개발 필수: Assembly Definition File (.asmdef) 완전 분석
 

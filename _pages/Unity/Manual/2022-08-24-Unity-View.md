@@ -4,6 +4,7 @@ tags:
     - Unity
 date: "2022-08-24"
 thumbnail: "/assets/img/thumbnail/book.jpg"
+is_post: true
 ---
 ## Unity 기본 구성화면
 **Unity**의 기본 구성화면은 아래와 같이 되어있다.

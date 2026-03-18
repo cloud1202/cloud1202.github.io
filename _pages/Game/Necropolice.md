@@ -8,6 +8,7 @@ date: "2025-12-03"
 thumbnail: "/assets/img/thumbnail/book.jpg"
 imgAddress: "/assets/img/Necropolice/"
 bookmark: true
+is_post: true
 ---
 <iframe 
     src="/assets/games/{{page.title}}/index.html" 

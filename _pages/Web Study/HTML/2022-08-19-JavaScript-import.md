@@ -7,6 +7,7 @@ tags:
     - Java Script
 date: "2022-08-19"
 thumbnail: "/assets/img/thumbnail/book.jpg"
+is_post: true
 ---
 
 사실 **JS**를 잘 알지 못한다. 대학교 커리큘럼에 포함되어있어서 몇번 다뤄보았고, 현재에는 Jekyll 블로그를 만드느라 다루는 것이 전부여서 전문적인 지식이 아닌 기록의 용도로 가끔 참고하기 위해 포스팅 합니다.  
