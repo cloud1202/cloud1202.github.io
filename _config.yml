@@ -41,6 +41,8 @@ exclude:
   - categories/
   - tags/
   - assets/
+  - googlefe5bbe7e1139c75a.html
+  - naver9a2bac8d9af0482f796aa2d7bd7ab624.html
 
 collections:
   pages:
