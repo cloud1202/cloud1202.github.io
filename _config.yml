@@ -35,7 +35,6 @@ plugins:
 
 exclude:
   - docs/
-  - assets/games/
 
 collections:
   pages:
