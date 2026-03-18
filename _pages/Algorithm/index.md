@@ -1,3 +1,4 @@
 ---
-
+sitemap: false
+robots: noindex
 ---
