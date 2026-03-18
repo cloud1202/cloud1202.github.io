@@ -35,6 +35,12 @@ plugins:
 
 exclude:
   - docs/
+  - unity/
+  - web/
+  - blog/
+  - categories/
+  - tags/
+  - assets/
 
 collections:
   pages:
