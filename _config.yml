@@ -36,6 +36,8 @@ plugins:
 exclude:
   - docs/
 
+google_site_verification: 4bTbaLB2q_z3v8-iUBwskiRH4UKmUl87XOu8MSOtV8o
+
 collections:
   pages:
     output: true
