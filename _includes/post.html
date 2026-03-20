@@ -66,7 +66,9 @@
 {% for p in site.pages %}
   {% assign p_parts = p.url | split: "/" %}
   {% assign p_filtered = p_parts | where_exp: "item", "item != ''" %}
-  
+  {% if p.url contains "index.html" %}
+  {% continue %}
+{% endif %}
   {% if p_filtered[0] == curr_category %}
     <a href="{{ p.url }}">{{ p.title }}</a>
   {% endif %}
