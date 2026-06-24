@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service – Slide Block</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #181c24;
+    --border: rgba(255,255,255,0.08);
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --accent: #6c63ff;
+    --accent-soft: rgba(108,99,255,0.12);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  header { border-bottom: 1px solid var(--border); padding: 2rem 0; }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .app-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 { font-size: 1.75rem; font-weight: 600; color: #fff; line-height: 1.2; }
+
+  .meta { margin-top: 0.75rem; font-size: 13px; color: var(--muted); }
+
+  main { padding: 3rem 0; }
+
+  .intro {
+    background: var(--accent-soft);
+    border: 1px solid rgba(108,99,255,0.2);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 14px;
+    color: #b0b8d8;
+    line-height: 1.7;
+  }
+
+  section { margin-bottom: 2.5rem; }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  p { color: #b0b8d8; margin-bottom: 0.75rem; font-size: 14px; }
+  p:last-child { margin-bottom: 0; }
+
+  ul { list-style: none; margin: 0.5rem 0; }
+  ul li {
+    position: relative;
+    padding-left: 1.25rem;
+    color: #b0b8d8;
+    font-size: 14px;
+    margin-bottom: 0.6rem;
+    line-height: 1.6;
+  }
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .license-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .license-box .lib-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .license-box .lib-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .license-box pre {
+    font-family: 'Inter', monospace;
+    font-size: 12px;
+    color: #7a8099;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 3rem 0;
+  }
+
+  .contact-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .contact-box .icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-box .icon svg {
+    width: 20px; height: 20px;
+    stroke: var(--accent); fill: none;
+    stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .contact-box .label { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+  .contact-box .value { font-size: 14px; font-weight: 500; color: var(--text); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f8f9fc;
+      --surface: #fff;
+      --border: rgba(0,0,0,0.08);
+      --text: #1a1d2e;
+      --muted: #8890aa;
+      --accent: #5b52e8;
+      --accent-soft: rgba(91,82,232,0.08);
+    }
+    h1, h2 { color: #1a1d2e; }
+    p, ul li { color: #4a5068; }
+    .intro { color: #4a5068; }
+    .contact-box .value { color: var(--text); }
+    .license-box pre { color: #8890aa; }
+    .license-box .lib-name { color: var(--text); }
+  }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="app-label">Slide Block</div>
+    <h1>이용약관<br><span style="font-size:1.1rem;font-weight:400;color:#7a8099">Terms of Service</span></h1>
+    <div class="meta">최종 업데이트 · Last updated: 2026년 6월 24일</div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <div class="intro">
+      본 이용약관은 OortCloud98이 개발한 모바일 게임 <strong>Slide Block</strong> 이용에 관한 조건을 규정합니다. 앱을 설치하거나 사용함으로써 본 약관에 동의하는 것으로 간주됩니다.<br><br>
+      These Terms of Service govern your use of <strong>Slide Block</strong>, developed by OortCloud98. By installing or using the app, you agree to these terms.
+    </div>
+
+    <section>
+      <h2>1. 서비스 이용 · Use of Service</h2>
+      <p>Slide Block은 개인적, 비상업적 목적으로만 사용할 수 있습니다.<br>
+      Slide Block is available for personal, non-commercial use only.</p>
+      <ul>
+        <li>앱을 리버스 엔지니어링, 복제, 수정하거나 파생 저작물을 생성하는 행위를 금지합니다.<br>
+        <span style="font-size:13px;color:var(--muted)">You may not reverse engineer, copy, modify, or create derivative works of the app.</span></li>
+        <li>앱 내 부정한 방법으로 점수를 조작하거나 서비스를 악용하는 행위를 금지합니다.<br>
+        <span style="font-size:13px;color:var(--muted)">You may not manipulate scores or abuse the service through unauthorized means.</span></li>
+        <li>타인에게 피해를 주는 방식으로 서비스를 이용하는 행위를 금지합니다.<br>
+        <span style="font-size:13px;color:var(--muted)">You may not use the service in ways that harm others.</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. 리더보드 및 사용자 데이터 · Leaderboard & User Data</h2>
+      <p>리더보드에 등록된 점수 및 닉네임은 다른 사용자에게 공개됩니다.<br>
+      Scores and nicknames on the leaderboard are visible to other users.</p>
+      <ul>
+        <li>부적절하거나 타인을 불쾌하게 하는 닉네임은 사전 통보 없이 삭제될 수 있습니다.<br>
+        <span style="font-size:13px;color:var(--muted)">Inappropriate or offensive nicknames may be removed without prior notice.</span></li>
+        <li>비정상적인 방법으로 획득한 점수는 삭제될 수 있습니다.<br>
+        <span style="font-size:13px;color:var(--muted)">Scores obtained through abnormal means may be removed.</span></li>
+        <li>데이터 삭제를 원하시면 아래 이메일로 요청하세요.<br>
+        <span style="font-size:13px;color:var(--muted)">To request data deletion, contact us at the email below.</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. 광고 · Advertisements</h2>
+      <p>Slide Block은 Google AdMob을 통해 광고를 제공합니다. 광고는 Google의 정책에 따라 표시되며, 개발자는 광고 내용에 대한 책임을 지지 않습니다.<br>
+      Slide Block displays ads via Google AdMob. Ads are shown according to Google's policies. The developer is not responsible for ad content.</p>
+    </section>
+
+    <section>
+      <h2>4. 지식재산권 · Intellectual Property</h2>
+      <p>앱의 모든 콘텐츠 (그래픽, 사운드, 코드 등)는 OortCloud98의 소유이며 저작권법에 의해 보호됩니다.<br>
+      All content in the app (graphics, sound, code, etc.) is owned by OortCloud98 and protected by copyright law.</p>
+    </section>
+
+    <section>
+      <h2>5. 면책조항 · Disclaimer</h2>
+      <p>Slide Block은 현재 상태 그대로 제공되며, 서비스의 지속적인 가용성을 보장하지 않습니다. 개발자는 앱 사용으로 인한 직접적·간접적 손해에 대해 책임을 지지 않습니다.<br>
+      Slide Block is provided "as is" without warranty of continuous availability. The developer is not liable for any direct or indirect damages arising from use of the app.</p>
+    </section>
+
+    <section>
+      <h2>6. 약관 변경 · Changes to Terms</h2>
+      <p>본 약관은 변경될 수 있으며, 변경 시 이 페이지에 업데이트됩니다. 변경 후 계속 앱을 사용하면 새로운 약관에 동의한 것으로 간주됩니다.<br>
+      These terms may be updated. Changes will be reflected on this page. Continued use of the app after changes constitutes acceptance of the new terms.</p>
+    </section>
+
+    <section>
+      <h2>7. 문의 · Contact</h2>
+      <div class="contact-box">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        </div>
+        <div>
+          <div class="label">개발자 이메일 · Developer Email</div>
+          <div class="value"><a href="mailto:oortcloud98@gmail.com">oortcloud98@gmail.com</a></div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- 오픈소스 라이선스 -->
+    <section>
+      <h2>오픈소스 라이선스 · Open Source Licenses</h2>
+      <p>Slide Block은 다음 오픈소스 라이브러리를 사용합니다.<br>
+      Slide Block uses the following open source libraries.</p>
+
+      <div class="license-box">
+        <div class="lib-name">UniTask</div>
+        <div class="lib-meta">Cysharp, Inc. · MIT License · <a href="https://github.com/Cysharp/UniTask" target="_blank">github.com/Cysharp/UniTask</a></div>
+        <pre>MIT License
+
+Copyright (c) 2019 Yoshifumi Kawai / Cysharp, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    © 2026 OortCloud98 · Slide Block · All rights reserved. · <a href="/privacy-policy/">개인정보처리방침</a>
+  </div>
+</footer>
+
+</body>
+</html>
