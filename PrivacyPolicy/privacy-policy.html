@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy – Slide Block</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #181c24;
+    --border: rgba(255,255,255,0.08);
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --accent: #6c63ff;
+    --accent-soft: rgba(108,99,255,0.12);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 0;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .app-label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .meta {
+    margin-top: 0.75rem;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  main {
+    padding: 3rem 0;
+  }
+
+  .intro {
+    background: var(--accent-soft);
+    border: 1px solid rgba(108,99,255,0.2);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 14px;
+    color: #b0b8d8;
+    line-height: 1.7;
+  }
+
+  section {
+    margin-bottom: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  p {
+    color: #b0b8d8;
+    margin-bottom: 0.75rem;
+    font-size: 14px;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  ul {
+    list-style: none;
+    margin: 0.5rem 0;
+  }
+
+  ul li {
+    position: relative;
+    padding-left: 1.25rem;
+    color: #b0b8d8;
+    font-size: 14px;
+    margin-bottom: 0.4rem;
+  }
+
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover { text-decoration: underline; }
+
+  .contact-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .contact-box .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-box .icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .contact-box .label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .contact-box .value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f8f9fc;
+      --surface: #fff;
+      --border: rgba(0,0,0,0.08);
+      --text: #1a1d2e;
+      --muted: #8890aa;
+      --accent: #5b52e8;
+      --accent-soft: rgba(91,82,232,0.08);
+    }
+    h1 { color: #1a1d2e; }
+    h2 { color: #1a1d2e; }
+    p, ul li { color: #4a5068; }
+    .intro { color: #4a5068; }
+    .contact-box .value { color: var(--text); }
+  }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="app-label">Slide Block</div>
+    <h1>개인정보처리방침<br><span style="font-size:1.1rem;font-weight:400;color:#7a8099">Privacy Policy</span></h1>
+    <div class="meta">최종 업데이트 · Last updated: 2026년 6월 24일</div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <div class="intro">
+      본 개인정보처리방침은 OortCloud98이 개발한 모바일 게임 <strong>Slide Block</strong>이 수집하는 정보와 그 이용 방법을 설명합니다.<br>
+      This Privacy Policy describes how <strong>Slide Block</strong>, developed by OortCloud98, collects and uses information.
+    </div>
+
+    <section>
+      <h2>1. 수집하는 정보 · Information We Collect</h2>
+      <p>Slide Block은 다음과 같은 정보를 수집할 수 있습니다.</p>
+      <ul>
+        <li>광고 식별자 (Google 광고 ID) – 맞춤 광고 제공을 위해 Google AdMob이 수집합니다.</li>
+        <li>앱 사용 데이터 (세션 시간, 이벤트 로그) – Firebase Analytics가 수집합니다.</li>
+        <li>크래시 및 오류 보고 – Firebase Crashlytics가 수집합니다.</li>
+        <li>리더보드 점수 – Firestore에 저장되는 게임 점수 및 닉네임 (선택 시).</li>
+      </ul>
+      <p style="margin-top:0.75rem;">개발자는 위 정보를 직접 열람하거나 별도로 저장하지 않습니다.</p>
+    </section>
+
+    <section>
+      <h2>2. 정보 이용 목적 · How We Use Information</h2>
+      <ul>
+        <li>광고 노출 및 광고 성과 측정</li>
+        <li>앱 안정성 개선 및 버그 수정</li>
+        <li>게임 플레이 분석을 통한 사용자 경험 개선</li>
+        <li>리더보드 서비스 운영</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. 제3자 서비스 · Third-Party Services</h2>
+      <p>이 앱은 다음 제3자 서비스를 사용하며, 각 서비스는 자체 개인정보처리방침을 따릅니다.</p>
+      <ul>
+        <li><a href="https://policies.google.com/privacy" target="_blank">Google AdMob</a> – 광고 서비스</li>
+        <li><a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Analytics</a> – 앱 분석</li>
+        <li><a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Crashlytics</a> – 오류 보고</li>
+        <li><a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Firestore</a> – 리더보드 데이터 저장</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. 데이터 보관 및 삭제 · Data Retention</h2>
+      <p>수집된 데이터는 서비스 운영에 필요한 기간 동안 보관됩니다. 리더보드 데이터 삭제를 원하시면 아래 이메일로 요청하시면 됩니다.</p>
+      <p>Collected data is retained as long as necessary for service operation. To request deletion of leaderboard data, contact us at the email below.</p>
+    </section>
+
+    <section>
+      <h2>5. 아동 개인정보 보호 · Children's Privacy</h2>
+      <p>이 앱은 만 13세 미만 아동을 대상으로 하지 않으며, 의도적으로 아동의 개인정보를 수집하지 않습니다.</p>
+      <p>This app is not directed at children under 13 and does not knowingly collect personal information from children under 13.</p>
+    </section>
+
+    <section>
+      <h2>6. 방침 변경 · Changes to This Policy</h2>
+      <p>본 방침은 변경될 수 있으며, 변경 시 이 페이지에 업데이트됩니다. 중요한 변경사항은 앱 업데이트 노트를 통해 안내됩니다.</p>
+      <p>This policy may be updated. Changes will be reflected on this page. Significant changes will be communicated through app update notes.</p>
+    </section>
+
+    <section>
+      <h2>7. 문의 · Contact</h2>
+      <div class="contact-box">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        </div>
+        <div>
+          <div class="label">개발자 이메일 · Developer Email</div>
+          <div class="value"><a href="mailto:oortcloud98@gmail.com">oortcloud98@gmail.com</a></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    © 2026 OortCloud98 · Slide Block · All rights reserved.
+  </div>
+</footer>
+
+</body>
+</html>
