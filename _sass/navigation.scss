@@ -23,6 +23,7 @@
       transition:max-height .5s ease-in-out, opacity .3s;
       opacity:0;
       max-height:0;
+	  pointer-events:none;
   
       li { position:relative; }
     }
@@ -33,6 +34,7 @@
       > .nav-list {
         opacity:1;
         max-height:768px;
+		pointer-events:auto;
       }
     }
   }
