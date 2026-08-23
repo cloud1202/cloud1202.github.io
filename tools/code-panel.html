@@ -1,0 +1,586 @@
+---
+layout: null
+title: 포트폴리오 코드 패널
+permalink: /tools/code-panel/
+sitemap: false
+---
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="description" content="C# 코드에 색을 입혀 서식을 유지한 채 PowerPoint로 복사하는 도구.">
+<title>포트폴리오 코드 패널</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+
+<style>
+  /* ---- 토큰: 라이트 (기본) ---------------------------------------- */
+  :root {
+    --ink:        #0F172A;
+    --body:       #475569;
+    --meta:       #94A3B8;
+    --brand:      #4F46E5;
+    --brand-soft: #EEF0FE;
+    --surface:    #FFFFFF;
+    --sunken:     #F1F5F9;
+    --line:       #E2E8F0;
+    --line-soft:  #EFF3F8;
+
+    /* 코드 패널 — 두 테마에서 동일 (PPT 실물값) */
+    --panel:  #151718;
+    --t-def:  #F0F0F0;
+    --t-key:  #FF3399;
+    --t-type: #4BE6FA;
+    --t-str:  #FFD500;
+    --t-num:  #C10AFF;
+    --t-com:  #999999;
+
+    --mono: Consolas, "Cascadia Mono", "D2Coding", ui-monospace, "Courier New", monospace;
+    --sans: "Noto Sans KR", -apple-system, "Segoe UI", system-ui, sans-serif;
+
+    --r: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink:        #E8EDF5;
+      --body:       #A9B6C8;
+      --meta:       #6B7C93;
+      --brand:      #99A2FF;
+      --brand-soft: #232744;
+      --surface:    #14161F;
+      --sunken:     #1B1E29;
+      --line:       #2B3040;
+      --line-soft:  #232735;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink:        #E8EDF5;
+    --body:       #A9B6C8;
+    --meta:       #6B7C93;
+    --brand:      #99A2FF;
+    --brand-soft: #232744;
+    --surface:    #14161F;
+    --sunken:     #1B1E29;
+    --line:       #2B3040;
+    --line-soft:  #232735;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--sunken);
+    color: var(--body);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 40px 24px 72px; }
+
+  /* ---- 헤더 -------------------------------------------------------- */
+  .head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 28px; margin-bottom: 8px; }
+  .head h1 {
+    margin: 0; color: var(--ink); font-size: 26px; font-weight: 700;
+    letter-spacing: -0.01em; text-wrap: balance;
+  }
+  .head p { margin: 0; max-width: 62ch; font-size: 14px; }
+  .src {
+    font-family: var(--mono); font-size: 12px; color: var(--meta);
+    background: var(--brand-soft); border-radius: 6px; padding: 3px 9px;
+    white-space: nowrap;
+  }
+
+  /* ---- 팔레트 범례 ------------------------------------------------- */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin: 22px 0 28px; padding: 12px 14px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+  }
+  .sw { display: flex; align-items: center; gap: 7px; padding: 4px 10px 4px 5px; border-radius: 999px; background: var(--sunken); }
+  .sw i { width: 13px; height: 13px; border-radius: 3px; flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,.25); }
+  .sw b { color: var(--ink); font-size: 12.5px; font-weight: 500; }
+  .sw code { font-family: var(--mono); font-size: 11px; color: var(--meta); }
+
+  /* ---- 프리셋 ------------------------------------------------------ */
+  .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .bar .lab {
+    font-size: 11px; font-weight: 500; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--meta); margin-right: 4px;
+  }
+  button {
+    font-family: inherit; font-size: 13.5px; cursor: pointer;
+    border-radius: 8px; border: 1px solid var(--line);
+    background: var(--surface); color: var(--body);
+    padding: 7px 14px; transition: border-color .14s, color .14s, background .14s;
+  }
+  button:hover { border-color: var(--brand); color: var(--brand); }
+  button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  button[aria-pressed="true"] {
+    background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 500;
+  }
+  .spacer { flex: 1 1 auto; }
+  select {
+    font-family: inherit; font-size: 13px; color: var(--body);
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; padding: 7px 10px;
+  }
+  select:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  /* ---- 2단 --------------------------------------------------------- */
+  .split { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.15fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .split { grid-template-columns: minmax(0,1fr); } }
+
+  .pane { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+  .pane > header {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 11px 15px; border-bottom: 1px solid var(--line-soft);
+  }
+  .pane > header h2 {
+    margin: 0; font-size: 11px; font-weight: 500; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--meta);
+  }
+  .count { font-family: var(--mono); font-size: 11px; color: var(--meta); font-variant-numeric: tabular-nums; }
+
+  textarea {
+    display: block; width: 100%; min-height: 460px; resize: vertical;
+    border: 0; padding: 15px; background: transparent; color: var(--ink);
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.55; tab-size: 4;
+  }
+  textarea:focus { outline: 0; }
+
+  /* ---- 미리보기 ---------------------------------------------------- */
+  .stage { padding: 16px; background: var(--sunken); }
+  .panel {
+    background: var(--panel); border-radius: 8px; padding: 16px 18px;
+    overflow-x: auto; max-height: 560px; overflow-y: auto;
+  }
+  .panel pre {
+    margin: 0; font-family: var(--mono); font-size: 12px; line-height: 1.5;
+    color: var(--t-def); white-space: pre;
+  }
+  .dots { display: flex; gap: 6px; padding: 0 2px 12px; }
+  .dots span { width: 10px; height: 10px; border-radius: 50%; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 16px; background: var(--sunken); }
+  .primary {
+    background: var(--brand); border-color: var(--brand); color: #fff;
+    font-weight: 500; padding: 9px 18px;
+  }
+  .primary:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .flash { font-size: 13px; color: var(--brand); align-self: center; }
+
+  /* ---- 사용법 ------------------------------------------------------ */
+  .how { margin-top: 26px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 20px 22px; }
+  .how h2 { margin: 0 0 12px; color: var(--ink); font-size: 15px; font-weight: 700; }
+  .how ol { margin: 0; padding-left: 20px; display: grid; gap: 7px; font-size: 14px; }
+  .how li::marker { color: var(--brand); font-weight: 700; }
+  .how kbd {
+    font-family: var(--mono); font-size: 11.5px; background: var(--sunken);
+    border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; color: var(--ink);
+  }
+  .note { margin: 14px 0 0; padding-left: 13px; border-left: 2px solid var(--line); font-size: 13.5px; color: var(--meta); }
+  .note b { color: var(--body); font-weight: 500; }
+
+  .offscreen { position: fixed; left: -9999px; top: 0; white-space: pre; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <h1>포트폴리오 코드 패널</h1>
+    <span class="src">최태민_포트폴리오.pptx 에서 추출</span>
+  </div>
+  <p>코드를 붙여넣으면 색을 입혀 보여주고, <b>서식을 유지한 채</b> 클립보드에 담습니다. PowerPoint 코드 상자에 그대로 붙여넣으면 색이 따라갑니다.</p>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="bar">
+    <span class="lab">프리셋</span>
+    <button type="button" data-preset="slide" aria-pressed="true">슬라이드 로직</button>
+    <button type="button" data-preset="match" aria-pressed="false">매치 판정</button>
+    <button type="button" data-preset="blank" aria-pressed="false">비우기</button>
+    <span class="spacer"></span>
+    <label class="lab" for="size">붙여넣기 크기</label>
+    <select id="size">
+      <option value="7">7pt</option>
+      <option value="7.5">7.5pt</option>
+      <option value="8" selected>8pt</option>
+      <option value="8.5">8.5pt</option>
+      <option value="9.5">9.5pt</option>
+    </select>
+  </div>
+
+  <div class="split">
+    <section class="pane">
+      <header>
+        <h2>C# 코드</h2>
+        <span class="count" id="count">0줄</span>
+      </header>
+      <textarea id="input" spellcheck="false" aria-label="C# 코드 입력"></textarea>
+    </section>
+
+    <section class="pane">
+      <header>
+        <h2>미리보기</h2>
+        <span class="count">#151718 · Consolas</span>
+      </header>
+      <div class="stage">
+        <div class="panel">
+          <div class="dots" aria-hidden="true">
+            <span style="background:#FF5F56"></span>
+            <span style="background:#FFBD2E"></span>
+            <span style="background:#27C93F"></span>
+          </div>
+          <pre id="out"></pre>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="primary" id="copy">서식 포함 복사</button>
+        <button type="button" id="copyPlain">코드만 복사</button>
+        <span class="flash" id="flash" role="status" aria-live="polite"></span>
+      </div>
+    </section>
+  </div>
+
+  <div class="how">
+    <h2>PowerPoint에 붙여넣기</h2>
+    <ol>
+      <li><b>서식 포함 복사</b>를 누릅니다.</li>
+      <li>PPT에서 코드 상자를 <b>더블클릭</b>해 텍스트 편집 상태로 들어갑니다. 상자만 선택된 상태로 붙여넣으면 상자가 통째로 교체됩니다.</li>
+      <li>기존 코드를 <kbd>Ctrl</kbd>+<kbd>A</kbd>로 지우고 <kbd>Ctrl</kbd>+<kbd>V</kbd>로 붙여넣습니다.</li>
+      <li>붙여넣기 옵션이 뜨면 <b>원본 서식 유지</b>를 고릅니다. <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>V</kbd>는 서식을 버리니 쓰지 마세요.</li>
+    </ol>
+      <p class="note">들여쓰기는 줄바꿈 없는 공백으로 변환해 넣습니다. <b>정렬이 PPT에서도 그대로 유지</b>되고, 긴 줄이 제멋대로 접히지 않습니다.</p>
+      <p class="note">기존 슬라이드에서는 <b>async / await</b>에 색이 없었습니다. 여기서는 다른 키워드와 같은 분홍으로 칠하니, 예전 페이지와 정확히 맞추려면 그 두 단어만 흰색으로 되돌리세요.</p>
+  </div>
+
+</div>
+
+<div class="offscreen" id="ghost" aria-hidden="true"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var C = {
+    def:  "#F0F0F0", key: "#FF3399", type: "#4BE6FA",
+    str:  "#FFD500", num: "#C10AFF", com:  "#999999"
+  };
+
+  var LEGEND = [
+    ["기본",       C.def],
+    ["키워드·연산자", C.key],
+    ["타입·클래스",  C.type],
+    ["문자열",      C.str],
+    ["숫자",        C.num],
+    ["주석",        C.com]
+  ];
+
+  var KEYWORDS = ("abstract as async await base bool break byte case catch char checked class const " +
+    "continue decimal default delegate do double else enum event explicit extern false finally fixed " +
+    "float for foreach goto if implicit in int interface internal is lock long namespace new null " +
+    "object operator out override params private protected public readonly ref return sbyte sealed " +
+    "short sizeof stackalloc static string struct switch this throw true try typeof uint ulong " +
+    "unchecked unsafe ushort using var virtual void volatile while yield where").split(" ");
+
+  var TYPES = ("List Dictionary Queue Stack HashSet IEnumerable ICollection Action Func Task UniTask " +
+    "UniTaskVoid Exception ArgumentException CancellationToken CancellationTokenSource Vector2 Vector3 " +
+    "Quaternion Transform GameObject MonoBehaviour Nullable KeyValuePair StringBuilder").split(" ");
+
+  var KW = Object.create(null), TY = Object.create(null), i;
+  for (i = 0; i < KEYWORDS.length; i++) { KW[KEYWORDS[i]] = 1; }
+  for (i = 0; i < TYPES.length; i++) { TY[TYPES[i]] = 1; }
+
+  /* ---- 토크나이저 ------------------------------------------------- */
+  function tokenize(src) {
+    var out = [], n = src.length, p = 0;
+
+    function push(text, color) {
+      if (!text) { return; }
+      var last = out[out.length - 1];
+      if (last && last.c === color) { last.t += text; } else { out.push({ t: text, c: color }); }
+    }
+
+    while (p < n) {
+      var ch = src[p], two = src.substr(p, 2);
+
+      if (two === "//") {
+        var eol = src.indexOf("\n", p); if (eol === -1) { eol = n; }
+        push(src.slice(p, eol), C.com); p = eol; continue;
+      }
+      if (two === "/*") {
+        var end = src.indexOf("*/", p + 2);
+        end = end === -1 ? n : end + 2;
+        push(src.slice(p, end), C.com); p = end; continue;
+      }
+      if (ch === '"' || two === '$"' || two === '@"' || src.substr(p, 3) === '$@"') {
+        var q = src.indexOf('"', p) + 1, verbatim = /@/.test(src.slice(p, q));
+        var j = q;
+        while (j < n) {
+          if (src[j] === "\\" && !verbatim) { j += 2; continue; }
+          if (src[j] === '"') {
+            if (verbatim && src[j + 1] === '"') { j += 2; continue; }
+            j++; break;
+          }
+          if (src[j] === "\n" && !verbatim) { break; }
+          j++;
+        }
+        push(src.slice(p, j), C.str); p = j; continue;
+      }
+      if (ch === "'") {
+        var k = p + 1;
+        while (k < n && src[k] !== "'" && src[k] !== "\n") { k += (src[k] === "\\" ? 2 : 1); }
+        k = Math.min(k + 1, n);
+        push(src.slice(p, k), C.str); p = k; continue;
+      }
+      if (/[0-9]/.test(ch)) {
+        var m = /^[0-9][0-9_]*(\.[0-9]+)?([eE][+-]?[0-9]+)?[fFdDmMuUlL]*/.exec(src.slice(p));
+        push(m[0], C.num); p += m[0].length; continue;
+      }
+      if (/[A-Za-z_]/.test(ch)) {
+        var w = /^[A-Za-z_][A-Za-z0-9_]*/.exec(src.slice(p))[0];
+        var after = src.slice(p + w.length), before = src.slice(0, p);
+        var color;
+        if (KW[w]) {
+          color = C.key;
+        } else if (TY[w] || /^\s*</.test(after) || /\bnew\s+$/.test(before)) {
+          color = C.type;
+        } else {
+          color = C.def;
+        }
+        push(w, color); p += w.length; continue;
+      }
+      if (/[=+\-*/%<>!&|^~?:]/.test(ch)) {
+        var op = /^[=+\-*/%<>!&|^~?:]+/.exec(src.slice(p))[0];
+        push(op, C.key); p += op.length; continue;
+      }
+      push(ch, C.def); p++;
+    }
+    return out;
+  }
+
+  function esc(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  /* 화면 미리보기 — 일반 공백, <pre>가 정렬을 유지 */
+  function toPreview(tokens) {
+    var h = "", t;
+    for (var a = 0; a < tokens.length; a++) {
+      t = tokens[a];
+      h += '<span style="color:' + t.c + '">' + esc(t.t) + "</span>";
+    }
+    return h;
+  }
+
+  /* 클립보드 페이로드 — 줄마다 div, 공백은 nbsp (PPT가 공백을 접기 때문) */
+  function toRichHtml(tokens, pt) {
+    var lines = [[]], a, t, parts, b;
+    for (a = 0; a < tokens.length; a++) {
+      t = tokens[a];
+      parts = t.t.split("\n");
+      for (b = 0; b < parts.length; b++) {
+        if (b > 0) { lines.push([]); }
+        if (parts[b]) { lines[lines.length - 1].push({ t: parts[b], c: t.c }); }
+      }
+    }
+    var html = '<div style="font-family:Consolas,monospace;font-size:' + pt + 'pt;line-height:1.35;">';
+    for (a = 0; a < lines.length; a++) {
+      html += "<div>";
+      if (!lines[a].length) {
+        html += "&nbsp;";
+      } else {
+        for (b = 0; b < lines[a].length; b++) {
+          html += '<span style="color:' + lines[a][b].c + '">' +
+                  esc(lines[a][b].t).replace(/ /g, "&nbsp;") + "</span>";
+        }
+      }
+      html += "</div>";
+    }
+    return html + "</div>";
+  }
+
+  /* ---- DOM -------------------------------------------------------- */
+  var input  = document.getElementById("input");
+  var out    = document.getElementById("out");
+  var count  = document.getElementById("count");
+  var flash  = document.getElementById("flash");
+  var ghost  = document.getElementById("ghost");
+  var sizeEl = document.getElementById("size");
+  var timer  = null;
+
+  (function buildLegend() {
+    var box = document.getElementById("legend"), html = "";
+    for (var a = 0; a < LEGEND.length; a++) {
+      html += '<span class="sw"><i style="background:' + LEGEND[a][1] + '"></i>' +
+              "<b>" + LEGEND[a][0] + "</b><code>" + LEGEND[a][1] + "</code></span>";
+    }
+    box.innerHTML = html;
+  }());
+
+  var PRESETS = {
+    slide:
+"private (int startRow, int startCol, int dRow, int dCol)\n" +
+"    GetLineConfig(int lineIndex) => _boardDirection switch\n" +
+"    {\n" +
+"        BoardDirection.Up    => (BOARD_SIZE - 1, lineIndex, offset[0].r, offset[0].c),\n" +
+"        BoardDirection.Right => (lineIndex, BOARD_SIZE - 1, offset[1].r, offset[1].c),\n" +
+"        BoardDirection.Down  => (0, lineIndex, offset[2].r, offset[2].c),\n" +
+"        BoardDirection.Left  => (lineIndex, 0, offset[3].r, offset[3].c),\n" +
+"        _ => throw new ArgumentException()\n" +
+"    };\n" +
+"\n" +
+"// 방향을 시작점과 증분으로 환산해, 한 줄을 앞으로 압축한다\n" +
+"private bool SlideOneLine(int startRow, int startCol, int dRow, int dCol)\n" +
+"{\n" +
+"    bool isMove = false;\n" +
+"    int writeR = startRow, writeC = startCol;\n" +
+"\n" +
+"    for (int i = 0; i < BOARD_SIZE; ++i)\n" +
+"    {\n" +
+"        int readR = startRow + dRow * i;\n" +
+"        int readC = startCol + dCol * i;\n" +
+"\n" +
+"        if (_boardAreas[readR, readC].isEmpty) continue;\n" +
+"\n" +
+"        if (readR != writeR || readC != writeC)\n" +
+"        {\n" +
+"            isMove = true;\n" +
+"            Brick brick = _boardAreas[readR, readC].brick;\n" +
+"            brick.Move(_boardAreas[writeR, writeC].GetPos());\n" +
+"            _boardAreas[writeR, writeC].SetBrick(brick);\n" +
+"            _boardAreas[readR, readC].SetBrick();\n" +
+"        }\n" +
+"\n" +
+"        writeR += dRow;\n" +
+"        writeC += dCol;\n" +
+"    }\n" +
+"    return isMove;\n" +
+"}",
+    match:
+"// 같은 색으로 연결된 그룹 전체를 BFS로 수집한다\n" +
+"private List<BoardArea> FindMatchGroup(int startR, int startC, bool[,] visited)\n" +
+"{\n" +
+"    var brick = _boardAreas[startR, startC].brick;\n" +
+"    var bricks = new List<BoardArea>();\n" +
+"    var queue = new Queue<(int r, int c)>();\n" +
+"    queue.Enqueue((startR, startC));\n" +
+"    visited[startR, startC] = true;\n" +
+"\n" +
+"    while (queue.Count > 0)\n" +
+"    {\n" +
+"        var (r, c) = queue.Dequeue();\n" +
+"        bricks.Add(_boardAreas[r, c]);\n" +
+"\n" +
+"        for (int i = 0; i < 4; ++i)\n" +
+"        {\n" +
+"            int nr = r + offset[i].r, nc = c + offset[i].c;\n" +
+"            if (nr < 0 || nc < 0 || nr >= BOARD_SIZE || nc >= BOARD_SIZE) continue;\n" +
+"            if (visited[nr, nc] || _boardAreas[nr, nc].isEmpty) continue;\n" +
+"            if (!_boardAreas[nr, nc].MatchBrickType(brick)) continue;\n" +
+"\n" +
+"            visited[nr, nc] = true;\n" +
+"            queue.Enqueue((nr, nc));\n" +
+"        }\n" +
+"    }\n" +
+"    return bricks;\n" +
+"}\n" +
+"\n" +
+"// 제거 -> 재슬라이드 -> 재판정을 더 이상 제거가 없을 때까지 반복\n" +
+"async private UniTask SlideBrick()\n" +
+"{\n" +
+"    bool anyDestroyed = false;\n" +
+"    await m_soundManager.PlaySFX(SoundData.Slide);\n" +
+"    do\n" +
+"    {\n" +
+"        await UniTask.WaitForSeconds(0.2f, cancellationToken: _changeDirectionToken.Token);\n" +
+"        anyDestroyed = await DestroyMatches();\n" +
+"        if (anyDestroyed) SlideAll();\n" +
+"    }\n" +
+"    while (anyDestroyed);\n" +
+"}",
+    blank: ""
+  };
+
+  function render() {
+    var src = input.value;
+    var tokens = tokenize(src);
+    out.innerHTML = toPreview(tokens);
+    var n = src ? src.split("\n").length : 0;
+    count.textContent = n + "줄";
+  }
+
+  function say(msg) {
+    flash.textContent = msg;
+    if (timer) { clearTimeout(timer); }
+    timer = setTimeout(function () { flash.textContent = ""; }, 2600);
+  }
+
+  function copyRich() {
+    if (!input.value.trim()) { say("먼저 코드를 넣어주세요."); return; }
+    var html = toRichHtml(tokenize(input.value), sizeEl.value);
+
+    ghost.innerHTML = html;
+    var range = document.createRange();
+    range.selectNodeContents(ghost);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    sel.removeAllRanges();
+
+    if (ok) { say("복사됐습니다. PPT에 붙여넣으세요."); return; }
+
+    if (navigator.clipboard && window.ClipboardItem) {
+      navigator.clipboard.write([new ClipboardItem({
+        "text/html":  new Blob([html], { type: "text/html" }),
+        "text/plain": new Blob([input.value], { type: "text/plain" })
+      })]).then(function () {
+        say("복사됐습니다. PPT에 붙여넣으세요.");
+      })["catch"](function () {
+        say("복사가 막혔습니다. 미리보기를 직접 드래그해 Ctrl+C 하세요.");
+      });
+    } else {
+      say("복사가 막혔습니다. 미리보기를 직접 드래그해 Ctrl+C 하세요.");
+    }
+  }
+
+  function copyPlain() {
+    if (!input.value.trim()) { say("먼저 코드를 넣어주세요."); return; }
+    input.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    input.setSelectionRange(0, 0);
+    say(ok ? "코드만 복사했습니다." : "복사가 막혔습니다.");
+  }
+
+  document.getElementById("copy").addEventListener("click", copyRich);
+  document.getElementById("copyPlain").addEventListener("click", copyPlain);
+  input.addEventListener("input", render);
+
+  var btns = document.querySelectorAll("[data-preset]");
+  Array.prototype.forEach.call(btns, function (b) {
+    b.addEventListener("click", function () {
+      Array.prototype.forEach.call(btns, function (o) { o.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      input.value = PRESETS[b.getAttribute("data-preset")];
+      render();
+      if (b.getAttribute("data-preset") === "blank") { input.focus(); }
+    });
+  });
+
+  input.value = PRESETS.slide;
+  render();
+}());
+</script>
+</body>
+</html>
