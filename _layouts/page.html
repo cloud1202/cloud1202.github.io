@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
     {%- assign page_tree = page.path | remove_first: "_pages/" | split: "/" -%}
     {%- assign page_level = page_tree.size -%}
     {% if page_tree.last == "index.md" %}
@@ -69,6 +69,9 @@
             <div class="inner-content">
                 {% include category.html %}
                 {% if page_type == "category" %}
+                    {% if page_level == 1 %}
+                        {% include featured.html %}
+                    {% endif %}
                     {% include loading.html %}
                     {% include pagination.html %}
                 {% else %}

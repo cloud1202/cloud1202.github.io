@@ -1,0 +1,20 @@
+{%- assign items = "1,2,3,4" | split: "," -%}
+<div class="series-box">
+  <p class="series-title">📚 Unity Netcode 시리즈</p>
+  <ol class="series-list">
+    <li{% if include.current == 1 %} class="current"{% endif %}>{% if include.current == 1 %}Netcode 설치 하기 <em>(현재 글)</em>{% else %}<a href="/Unity/Netcode/2022-08-31-Netcode-01.html">Netcode 설치 하기</a>{% endif %}</li>
+    <li{% if include.current == 2 %} class="current"{% endif %}>{% if include.current == 2 %}Hello World <em>(현재 글)</em>{% else %}<a href="/Unity/Netcode/2022-09-01-Netcode-02.html">Hello World</a>{% endif %}</li>
+    <li{% if include.current == 3 %} class="current"{% endif %}>{% if include.current == 3 %}Golden Path One <em>(현재 글)</em>{% else %}<a href="/Unity/Netcode/2022-09-02-Netcode-03.html">Golden Path One</a>{% endif %}</li>
+    <li{% if include.current == 4 %} class="current"{% endif %}>{% if include.current == 4 %}Golden Path Two <em>(현재 글)</em>{% else %}<a href="/Unity/Netcode/2022-09-13-Netcode-04.html">Golden Path Two</a>{% endif %}</li>
+  </ol>
+  <p class="series-env">
+    <strong>작성 환경</strong> · Unity <strong>2021.2.18</strong> ·
+    패키지 <code>com.unity.netcode.gameobjects</code> (버전 미지정으로 설치, 2022년 8~9월 기준 최신 릴리스) ·
+    작성일 2022-08-31 ~ 2022-09-13
+  </p>
+  <p class="series-warn">
+    ⚠️ 2022년에 작성한 글이라 최신 패키지와 API가 다를 수 있습니다.
+    본문의 공식 문서 링크는 <code>/current/</code> 경로라 <strong>항상 최신 버전 문서</strong>로 연결되므로,
+    글의 화면·API와 차이가 보인다면 문서 쪽이 맞습니다.
+  </p>
+</div>

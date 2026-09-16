@@ -7,6 +7,7 @@ tags:
     - Java Script
 date: "2022-08-19"
 thumbnail: "/assets/img/thumbnail/book.jpg"
+description: "HTML에 JavaScript를 넣는 두 가지 방법 정리. script 태그로 .html 안에 직접 쓰는 방식과 별도 .js 파일을 불러오는 방식을 비교하고, 브라우저 개발자 도구 Console로 동작을 확인하는 방법을 다룹니다."
 is_post: true
 ---
 

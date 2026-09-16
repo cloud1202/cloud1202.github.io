@@ -4,6 +4,7 @@ tags:
     - Unity
 date: "2022-08-24"
 thumbnail: "/assets/img/thumbnail/book.jpg"
+description: "Unity 에디터 기본 구성 화면 정리. Hierarchy, Scene, Game, Inspector, Project 뷰가 각각 무슨 역할인지 스크린샷과 함께 설명하고, 레이아웃을 원하는 대로 바꾸는 방법까지 다룹니다."
 is_post: true
 ---
 ## Unity 기본 구성화면

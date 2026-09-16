@@ -6,6 +6,7 @@ tags: [Catch-Star, 개발일지, Devlog, Unity, Unity2D, C#, 원탭게임]
 description: "Catch-Star 두 번째 개발일지입니다. 타이머에 따라 줄어드는 고리, 콤보에 물린 각속도, 상단 90도 기준 판정창까지 붙였습니다. 각도 누적을 버리면서 1편의 360도 문제가 사라진 이야기도 함께 적었습니다."
 author: OC
 is_post: true
+featured: true
 thumbnail: "/assets/img/Catch-Star 제작(원탭 캐주얼게임) - 2/thumbnail.png"
 imgAddress: "/assets/img/Catch-Star 제작(원탭 캐주얼게임) - 2/"
 ---

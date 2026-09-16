@@ -1,3 +1,3 @@
-Sitemap: http://cloud1202.github.io/sitemap.xml
+Sitemap: https://cloud1202.github.io/sitemap.xml
 User-agent: *
-Allow:/
+Allow: /

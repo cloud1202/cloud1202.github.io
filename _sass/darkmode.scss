@@ -105,6 +105,9 @@ main {
 
 #related-box span { color:darkgoldenrod; }
 #related-posts .title { color:#ccc; }
+#related-posts-fallback a { color:#ccc; }
+#featured-box .featured-item a { color:#ccc; }
+#featured-box .featured-item:hover { box-shadow:4px 4px 12px -4px rgba(255, 255, 255, .2); }
 #related-posts li:hover { box-shadow:8px 8px 16px -4px rgba(255, 255, 255, .2); }
 
 .category-tree a { color:goldenrod; }

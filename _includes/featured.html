@@ -1,0 +1,19 @@
+{%- assign featured_pages = site.pages | where: "featured", true | sort: "date" | reverse -%}
+{%- if featured_pages.size > 0 -%}
+<section id="featured-box" aria-labelledby="featured-header">
+    <h1 class="category-header" id="featured-header">⭐ 추천글</h1>
+    <p class="featured-lead">처음 오셨다면 이 글부터 보시면 좋습니다.</p>
+    <ul class="featured-list">
+    {%- for item in featured_pages limit: 3 -%}
+        {%- assign item_tree = item.path | remove_first: "_pages/" | split: "/" -%}
+        <li class="featured-item">
+            <a href="{{ item.url | prepend: site.baseurl }}">
+                <p class="featured-category">{{ item_tree[0] }}{% if item_tree.size > 2 %} &gt; {{ item_tree[1] }}{% endif %}</p>
+                <h2 class="featured-title">{{ item.title }}</h2>
+                <p class="featured-desc">{% if item.description %}{{ item.description | strip_html | truncate: 140 }}{% else %}{{ item.excerpt | markdownify | strip_html | truncate: 140 }}{% endif %}</p>
+            </a>
+        </li>
+    {%- endfor -%}
+    </ul>
+</section>
+{%- endif -%}

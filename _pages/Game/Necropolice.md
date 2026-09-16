@@ -8,6 +8,7 @@ date: "2025-12-03"
 thumbnail: "/assets/img/thumbnail/book.jpg"
 imgAddress: "/assets/img/Necropolice/"
 bookmark: true
+description: "Unity WebGL로 만든 컬러타일 방식의 브라우저 게임 Necropolice. 계속 스폰되는 몬스터를 상단에 표시된 순서대로 처치해 거대 몬스터를 잡고, 생명력이 다하기 전에 높은 점수를 노리는 게임입니다. 설치 없이 바로 플레이할 수 있습니다."
 is_post: true
 ---
 <iframe 

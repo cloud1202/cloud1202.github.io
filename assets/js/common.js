@@ -327,10 +327,12 @@ function searchRelated(pages){
         }
     });
 
-    if (relatedPosts.length == 0){
-        refBox.style.display = 'none';
-        return;
-    }
+    // No JS-scored match: keep the server-rendered fallback list visible.
+    if (relatedPosts.length == 0) return;
+
+    // JS list wins, so drop the crawler/no-JS fallback.
+    const refFallback = document.getElementById('related-posts-fallback');
+    if (refFallback) refFallback.remove();
 
     for (var i = 0; i < Math.min(relatedPosts.length, 6); i++){
         let post = relatedPosts[i];

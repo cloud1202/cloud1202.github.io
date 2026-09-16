@@ -1,9 +1,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>
-	{{ site.title }}
-</title>
+<title>{% if page.title %}{{ page.title | strip_html | escape }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
 {% seo title=false %}
 
 <link rel="shortcut icon" type="image/png" href="{{ site.logo_img | prepend: site.baseurl }}">
@@ -54,6 +52,3 @@
 
 <meta name="naver-site-verification" content="6f63212c134b283e78510c2be59825a04ed95b49">
 <meta name="baseurl" content="{{ site.baseurl }}">
-<meta
-name="description"
-content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
