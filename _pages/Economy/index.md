@@ -1,4 +1,0 @@
----
-sitemap: false
-robots: noindex
----
