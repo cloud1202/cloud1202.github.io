@@ -5,6 +5,8 @@ from pathlib import Path
 
 from PIL import Image
 
+from build import _repo_root
+
 TOOLS = Path(__file__).resolve().parents[1]
 PORTFOLIO = TOOLS.parent
 
@@ -109,3 +111,58 @@ def test_참조가_깨지면_0이_아닌_코드로_끝난다(tmp_path):
 
     assert result.returncode != 0
     assert "찾을 수 없습니다" in (result.stdout + result.stderr)
+
+
+def test_설정_파일이_문법_오류면_친절한_메시지로_끝난다(tmp_path):
+    # README는 작가에게 GitHub 웹 UI에서 이 파일을 직접 고치라고 안내한다.
+    # 쉼표 하나만 잘못 찍혀도 이 경로를 타게 되므로, 원시 파이썬
+    # 트레이스백이 아니라 파일명과 줄 번호를 알려줘야 한다.
+    site = _sample_site(tmp_path)
+    (site / "site.config.json").write_text(
+        '{\n  "siteName": "이름",\n}\n', encoding="utf-8"
+    )
+
+    result = _run(site)
+
+    assert result.returncode != 0
+    output = result.stdout + result.stderr
+    assert "site.config.json" in output
+    assert "Traceback" not in output
+    assert "3" in output  # 문제가 있는 줄 번호
+
+
+def test_설정_파일이_없으면_친절한_메시지로_끝난다(tmp_path):
+    site = _sample_site(tmp_path)
+    (site / "site.config.json").unlink()
+
+    result = _run(site)
+
+    assert result.returncode != 0
+    output = result.stdout + result.stderr
+    assert "site.config.json" in output
+    assert "Traceback" not in output
+
+
+def test_저장소_루트를_git_rev_parse로_구한다(tmp_path):
+    # 스펙 12장의 이전 절차 1단계를 거치면 portfolio/ 자체가 저장소 루트가
+    # 되어, site_root.parent(옛 동작)는 저장소 밖의 상위 디렉터리를
+    # 가리키게 된다. git이 실제 루트를 답하면 그 값을 써야 한다.
+    site = tmp_path / "portfolio"
+    site.mkdir()
+    subprocess.run(
+        ["git", "init", "-q"], cwd=str(site), check=True, capture_output=True
+    )
+
+    repo_root = _repo_root(site)
+
+    assert repo_root == site.resolve()
+    assert repo_root != site.parent.resolve()
+
+
+def test_git_저장소가_아니면_부모_디렉터리로_대체한다(tmp_path):
+    site = tmp_path / "portfolio"
+    site.mkdir()
+
+    repo_root = _repo_root(site)
+
+    assert repo_root == site.parent

@@ -46,6 +46,12 @@
   }
 
   function open(index) {
+    // 이미 열려 있는데 다시 열면(이미지에 포커스가 남은 채 Enter/Space를
+    // 또 누르는 경우) 첫 오버레이는 참조를 잃고 DOM에 고아로 남고,
+    // 두 번째 오버레이를 닫을 때 overlay = null이 되어 close()가
+    // 조용히 아무것도 안 한다 — 페이지가 죽은 검은 막 뒤에 갇힌다.
+    if (overlay) return;
+
     overlay = document.createElement('div');
     overlay.className = 'lightbox';
     overlay.setAttribute('role', 'dialog');
@@ -54,6 +60,7 @@
     picture = document.createElement('img');
     overlay.appendChild(picture);
 
+    var closeButton = null;
     [['lb-close', '✕', close],
      ['lb-prev', '‹', function () { show(current - 1); }],
      ['lb-next', '›', function () { show(current + 1); }]
@@ -67,6 +74,7 @@
         spec[2]();
       });
       overlay.appendChild(button);
+      if (spec[0] === 'lb-close') closeButton = button;
     });
 
     overlay.addEventListener('click', close);
@@ -74,6 +82,10 @@
     document.body.classList.add('lb-open');
     document.addEventListener('keydown', onKey);
     show(index);
+    // 포커스를 오버레이 안으로 옮긴다. 옮기지 않으면 이미지가 계속
+    // 포커스를 쥐고 있어(tabIndex = 0) Enter/Space가 open()을 또
+    // 부르는 재진입 경로가 된다.
+    if (closeButton) closeButton.focus();
   }
 
   zoomable.forEach(function (image, index) {
