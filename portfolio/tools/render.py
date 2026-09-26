@@ -29,12 +29,16 @@ def relative_prefix(depth: int) -> str:
 
 
 def _url_path(path: str) -> str:
-    """한글 경로를 퍼센트 인코딩한다. 슬래시는 남긴다.
+    """경로를 퍼센트 인코딩해 안전한 URL로 만든다. 슬래시는 남긴다.
 
-    사이트 내부 상대경로(href/src)는 브라우저가 알아서 처리하므로 그대로
-    둔다. 이 함수는 og:image처럼 카카오톡·인스타그램 등 외부로 나가는
-    절대 URL을 만들 때만 쓴다 — 그런 곳은 원시 UTF-8 경로를 받아들이지
-    않는 경우가 있다.
+    폴더 이름은 작가가 마음대로 짓는다 — 이 프로젝트의 전제 자체가
+    "작가가 폴더 이름을 뭐라 짓든 그대로 URL이 된다"이다. 이름에 `#`이
+    들어가면 원시 href는 그 뒤를 프래그먼트로 잘라 먹어 이미지가 조용히
+    깨지고, `?`는 쿼리 스트링을 시작하고, `&`·`%`·공백도 마찬가지로
+    문제를 일으킨다. html.escape는 이 문자들을 건드리지 않으므로
+    이스케이프만으로는 URL을 보호하지 못한다. 그래서 파일시스템 경로나
+    화면에 보이는 링크 텍스트가 아니라, HTML 안의 로컬 URL(href/src)은
+    전부 이 함수를 거친다 — og:image 같은 외부 절대 URL도 마찬가지다.
     """
     return quote(path, safe="/-_.~")
 
@@ -90,7 +94,7 @@ def _video_html(video: dict | None, rel: str, title: str) -> str:
             "</iframe></div>"
         )
     if kind == "file":
-        source = escape(video.get("url") or "")
+        source = _url_path(video.get("url") or "")
         return (
             '<div class="player">'
             f'<video controls preload="metadata" src="{rel}{source}"></video>'
@@ -150,8 +154,8 @@ def _render_index(manifest: dict, config: dict, site_root: Path, templates_dir: 
                 card_template,
                 {
                     "REL": "",
-                    "URL": escape(work["url"]),
-                    "COVER": escape(cover.get("src", "")),
+                    "URL": _url_path(work["url"]),
+                    "COVER": _url_path(cover.get("src", "")),
                     "COVER_W": str(cover.get("w", 600)),
                     "COVER_H": str(cover.get("h", 338)),
                     "TITLE": escape(work["title"]),
@@ -243,7 +247,7 @@ def _render_post(
                 figure_template,
                 {
                     "REL": rel,
-                    "SRC": escape(image["src"]),
+                    "SRC": _url_path(image["src"]),
                     "W": str(image["w"]),
                     "H": str(image["h"]),
                     "ALT": escape(f"{work['title']} — {index}번째 이미지"),
@@ -255,12 +259,12 @@ def _render_post(
     nav_parts = []
     if previous_work:
         nav_parts.append(
-            f'<a class="prev" href="{rel}{escape(previous_work["url"])}">← {escape(previous_work["title"])}</a>'
+            f'<a class="prev" href="{rel}{_url_path(previous_work["url"])}">← {escape(previous_work["title"])}</a>'
         )
     nav_parts.append(f'<a class="up" href="{rel}index.html">전체 보기</a>')
     if next_work:
         nav_parts.append(
-            f'<a class="next" href="{rel}{escape(next_work["url"])}">{escape(next_work["title"])} →</a>'
+            f'<a class="next" href="{rel}{_url_path(next_work["url"])}">{escape(next_work["title"])} →</a>'
         )
 
     content = render_template(

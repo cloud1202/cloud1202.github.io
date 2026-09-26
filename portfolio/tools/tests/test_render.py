@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import quote
 
 import pytest
 
@@ -82,7 +83,11 @@ def test_게시물_페이지는_상대경로로_자산을_참조한다(tmp_path)
 
     # works/화보/작업1/ 은 3단 깊이다
     assert "../../../assets/css/style.css" in html
-    assert "../../../media/화보/작업1/01-a-1600.webp" in html
+    # 폴더 이름은 작가 마음대로라 #, ?, & 같은 문자가 원시 href를 깨뜨릴 수
+    # 있다. 로컬 URL도 퍼센트 인코딩되므로, 손으로 값을 타이핑하지 않고
+    # 같은 규칙(quote(..., safe="/-_.~"))으로 직접 계산해 비교한다.
+    encoded_media = quote("media/화보/작업1/01-a-1600.webp", safe="/-_.~")
+    assert f"../../../{encoded_media}" in html
     assert "/assets/css" not in html.replace("../../../assets/css", "")
 
 
