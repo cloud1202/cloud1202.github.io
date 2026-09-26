@@ -189,6 +189,22 @@ def test_커버가_없으면_경고를_남긴다(tmp_path):
     assert any("커버 이미지가 없습니다" in w for w in warnings)
 
 
+def test_로컬_영상은_커버를_포스터로_쓴다(tmp_path):
+    # 스펙 4장: "포스터는 커버 이미지를 쓴다".
+    manifest = _manifest()
+    manifest["categories"][0]["works"][0]["video"] = {
+        "kind": "file",
+        "id": None,
+        "embed": None,
+        "url": "reel.mp4",
+    }
+    render_site(manifest, CONFIG, tmp_path, TEMPLATES)
+    html = (tmp_path / "works" / "화보" / "작업1" / "index.html").read_text(encoding="utf-8")
+
+    encoded_cover = quote("media/화보/작업1/cover-600.webp", safe="/-_.~")
+    assert f'poster="../../../{encoded_cover}"' in html
+
+
 def test_이전_다음_링크가_연결된다(tmp_path):
     render_site(_manifest(2), CONFIG, tmp_path, TEMPLATES)
     first = (tmp_path / "works" / "화보" / "작업1" / "index.html").read_text(encoding="utf-8")

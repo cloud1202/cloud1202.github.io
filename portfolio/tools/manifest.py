@@ -67,10 +67,22 @@ def _build_work(
             warnings.append(f"{category.title}/{work.title}/{work.cover.name}: 이미지를 열 수 없어 커버에서 제외했습니다")
     elif work.video and work.video.get("kind") == "youtube":
         cover_dest = out_dir / COVER_FILENAME
-        if fetch_youtube_cover(work.video["id"], cover_dest):
-            cover_entry = {"src": _relative(site_root, cover_dest), "w": COVER_WIDTH, "h": round(COVER_WIDTH * 9 / 16)}
-        else:
+        # 이미 받아둔 썸네일이 있으면 다시 내려받지 않는다. 무조건 다시 받으면
+        # i.ytimg.com이 잠깐 응답하지 않을 때 fetch_youtube_cover가 False를
+        # 돌려주고, 그 결과로 cover가 null이 되어 디스크에 있는 멀쩡한
+        # 커버가 목록에서 사라진다.
+        fetched = cover_dest.exists() or fetch_youtube_cover(work.video["id"], cover_dest)
+        if not fetched:
             warnings.append(f"{category.title}/{work.title}: 유튜브 썸네일을 받지 못했습니다")
+        else:
+            try:
+                # 다른 모든 미디어 경로처럼 실제 파일에서 크기를 읽는다.
+                # 16:9를 다시 계산하지 않는다 — 실제 저장된 크기와 다를 수 있다.
+                size = image_size(cover_dest)
+            except OSError:
+                warnings.append(f"{category.title}/{work.title}: 유튜브 썸네일을 읽을 수 없습니다")
+            else:
+                cover_entry = {"src": _relative(site_root, cover_dest), "w": size[0], "h": size[1]}
 
     image_entries = []
     for index, source in enumerate(work.images, start=1):

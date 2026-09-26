@@ -26,6 +26,17 @@ def test_CP949_한글을_읽는다(tmp_path):
     assert warning is None
 
 
+def test_BOM과_판별불가_바이트가_섞이면_BOM이_본문에_남지_않는다(tmp_path):
+    # utf-8-sig도 cp949도 실패하면 마지막 수단이 "utf-8"이 아니라
+    # "utf-8-sig"여야 한다. "utf-8"로 복구하면 BOM 세 바이트가
+    # 리터럴 U+FEFF로 본문에 남는다.
+    path = tmp_path / "memo.txt"
+    path.write_bytes(b"\xef\xbb\xbf\xffbroken")
+    text, warning = read_text(path)
+    assert warning is not None
+    assert "﻿" not in text
+
+
 def test_판별_불가_바이트는_경고와_함께_복구한다(tmp_path):
     path = tmp_path / "memo.txt"
     path.write_bytes(b"\xff\xfe\x00broken")

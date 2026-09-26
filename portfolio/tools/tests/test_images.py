@@ -114,6 +114,36 @@ def test_유튜브_썸네일을_받아_저장한다(tmp_path):
         assert image.size == (COVER_WIDTH, 338)
 
 
+def test_유튜브_썸네일_저장이_실패해도_예외없이_False(tmp_path, monkeypatch):
+    # 다운로드는 성공했지만 저장(디스크 부족, 권한 등)이 실패하는 경우다.
+    # _save가 try 밖에 있으면 여기서 OSError가 그대로 새어나가
+    # manifest.py까지 감싸지 않은 예외로 번진다.
+    buffer = io.BytesIO()
+    Image.new("RGB", (1280, 720), (10, 10, 10)).save(buffer, format="JPEG")
+    payload = buffer.getvalue()
+
+    def fake_opener(url, timeout=0):
+        class Response:
+            def read(self):
+                return payload
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                return False
+
+        return Response()
+
+    def failing_save(image, dest):
+        raise OSError("disk full")
+
+    monkeypatch.setattr("images._save", failing_save)
+
+    dest = tmp_path / "out" / "cover-600.webp"
+    assert fetch_youtube_cover("dQw4w9WgXcQ", dest, opener=fake_opener) is False
+
+
 def test_유튜브_썸네일을_못_받으면_False(tmp_path):
     def failing_opener(url, timeout=0):
         raise OSError("404")

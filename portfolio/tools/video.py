@@ -53,12 +53,16 @@ def parse_video_url(url: str) -> dict | None:
             }
 
     if host in _VIMEO_HOSTS:
-        match = re.search(r"/(\d+)", parsed.path)
-        if match:
+        # 앞쪽 숫자를 그냥 잡으면 채널·유저 ID를 영상 ID로 오인한다.
+        # vimeo.com/channels/32846/76979871 의 32846은 채널 ID,
+        # 76979871이 실제 영상 ID다 — 경로의 마지막 숫자 세그먼트를 쓴다.
+        segments = [segment for segment in parsed.path.split("/") if segment.isdigit()]
+        if segments:
+            video_id = segments[-1]
             return {
                 "kind": "vimeo",
-                "id": match.group(1),
-                "embed": f"https://player.vimeo.com/video/{match.group(1)}",
+                "id": video_id,
+                "embed": f"https://player.vimeo.com/video/{video_id}",
                 "url": url,
             }
 

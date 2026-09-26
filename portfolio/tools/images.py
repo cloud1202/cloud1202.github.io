@@ -83,15 +83,18 @@ def fetch_youtube_cover(video_id: str, dest: Path, opener=None) -> bool:
             with Image.open(io.BytesIO(payload)) as downloaded:
                 downloaded.load()
                 image = ImageOps.exif_transpose(downloaded).convert("RGB")
+            target_height = max(1, round(COVER_WIDTH * COVER_RATIO[1] / COVER_RATIO[0]))
+            fitted = ImageOps.fit(
+                image,
+                (COVER_WIDTH, target_height),
+                method=Image.LANCZOS,
+                centering=(0.5, 0.5),
+            )
+            # 저장 실패(디스크 부족, 권한 등)도 이 함수의 다른 모든 실패처럼
+            # False를 돌려줘야 한다 — try 밖에 있으면 이 함수를 감싸지 않는
+            # 호출부(manifest.py)까지 예외가 그대로 새어나간다.
+            _save(fitted, dest)
         except (OSError, ValueError):
             continue
-        target_height = max(1, round(COVER_WIDTH * COVER_RATIO[1] / COVER_RATIO[0]))
-        fitted = ImageOps.fit(
-            image,
-            (COVER_WIDTH, target_height),
-            method=Image.LANCZOS,
-            centering=(0.5, 0.5),
-        )
-        _save(fitted, dest)
         return True
     return False

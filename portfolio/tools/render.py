@@ -93,7 +93,7 @@ def _absolute(config: dict, relative: str) -> str | None:
     return f"{base}/{relative}"
 
 
-def _video_html(video: dict | None, rel: str, title: str) -> str:
+def _video_html(video: dict | None, rel: str, title: str, cover: dict) -> str:
     if not video:
         return ""
     kind = video.get("kind")
@@ -107,9 +107,12 @@ def _video_html(video: dict | None, rel: str, title: str) -> str:
         )
     if kind == "file":
         source = _url_path(video.get("url") or "")
+        # 스펙 4장: "포스터는 커버 이미지를 쓴다". cover는 항상 실제 커버나
+        # 플레이스홀더 중 하나를 갖고 있어 src가 빈 문자열일 일이 없다.
+        poster = _url_path(cover.get("src", ""))
         return (
             '<div class="player">'
-            f'<video controls preload="metadata" src="{rel}{source}"></video>'
+            f'<video controls preload="metadata" src="{rel}{source}" poster="{rel}{poster}"></video>'
             "</div>"
         )
     if kind == "link" and video.get("url"):
@@ -250,6 +253,7 @@ def _render_post(
     depth = 3  # works/<카테고리>/<게시물>/
     rel = relative_prefix(depth)
     figure_template = _load(templates_dir, "partials/figure.html")
+    cover = _cover_or_placeholder(work)
 
     figures = []
     for index, image in enumerate(work["images"], start=1):
@@ -282,7 +286,7 @@ def _render_post(
     content = render_template(
         _load(templates_dir, "partials/post.html"),
         {
-            "VIDEO": _video_html(work.get("video"), rel, work["title"]),
+            "VIDEO": _video_html(work.get("video"), rel, work["title"], cover),
             "TITLE": escape(work["title"]),
             "CATEGORY": escape(category["title"]),
             "DATE": _format_date(work.get("date")),
@@ -292,7 +296,6 @@ def _render_post(
         },
     )
 
-    cover = _cover_or_placeholder(work)
     meta = _meta_block(
         config,
         f"{work['title']} — {config.get('siteName','')}",

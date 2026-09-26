@@ -110,6 +110,41 @@ def test_manifest를_UTF8_JSON으로_쓴다(tmp_path):
     assert "화보" in out.read_text(encoding="utf-8")
 
 
+def test_이미_받은_유튜브_커버는_다시_받지_않고_실제_크기를_읽는다(tmp_path, monkeypatch):
+    # 커버가 이미 디스크에 있는데도 무조건 다시 받으면, i.ytimg.com이 잠깐
+    # 응답하지 않는 순간 멀쩡한 커버가 목록에서 사라진다. 파일이 있으면
+    # 네트워크를 아예 타지 않아야 하고, 크기는 (16:9로 다시 계산하지 않고)
+    # 실제 저장된 파일에서 읽어야 한다 — 여기서는 16:9가 아닌 600x400으로
+    # 만들어 계산값(338)과 실제값(400)을 구분한다.
+    category = _fixture_category(tmp_path)
+    work = category.works[0]
+    work.cover = None  # 로컬 이미지가 없어야 유튜브 분기를 탄다
+
+    media_root = tmp_path / "media"
+    cover_dest = media_root / category.slug / work.slug / "cover-600.webp"
+    cover_dest.parent.mkdir(parents=True)
+    Image.new("RGB", (600, 400), (10, 20, 30)).save(cover_dest, "WEBP")
+
+    called = []
+
+    def fake_fetch(video_id, dest, opener=None):
+        called.append(video_id)
+        return False  # 네트워크가 끊겼다고 가정해도 이미 있는 파일은 건드리지 않아야 한다
+
+    monkeypatch.setattr("manifest.fetch_youtube_cover", fake_fetch)
+
+    manifest, warnings = build_manifest([category], media_root, NOW)
+    entry = manifest["categories"][0]["works"][0]
+
+    assert called == []
+    assert entry["cover"] == {
+        "src": "media/화보/작업/cover-600.webp",
+        "w": 600,
+        "h": 400,
+    }
+    assert warnings == []
+
+
 def test_로컬_영상_파일이_media로_복사된다(tmp_path):
     category = _fixture_category(tmp_path)
     work = category.works[0]

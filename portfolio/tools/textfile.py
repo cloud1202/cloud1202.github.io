@@ -21,7 +21,9 @@ def read_text(path: Path) -> tuple[str, str | None]:
             return raw.decode(encoding), None
         except UnicodeDecodeError:
             continue
-    recovered = raw.decode("utf-8", errors="replace")
+    # BOM이 붙어 있는데 나머지 바이트가 어느 인코딩으로도 안 풀리면,
+    # "utf-8"로 복구할 경우 BOM 자체가 본문에 리터럴 ﻿로 남는다.
+    recovered = raw.decode("utf-8-sig", errors="replace")
     return recovered, f"{path.name}: 인코딩을 판별하지 못해 일부 문자를 대체했습니다"
 
 

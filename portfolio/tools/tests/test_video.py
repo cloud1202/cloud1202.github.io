@@ -27,6 +27,15 @@ def test_vimeo_주소():
     assert result["embed"] == "https://player.vimeo.com/video/123456789"
 
 
+def test_vimeo_채널_주소는_마지막_숫자를_영상_id로_쓴다():
+    # /channels/32846/76979871 에서 32846은 채널 ID, 76979871이 실제 영상이다.
+    # 앞쪽 숫자를 그냥 잡으면 채널 ID를 영상 ID로 오인해 플레이어가 조용히 깨진다.
+    result = parse_video_url("https://vimeo.com/channels/32846/76979871")
+    assert result["kind"] == "vimeo"
+    assert result["id"] == "76979871"
+    assert result["embed"] == "https://player.vimeo.com/video/76979871"
+
+
 def test_모르는_주소는_링크로_남긴다():
     result = parse_video_url("https://example.com/my-reel")
     assert result["kind"] == "link"
