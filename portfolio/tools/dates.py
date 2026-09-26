@@ -24,6 +24,7 @@ def git_added_at(repo_root: Path, path: Path) -> datetime:
             cwd=str(repo_root),
             capture_output=True,
             text=True,
+            errors="replace",
             timeout=30,
         )
     except (OSError, subprocess.SubprocessError):

@@ -1,11 +1,16 @@
+import os
 import subprocess
 from datetime import datetime, timezone
 
 from dates import git_added_at
 
 
-def _git(repo, *args):
-    subprocess.run(["git", *args], cwd=str(repo), check=True, capture_output=True)
+def _git(repo, *args, env=None):
+    """Run git command with optional environment variables merged over os.environ."""
+    git_env = os.environ.copy()
+    if env:
+        git_env.update(env)
+    subprocess.run(["git", *args], cwd=str(repo), check=True, capture_output=True, env=git_env)
 
 
 def test_폴더가_추가된_커밋_시각을_읽는다(tmp_path):
@@ -16,14 +21,19 @@ def test_폴더가_추가된_커밋_시각을_읽는다(tmp_path):
     _git(repo, "config", "user.email", "t@example.com")
     _git(repo, "config", "user.name", "t")
     _git(repo, "add", "-A")
-    _git(repo, "commit", "-q", "-m", "add work")
+
+    # Seed a specific commit timestamp 30 days in the past
+    specific_time = datetime(2026, 8, 28, 14, 30, 0, tzinfo=timezone.utc)
+    iso_time = specific_time.isoformat()
+    _git(repo, "commit", "-q", "-m", "add work",
+         env={"GIT_AUTHOR_DATE": iso_time, "GIT_COMMITTER_DATE": iso_time})
 
     result = git_added_at(repo, repo / "work")
 
     assert isinstance(result, datetime)
     assert result.tzinfo is not None
-    # 방금 만든 커밋이므로 현재와 하루 이상 벌어질 수 없다
-    assert abs((datetime.now(timezone.utc) - result).total_seconds()) < 86400
+    # 결과는 설정한 커밋 시각과 같아야 한다 (git의 timestamp 정확도 범위 내에서)
+    assert abs((specific_time - result).total_seconds()) < 5
 
 
 def test_이력이_없으면_현재_시각으로_대체한다(tmp_path):
