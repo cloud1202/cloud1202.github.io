@@ -1608,7 +1608,7 @@ def write_manifest(manifest: dict, path: Path) -> None:
 - [ ] **Step 4: 테스트 통과 확인**
 
 Run: `python -m pytest portfolio/tools/tests/test_manifest.py -v`
-Expected: PASS — 8 passed
+Expected: PASS — 7 passed
 
 - [ ] **Step 5: 커밋**
 
