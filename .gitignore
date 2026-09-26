@@ -48,3 +48,8 @@ node_modules
 # Claude Code worktrees / SDD scratch
 .claude/worktrees/
 .superpowers/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
