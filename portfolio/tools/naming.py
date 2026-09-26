@@ -9,13 +9,22 @@ import re
 _PREFIX = re.compile(r"^(\d+)\s*[_.\-]\s*(.+)$")
 _DIGITS = re.compile(r"(\d+)")
 
+# 제목은 그대로 슬러그·URL 경로 조각이 된다. "1_.."처럼 접두사를 떼고 나면
+# ".."만 남는 폴더명은 렌더러가 works/../.../index.html을 쓰게 만들어
+# 트리 밖으로 나가고, "1_ "처럼 뗀 뒤 빈 문자열만 남으면 works/<카테고리>//
+# 같은 깨진 경로가 된다. 둘 다 접두사를 떼지 않은 원래 이름으로 되돌린다.
+_INVALID_SLUGS = {"", ".", ".."}
+
 
 def strip_order_prefix(name: str) -> tuple[int | None, str]:
-    """(순서, 제목)을 돌려준다. 접두사가 없으면 순서는 None."""
+    """(순서, 제목)을 돌려준다. 접두사가 없거나 뗀 제목이 안전하지 않으면 순서는 None."""
     match = _PREFIX.match(name)
     if not match:
         return None, name
-    return int(match.group(1)), match.group(2).strip()
+    title = match.group(2).strip()
+    if title in _INVALID_SLUGS:
+        return None, name
+    return int(match.group(1)), title
 
 
 def natural_key(name: str) -> list:

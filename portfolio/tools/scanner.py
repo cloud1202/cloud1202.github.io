@@ -162,6 +162,7 @@ def scan(upload_dir: Path) -> tuple[list[Category], list[str]]:
         return [], [f"업로드 폴더가 없습니다: {upload_dir}"]
 
     categories: list[Category] = []
+    taken_category_slugs: set[str] = set()
     entries, dir_warnings = _sorted_children(upload_dir)
     warnings.extend(dir_warnings)
     for entry in entries:
@@ -191,6 +192,14 @@ def scan(upload_dir: Path) -> tuple[list[Category], list[str]]:
             category.works.append(work)
 
         if category.works:
+            # 카테고리 슬러그는 전체 스캔에서 유일해야 한다. "05_광고"와 "광고"처럼
+            # 접두사만 다른 폴더가 같은 제목으로 떨어지면 같은 works/media 경로를
+            # 가리켜 한쪽이 조용히 가려진다.
+            unique = dedupe_slug(category.slug, taken_category_slugs)
+            if unique != category.slug:
+                warnings.append(f"{entry.name}: 카테고리 주소가 겹쳐 {unique}로 바꿨습니다")
+            category.slug = unique
+            taken_category_slugs.add(unique)
             categories.append(category)
         else:
             warnings.append(f"{entry.name}: 게시물이 없어 건너뜁니다")

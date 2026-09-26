@@ -23,6 +23,18 @@ def test_접두사_뒤_공백을_제거한다():
     assert strip_order_prefix("03_ 화보 ") == (3, "화보")
 
 
+def test_접두사를_떼면_점두개만_남으면_원래_이름으로_돌아간다():
+    # ".."가 슬러그가 되면 렌더러가 works/../.../index.html을 써서
+    # 트리 밖으로 나간다. 원래 폴더 이름 그대로를 제목으로 되돌려야 한다.
+    assert strip_order_prefix("1_..") == (None, "1_..")
+
+
+def test_접두사를_떼면_빈_문자열만_남으면_원래_이름으로_돌아간다():
+    # "1_ "에서 숫자·구분자·공백을 떼면 제목이 빈 문자열이 되어
+    # works/<카테고리>// 같은 깨진 경로가 된다.
+    assert strip_order_prefix("1_ ") == (None, "1_ ")
+
+
 def test_자연_정렬은_숫자를_수로_비교한다():
     names = ["10.jpg", "2.jpg", "1.jpg"]
     assert sorted(names, key=natural_key) == ["1.jpg", "2.jpg", "10.jpg"]

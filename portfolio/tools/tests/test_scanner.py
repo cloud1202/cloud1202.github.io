@@ -143,6 +143,20 @@ def test_같은_카테고리_안에서_슬러그가_충돌하면_번호를_붙�
     assert any("작업" in w for w in warnings)
 
 
+def test_카테고리_슬러그가_충돌하면_번호를_붙인다(tmp_path):
+    # "05_광고"와 "광고"는 접두사를 떼면 둘 다 제목이 "광고"라, 다른 카테고리인데도
+    # 같은 works/media/광고/... 경로를 가리켜 한쪽 게시물이 조용히 가려진다.
+    _make(tmp_path, "05_광고/작업/01.jpg")
+    _make(tmp_path, "광고/작업/01.jpg")
+
+    categories, warnings = scan(tmp_path)
+
+    slugs = [c.slug for c in categories]
+    assert slugs == ["광고", "광고-2"]
+    assert len(set(slugs)) == len(slugs)
+    assert any("카테고리" in w and "광고" in w for w in warnings)
+
+
 def test_업로드_폴더가_없으면_빈_결과와_경고(tmp_path):
     categories, warnings = scan(tmp_path / "없음")
 

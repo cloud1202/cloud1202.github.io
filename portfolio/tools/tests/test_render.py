@@ -164,6 +164,31 @@ def test_작업물이_없으면_빈_상태를_보여준다(tmp_path):
     assert "준비 중" in html
 
 
+def test_커버가_없으면_빈_src_대신_플레이스홀더를_쓴다(tmp_path):
+    # 이미지도 유튜브 썸네일도 없는 게시물(비-YouTube 링크, 커버 없는 mp4,
+    # 디코딩 실패한 cover.jpg)은 manifest의 cover가 null이다. 그대로 두면
+    # 카드가 <img src="">를 찍어 브라우저가 페이지 자신을 다시 요청한다.
+    manifest = _manifest()
+    manifest["categories"][0]["works"][0]["cover"] = None
+    pages, _ = render_site(manifest, CONFIG, tmp_path, TEMPLATES)
+
+    found_placeholder = False
+    for page in pages:
+        html = page.read_text(encoding="utf-8")
+        assert 'src=""' not in html, page
+        if "placeholder-600" in html:
+            found_placeholder = True
+    assert found_placeholder
+
+
+def test_커버가_없으면_경고를_남긴다(tmp_path):
+    manifest = _manifest()
+    manifest["categories"][0]["works"][0]["cover"] = None
+    _, warnings = render_site(manifest, CONFIG, tmp_path, TEMPLATES)
+
+    assert any("커버 이미지가 없습니다" in w for w in warnings)
+
+
 def test_이전_다음_링크가_연결된다(tmp_path):
     render_site(_manifest(2), CONFIG, tmp_path, TEMPLATES)
     first = (tmp_path / "works" / "화보" / "작업1" / "index.html").read_text(encoding="utf-8")

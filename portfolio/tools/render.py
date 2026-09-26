@@ -17,6 +17,18 @@ from textfile import body_to_html
 
 _TOKEN = re.compile(r"\{\{([A-Z_]+)\}\}")
 
+# 이미지도 영상 커버도 없는 게시물(비-YouTube 링크만, 커버 없는 mp4, 디코딩
+# 실패한 cover.jpg)은 manifest의 cover가 null이다. null을 그대로 <img src="">에
+# 넣으면 브라우저가 현재 페이지 주소를 다시 요청하고 linkcheck는 빈 참조를
+# 건너뛰어 이를 못 잡는다. manifest는 진짜 데이터 계약이라 null을 유지하고,
+# 렌더링 시점에만 이 무채색 플레이스홀더로 대체한다.
+_PLACEHOLDER_COVER = {"src": "assets/placeholder-600.webp", "w": 600, "h": 338}
+
+
+def _cover_or_placeholder(work: dict) -> dict:
+    """work["cover"]가 없으면 커버 자리 전부에서 쓸 플레이스홀더를 돌려준다."""
+    return work.get("cover") or _PLACEHOLDER_COVER
+
 
 def render_template(text: str, values: dict[str, str]) -> str:
     """{{TOKEN}}을 치환한다. 값이 없는 토큰은 지운다."""
@@ -147,7 +159,7 @@ def _render_index(manifest: dict, config: dict, site_root: Path, templates_dir: 
     for category in manifest["categories"]:
         cards = []
         for index, work in enumerate(category["works"]):
-            cover = work.get("cover") or {}
+            cover = _cover_or_placeholder(work)
             badge = '<span class="badge">VIDEO</span>' if work.get("video") else ""
             classes = "" if index < page_size else " extra"
             card = render_template(
@@ -280,7 +292,7 @@ def _render_post(
         },
     )
 
-    cover = work.get("cover") or {}
+    cover = _cover_or_placeholder(work)
     meta = _meta_block(
         config,
         f"{work['title']} — {config.get('siteName','')}",
