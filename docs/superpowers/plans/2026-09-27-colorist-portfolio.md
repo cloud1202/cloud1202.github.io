@@ -1848,7 +1848,11 @@ def test_게시물_OG_태그는_절대주소를_쓴다(tmp_path):
     html = (tmp_path / "works" / "화보" / "작업1" / "index.html").read_text(encoding="utf-8")
 
     assert 'property="og:title"' in html
-    assert "https://example.com/portfolio/media/화보/작업1/cover-600.webp" in html
+    # 사이트 내부 링크와 같은 규칙으로 퍼센트 인코딩된다
+    assert (
+        "https://example.com/portfolio/media/%ED%99%94%EB%B3%B4/%EC%9E%91%EC%97%851/cover-600.webp"
+        in html
+    )
 
 
 def test_gridPageSize를_넘으면_더보기_버튼이_생긴다(tmp_path):
