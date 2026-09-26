@@ -21,9 +21,11 @@ upload/
 - **설명글**은 아무 이름의 `.txt`에 쓰면 게시물 맨 아래에 들어갑니다. 메모장으로 저장해도 한글이 깨지지 않습니다. 빈 줄을 넣으면 단락이 나뉩니다.
 - 사진도 영상도 없는 폴더는 그냥 무시됩니다.
 
-올린 뒤 1~2분이면 사이트에 반영됩니다. 사진은 웹용으로 자동 축소되며 **원본은 그대로 보관되고 웹에는 공개되지 않습니다.**
+올린 뒤 1~2분이면 사이트에 반영됩니다. 사진은 웹용으로 자동 축소되며 **원본 사진은 그대로 보관되고 웹에는 공개되지 않습니다.** (mp4로 올린 영상은 다릅니다 — 리사이즈하지 않고 원본 파일을 그대로 웹에 올립니다. 용량이 크면 그만큼 그대로 웹에 나갑니다.)
 
 혹시 시간이 지나도 반영이 안 되면 저장소의 **Actions** 탭에서 방금 올린 건의 진행 상황을 볼 수 있습니다. 빨간 표시가 뜨면 처리가 안 된 것이니, 다시 올려보기보다는 그 화면을 그대로 알려주세요.
+
+폴더를 지우거나 이름을 바꿔도 **이미 만들어진 게시물 페이지와 사진 주소는 그대로 남습니다.** 목록에서만 빠지고, 그 주소를 아는 사람은 여전히 볼 수 있습니다. 저작권·초상권 문제로 정말 완전히 내려야 하는 경우에는 폴더를 지우는 것만으로 끝나지 않으니 따로 알려주세요.
 
 ## 이름·연락처 바꾸기
 
@@ -38,10 +40,22 @@ upload/
 빌드:
 
 ```bash
-pip install pillow
+pip install "pillow==12.*" "pytest==9.*"
 python portfolio/tools/build.py          # 전체 빌드
 python portfolio/tools/build.py --check   # 생성물 참조만 검증
 python -m pytest portfolio/tools/tests -v # 테스트
 ```
 
-이 폴더는 상위 Jekyll 블로그와 절연돼 있습니다. front matter와 Liquid 문법을 쓰지 않으며, 모든 참조가 상대경로라 폴더째 다른 호스팅으로 옮길 수 있습니다. 이전 절차는 [설계 문서](../docs/superpowers/specs/2026-09-27-colorist-portfolio-design.md) 12장에 있습니다.
+이 폴더는 상위 Jekyll 블로그와 절연돼 있습니다. front matter와 Liquid 문법을 쓰지 않으며, 자산 참조(CSS·JS·이미지)가 모두 상대경로라 폴더째 다른 호스팅으로 옮겨도 그 부분은 깨지지 않습니다.
+
+다만 카드와 이전/다음 링크는 디렉터리 URL(`works/화보/2026웨딩스냅/`)이라 `file://`로 폴더를 직접 열면 브라우저가 그 안의 `index.html`을 자동으로 찾지 못해 페이지 사이 이동이 안 됩니다(CSS·JS·이미지는 정상입니다). 로컬에서 확인할 때는 `portfolio/` 안에서 `python -m http.server`를 실행하고 콘솔에 뜨는 주소로 접속하세요. 예쁜 URL을 그대로 두기로 한 이유는 공유 링크에 영구히 남는 주소이기 때문이고, 이 한계는 로컬 확인 한 번의 불편일 뿐입니다.
+
+### 다른 저장소로 옮기기
+
+지금은 이 Jekyll 블로그 저장소 안에 임시로 있습니다. 나중에 지인 소유 저장소로 옮길 때:
+
+1. `portfolio/` 전체를 새 저장소의 루트로 복사합니다. 빌드는 저장소 루트를 `git rev-parse --show-toplevel`로 찾으므로(실패하면 상위 디렉터리로 대체) 이 이동 자체가 게시물 날짜 정렬을 깨지 않습니다.
+2. `site.config.json`의 `siteUrl`을 새 도메인으로, `noindex`를 `false`로 바꿉니다.
+3. `.github/workflows/portfolio.yml`의 트리거 경로에서 `portfolio/` 접두사를 뗍니다.
+4. 새 저장소의 **Settings → Actions → General → Workflow permissions**를 "Read and write permissions"로 바꿉니다. 기본값(읽기 전용)에서는 워크플로에 `permissions: contents: write`가 있어도 push가 403으로 막힙니다.
+5. 이 Jekyll 저장소에서 `portfolio/`와 이 워크플로, `_config.yml`의 `exclude`에 있는 포트폴리오 관련 세 항목(`portfolio/upload/`, `portfolio/templates/`, `portfolio/tools/`)과 `defaults`의 `portfolio` 스코프 블록을 지웁니다.
