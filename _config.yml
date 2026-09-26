@@ -36,6 +36,9 @@ plugins:
 
 exclude:
   - docs/
+  - portfolio/upload/
+  - portfolio/templates/
+  - portfolio/tools/
 
 google_site_verification: 4bTbaLB2q_z3v8-iUBwskiRH4UKmUl87XOu8MSOtV8o
 
@@ -52,10 +55,10 @@ defaults:
     values:
       layout: "page"
       #date: "1900-01-01"
-  # lab/ is a standalone space outside the Jekyll site - keep it out of sitemap.xml
+  # portfolio/ is a standalone space outside the Jekyll site - keep it out of sitemap.xml
   -
     scope:
-      path: "lab"
+      path: "portfolio"
     values:
       sitemap: false
 
