@@ -47,11 +47,20 @@ def _visible(path: Path) -> bool:
     return not path.name.startswith((".", "_"))
 
 
-def _sorted_children(directory: Path) -> list[Path]:
-    return sorted(
-        (child for child in directory.iterdir() if _visible(child)),
-        key=lambda child: natural_key(child.name),
-    )
+def _sorted_children(directory: Path) -> tuple[list[Path], list[str]]:
+    """directory 안의 보이는 항목을 자연 정렬해 (목록, 경고)로 돌려준다.
+
+    깨진 심볼릭 링크는 is_dir()/is_file() 모두 False로 조용히 실패하기 때문에
+    호출부가 디렉터리로 오인해 iterdir()를 호출할 수 있다. 그 경우와 권한 문제,
+    스캔 중 폴더가 사라지는 경우 모두 iterdir()가 OSError를 던지므로 여기서
+    잡아 경고로 바꾼다 — scan()이 예외를 던지지 않는다는 계약을 지키기 위함.
+    """
+    try:
+        raw = list(directory.iterdir())
+    except OSError as exc:
+        return [], [f"{directory.name}: 폴더를 읽지 못했습니다 ({exc})"]
+    visible = [child for child in raw if _visible(child)]
+    return sorted(visible, key=lambda child: natural_key(child.name)), []
 
 
 def _read_work(directory: Path) -> tuple[Work | None, list[str]]:
@@ -61,7 +70,9 @@ def _read_work(directory: Path) -> tuple[Work | None, list[str]]:
     body_files: list[Path] = []
     link_file: Path | None = None
 
-    for child in _sorted_children(directory):
+    children, dir_warnings = _sorted_children(directory)
+    warnings.extend(dir_warnings)
+    for child in children:
         if child.is_dir():
             warnings.append(f"{directory.name}/{child.name}: 게시물 안의 하위 폴더는 무시합니다")
             continue
@@ -78,15 +89,20 @@ def _read_work(directory: Path) -> tuple[Work | None, list[str]]:
 
     video: dict | None = None
     if link_file is not None:
-        text, warning = read_text(link_file)
-        if warning:
-            warnings.append(warning)
-        for line in text.splitlines():
-            video = parse_video_url(line)
-            if video:
-                break
-        if video is None:
-            warnings.append(f"{directory.name}/{link_file.name}: 주소를 찾지 못했습니다")
+        try:
+            text, warning = read_text(link_file)
+        except OSError as exc:
+            # 링크 파일 하나를 못 읽어도 mp4 파일 영상으로 대체할 수 있으니 건너뛴다.
+            warnings.append(f"{directory.name}/{link_file.name}: 파일을 읽지 못했습니다 ({exc})")
+        else:
+            if warning:
+                warnings.append(warning)
+            for line in text.splitlines():
+                video = parse_video_url(line)
+                if video:
+                    break
+            if video is None:
+                warnings.append(f"{directory.name}/{link_file.name}: 주소를 찾지 못했습니다")
     if video is None and videos:
         video = {"kind": "file", "id": None, "embed": None, "url": videos[0].name}
 
@@ -106,7 +122,12 @@ def _read_work(directory: Path) -> tuple[Work | None, list[str]]:
 
     body_parts = []
     for body_file in body_files:
-        text, warning = read_text(body_file)
+        try:
+            text, warning = read_text(body_file)
+        except OSError as exc:
+            # 본문 파일 하나가 읽히지 않아도 나머지 본문·이미지·영상은 살린다.
+            warnings.append(f"{directory.name}/{body_file.name}: 파일을 읽지 못했습니다 ({exc})")
+            continue
         if warning:
             warnings.append(warning)
         html = body_to_html(text)
@@ -141,7 +162,9 @@ def scan(upload_dir: Path) -> tuple[list[Category], list[str]]:
         return [], [f"업로드 폴더가 없습니다: {upload_dir}"]
 
     categories: list[Category] = []
-    for entry in _sorted_children(upload_dir):
+    entries, dir_warnings = _sorted_children(upload_dir)
+    warnings.extend(dir_warnings)
+    for entry in entries:
         if entry.is_file():
             warnings.append(f"{entry.name}: 카테고리 폴더 밖의 파일은 무시합니다")
             continue
@@ -150,7 +173,9 @@ def scan(upload_dir: Path) -> tuple[list[Category], list[str]]:
         category = Category(title=title, slug=title, order=order, directory=entry)
 
         taken_slugs: set[str] = set()
-        for child in _sorted_children(entry):
+        children, child_warnings = _sorted_children(entry)
+        warnings.extend(child_warnings)
+        for child in children:
             if child.is_file():
                 warnings.append(f"{entry.name}/{child.name}: 게시물 폴더 밖의 파일은 무시합니다")
                 continue

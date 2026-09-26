@@ -1,3 +1,5 @@
+import pytest
+
 from scanner import scan
 
 
@@ -6,6 +8,20 @@ def _make(root, relative, content=b"x"):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(content)
     return path
+
+
+def _broken_symlink(path):
+    """path 위치에 존재하지 않는 대상을 가리키는 심볼릭 링크를 만든다.
+
+    is_dir()/is_file()가 조용히 False를 돌려주는 실제 OSError 트리거다.
+    심볼릭 링크 생성 권한이 없는 환경(예: 개발자 모드가 꺼진 Windows CI)에서는
+    스킵한다 — 목만들어 통과시키는 대신 실제로 검증 가능한 곳에서만 검증한다.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        path.symlink_to(path.parent / "존재하지-않는-대상")
+    except OSError as exc:
+        pytest.skip(f"이 환경에서는 심볼릭 링크를 만들 수 없습니다: {exc}")
 
 
 def test_카테고리와_게시물을_2단으로_읽는다(tmp_path):
@@ -143,3 +159,37 @@ def test_카테고리는_접두사_순서로_정렬된다(tmp_path):
 
     # 접두사가 있는 것이 먼저, 그 뒤는 이름 순
     assert [c.title for c in categories] == ["화보", "뮤비", "잡다한것"]
+
+
+def test_카테고리_위치의_깨진_심볼릭_링크는_경고로_건너뛴다(tmp_path):
+    # 깨진 심볼릭 링크는 is_dir()/is_file() 모두 False라서 카테고리 폴더로
+    # 오인해 내려가다가 iterdir()가 실제 OSError를 던지는 실제 상황이다.
+    _make(tmp_path, "화보/작업/01.jpg")
+    _broken_symlink(tmp_path / "깨진링크")
+
+    categories, warnings = scan(tmp_path)
+
+    assert [c.title for c in categories] == ["화보"]
+    assert any("깨진링크" in w for w in warnings)
+
+
+def test_link_txt가_깨진_심볼릭_링크면_경고하고_영상없이_진행한다(tmp_path):
+    _make(tmp_path, "화보/작업/01.jpg")
+    _broken_symlink(tmp_path / "화보" / "작업" / "link.txt")
+
+    categories, warnings = scan(tmp_path)
+    work = categories[0].works[0]
+
+    assert work.video is None
+    assert any("link.txt" in w for w in warnings)
+
+
+def test_본문_txt가_깨진_심볼릭_링크면_경고하고_건너뛴다(tmp_path):
+    _make(tmp_path, "화보/작업/01.jpg")
+    _broken_symlink(tmp_path / "화보" / "작업" / "memo.txt")
+
+    categories, warnings = scan(tmp_path)
+    work = categories[0].works[0]
+
+    assert work.body == ""
+    assert any("memo.txt" in w for w in warnings)
