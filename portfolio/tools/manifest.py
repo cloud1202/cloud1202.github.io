@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 from datetime import datetime
 from pathlib import Path
 
@@ -84,6 +85,24 @@ def _build_work(
             continue
         image_entries.append({"src": _relative(site_root, dest), "w": size[0], "h": size[1]})
 
+    # upload/ 는 _config.yml 에서 발행 대상에서 빠지므로, 로컬 mp4를 그 자리에
+    # 둔 채로 링크만 걸면 재생되지 않는다. media/ 로 복사해 실제로 서빙되는
+    # 경로를 만들고, 그 경로로 url을 다시 쓴다. work.video는 스캐너의 입력
+    # 자료구조라 직접 고치면 build_manifest를 같은 데이터로 두 번 부르는
+    # 경우 결과가 달라지므로, 새 dict를 만들어 매니페스트에만 반영한다.
+    video_entry = work.video
+    if work.video is not None and work.video.get("kind") == "file":
+        source = work.directory / work.video["url"]
+        dest = out_dir / source.name
+        try:
+            if needs_rebuild(source, dest):
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, dest)
+            video_entry = {**work.video, "url": _relative(site_root, dest)}
+        except OSError:
+            warnings.append(f"{category.title}/{work.title}/{source.name}: 영상을 복사하지 못해 재생에서 제외했습니다")
+            video_entry = None
+
     entry = {
         "title": work.title,
         "slug": work.slug,
@@ -91,7 +110,7 @@ def _build_work(
         "date": work.date.isoformat() if work.date else None,
         "order": work.order,
         "cover": cover_entry,
-        "video": work.video,
+        "video": video_entry,
         "images": image_entries,
         "body": work.body,
     }

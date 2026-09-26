@@ -108,3 +108,18 @@ def test_manifest를_UTF8_JSON으로_쓴다(tmp_path):
     assert loaded["categories"][0]["title"] == "화보"
     # 한글이 \uXXXX로 이스케이프되지 않아야 한다
     assert "화보" in out.read_text(encoding="utf-8")
+
+
+def test_로컬_영상_파일이_media로_복사된다(tmp_path):
+    category = _fixture_category(tmp_path)
+    work = category.works[0]
+    work.video = {"kind": "file", "id": None, "embed": None, "url": "reel.mp4"}
+    (work.directory / "reel.mp4").write_bytes(b"fake video bytes")
+
+    manifest, warnings = build_manifest([category], tmp_path / "media", NOW)
+    entry = manifest["categories"][0]["works"][0]
+
+    video_path = tmp_path / entry["video"]["url"]
+    assert video_path.exists()
+    assert entry["video"]["url"] == "media/화보/작업/reel.mp4"
+    assert warnings == []
