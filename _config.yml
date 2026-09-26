@@ -52,6 +52,12 @@ defaults:
     values:
       layout: "page"
       #date: "1900-01-01"
+  # lab/ is a standalone space outside the Jekyll site - keep it out of sitemap.xml
+  -
+    scope:
+      path: "lab"
+    values:
+      sitemap: false
 
 # Markdown newline activator 
 kramdown:

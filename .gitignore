@@ -44,3 +44,7 @@ node_modules
 
 # Ruby gems
 *.gem
+
+# Claude Code worktrees / SDD scratch
+.claude/worktrees/
+.superpowers/
