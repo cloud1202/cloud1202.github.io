@@ -1,18 +1,63 @@
 /* 포트폴리오 동작 — 의존성 없음.
    JS가 없어도 그리드와 게시물은 정적 HTML로 전부 보인다.
-   여기서 하는 일은 (1) 초과 카드 접기 (2) 이미지 확대뿐이다. */
+   여기서 하는 일은 (1) 스크롤에 따라 카드 풀기 (2) 이미지 확대뿐이다.
+   카드는 모두 이미 HTML에 들어 있고, 여기서는 숨김만 걷어낸다 —
+   네트워크 요청도, 가져올 데이터도 없다. */
 (function () {
   'use strict';
 
   // 이 클래스가 붙은 뒤에만 CSS가 초과 카드를 숨긴다.
   document.documentElement.classList.add('js');
 
-  // 1) Show more
-  document.querySelectorAll('.category .more').forEach(function (button) {
-    button.addEventListener('click', function () {
-      var section = button.closest('.category');
-      if (section) section.classList.add('is-open');
-    });
+  // 1) 스크롤이 바닥에 가까워지면 한 묶음씩 더 보여준다.
+  var BATCH = 12;
+  var LOOKAHEAD = 600; // 바닥에 닿기 전에 미리 풀어 빈 화면을 안 만든다
+
+  document.querySelectorAll('.category').forEach(function (section) {
+    var button = section.querySelector('.more');
+
+    // 버튼은 IntersectionObserver가 없는 브라우저의 폴백으로 남긴다.
+    if (button) {
+      button.addEventListener('click', function () {
+        section.classList.add('is-open');
+      });
+    }
+
+    if (!('IntersectionObserver' in window)) return;
+    if (!section.querySelector('.card.extra')) return;
+
+    // 스크롤로 자동 확장되므로 버튼은 감춘다.
+    if (button) button.hidden = true;
+
+    var sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    section.appendChild(sentinel);
+
+    var observer = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) step();
+    }, { rootMargin: LOOKAHEAD + 'px 0px' });
+
+    function step() {
+      var hidden = section.querySelectorAll('.card.extra:not(.shown)');
+      if (!hidden.length) {
+        observer.disconnect();
+        sentinel.remove();
+        return;
+      }
+      for (var i = 0; i < BATCH && i < hidden.length; i++) {
+        hidden[i].classList.add('shown');
+      }
+      // 카드를 풀어도 sentinel이 여전히 화면 안에 있으면 옵저버는 다시
+      // 울리지 않는다(교차 상태가 안 바뀌므로). 다음 프레임에 직접 확인한다.
+      requestAnimationFrame(function () {
+        if (!sentinel.parentNode) return;
+        if (sentinel.getBoundingClientRect().top < window.innerHeight + LOOKAHEAD) {
+          step();
+        }
+      });
+    }
+
+    observer.observe(sentinel);
   });
 
   // 2) 이미지 확대
