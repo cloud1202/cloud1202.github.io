@@ -60,8 +60,9 @@ def test_빌드가_모든_산출물을_만든다(tmp_path):
     assert result.returncode == 0, result.stdout + result.stderr
     assert (site / "works.json").exists()
     assert (site / "index.html").exists()
-    assert (site / "about.html").exists()
     assert (site / "contact.html").exists()
+    # About 페이지는 없다 — 상단 메뉴에서 빠졌고 생성도 하지 않는다
+    assert not (site / "about.html").exists()
     assert (site / "works" / "화보" / "2026웨딩스냅" / "index.html").exists()
     assert (site / "works" / "뮤직비디오" / "TAEMIN-Guilty" / "index.html").exists()
     assert list((site / "media" / "화보" / "2026웨딩스냅").glob("*.webp"))

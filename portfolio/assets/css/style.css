@@ -23,10 +23,25 @@
 
 * { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html {
+  -webkit-text-size-adjust: 100%;
+  /* 스크롤바를 항상 띄운다. 내용 길이에 따라 나타났다 사라지면 그때마다
+     가로 폭이 바뀌어 그리드가 다시 계산된다. */
+  overflow-y: scroll;
+  /* 네이티브 스크롤바·폼 요소가 이 팔레트에 맞는 어두운 쪽으로 그려진다.
+     이게 없으면 항상 보이는 스크롤바가 검은 화면에 흰 띠로 남는다. */
+  color-scheme: dark;
+}
 
+/* 푸터를 본문에 이어 붙이지 않고 화면 최하단으로 밀어낸다.
+   내용이 짧아도 푸터가 아래에 붙고, 길면 평소처럼 함께 흐른다
+   (position: fixed 로 띄우면 내용이 긴 페이지에서 본문을 덮는다). */
 body {
   margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
   color: var(--text);
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -34,6 +49,8 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
+
+main { flex: 1 0 auto; }
 
 img, video, iframe { display: block; max-width: 100%; }
 
@@ -55,6 +72,7 @@ a { color: inherit; text-decoration: none; }
 /* 헤더 — 사이트 이름을 두지 않고 메뉴만 가운데 둔다.
    이름은 푸터에 남아 있고, 홈으로 가는 길은 메뉴의 Works가 맡는다. */
 .masthead {
+  flex-shrink: 0;
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -62,6 +80,8 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
   /* 아래 여백 100px — 메뉴와 본문 사이 간격이다 */
   padding: 28px var(--gutter) 100px;
+  /* 배경보다 한 단계 밝게. 푸터와 같은 색이라 위아래가 한 쌍으로 읽힌다. */
+  background: var(--surface);
 }
 
 /* 2.03125rem의 절반. 이 크기에서는 두 항목이 좁은 폰 화면에도 한 줄로
@@ -303,10 +323,14 @@ a { color: inherit; text-decoration: none; }
 }
 .page p { max-width: 34rem; color: var(--muted); }
 
-/* 푸터 — Contact 페이지에만 있다 */
+/* 푸터 — Contact 페이지에만 있다.
+   body가 flex column이고 main이 남는 높이를 먹으므로 내용이 짧아도
+   여기가 화면 최하단에 붙는다. */
 .footer {
+  flex-shrink: 0;
   padding: 40px var(--gutter) 64px;
   border-top: 1px solid var(--line);
+  background: var(--surface);
   font-size: .8125rem;
   color: var(--muted);
 }

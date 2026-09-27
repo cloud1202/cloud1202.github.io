@@ -16,7 +16,6 @@ CONFIG = {
     "siteUrl": "https://example.com/portfolio",
     "email": "hello@example.com",
     "instagram": "https://instagram.com/x",
-    "about": "소개 문단\n\n둘째 단락",
     "contactNote": "메일로 연락 주세요",
     "gridPageSize": 2,
     "noindex": True,
@@ -65,7 +64,6 @@ def test_목록과_게시물과_고정페이지를_만든다(tmp_path):
 
     names = {page.relative_to(tmp_path).as_posix() for page in pages}
     assert "index.html" in names
-    assert "about.html" in names
     assert "contact.html" in names
     assert "works/화보/작업1/index.html" in names
     assert warnings == []

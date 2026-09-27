@@ -29,11 +29,11 @@ upload/
 
 ## 이름·연락처 바꾸기
 
-`site.config.json` 파일의 값만 고치면 모든 페이지에 반영됩니다. 그중 **About 페이지 글은 `about` 값**, **Contact 페이지 글은 `contactNote` 값**에 씁니다. 여기도 작업물의 설명글과 마찬가지로 빈 줄을 넣으면 단락이 나뉩니다.
+`site.config.json` 파일의 값만 고치면 모든 페이지에 반영됩니다. 그중 **Contact 페이지 글은 `contactNote` 값**에 씁니다. 여기도 작업물의 설명글과 마찬가지로 빈 줄을 넣으면 단락이 나뉩니다.
 
 ## 만지지 않아도 되는 것
 
-`works/`, `media/`, `works.json`, `index.html`, `about.html`, `contact.html`은 **자동으로 만들어지는 파일**입니다. 직접 고치면 다음 업로드 때 덮어써집니다. About·Contact 페이지 글을 바꾸려면 이 파일들이 아니라 위의 `site.config.json`을 고치세요.
+`works/`, `media/`, `works.json`, `index.html`, `contact.html`은 **자동으로 만들어지는 파일**입니다. 직접 고치면 다음 업로드 때 덮어써집니다. Contact 페이지 글을 바꾸려면 이 파일들이 아니라 위의 `site.config.json`을 고치세요.
 
 ## 개발자용
 

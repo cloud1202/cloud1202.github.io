@@ -79,7 +79,7 @@ def _repo_root(site_root: Path) -> Path:
 
 
 def _collect_pages(site_root: Path) -> list[Path]:
-    pages = [site_root / name for name in ("index.html", "about.html", "contact.html")]
+    pages = [site_root / name for name in ("index.html", "contact.html")]
     pages += sorted((site_root / "works").rglob("index.html"))
     return [page for page in pages if page.exists()]
 

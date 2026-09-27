@@ -138,8 +138,7 @@ def _write(path: Path, html: str) -> Path:
     return path
 
 
-# 상단 메뉴. About은 탭에서 빠졌다 — about.html은 계속 생성되지만
-# 어디서도 링크되지 않는다.
+# 상단 메뉴. About 페이지는 없다 — 소개는 지금 어디에도 실리지 않는다.
 _NAV_ITEMS = (("index.html", "Works"), ("contact.html", "Contact"))
 
 
@@ -374,7 +373,6 @@ def render_site(
     warnings: list[str] = []
     pages = [
         _render_index(manifest, config, site_root, templates_dir),
-        _render_simple_page("about.html", "About", config.get("about", ""), config, site_root, templates_dir),
         # 연락처 푸터는 이 페이지에만 붙는다
         _render_simple_page(
             "contact.html",
