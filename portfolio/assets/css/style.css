@@ -10,8 +10,10 @@
   --text: #ededed;
   --muted: #8a8a8f;
   --faint: #5c5c61;
-  --gutter: 16px;
-  --max: 1360px;
+  /* 좌우 여백은 화면 폭과 무관하게 고정이다. 가운데 정렬(margin auto)로
+     폭을 묶지 않으므로 그리드가 창 전체를 쓴다. */
+  --gutter: 30px;
+  --gap: 30px;
 }
 
 * { box-sizing: border-box; }
@@ -53,8 +55,6 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
-  max-width: var(--max);
-  margin: 0 auto;
   padding: 28px var(--gutter) 20px;
 }
 
@@ -76,8 +76,6 @@ a { color: inherit; text-decoration: none; }
 
 /* 목록 */
 .category {
-  max-width: var(--max);
-  margin: 0 auto;
   padding: 0 var(--gutter) 64px;
 }
 
@@ -87,7 +85,7 @@ a { color: inherit; text-decoration: none; }
    그 틈을 없애고, JS가 없으면 이 모습이 폴백이다. */
 .grid {
   display: grid;
-  gap: 12px;
+  gap: var(--gap);
   grid-template-columns: 1fr;
   align-items: start;
 }
@@ -96,9 +94,10 @@ a { color: inherit; text-decoration: none; }
   .grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 900px) {
-  .grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid { grid-template-columns: repeat(3, 1fr); }
 }
-/* 컨테이너가 --max(1360px)에서 멈추므로 여기가 가장 넓은 단계다 */
+/* 열 수의 상한. 폭 상한이 없으므로 이 뒤로는 창이 넓어질수록
+   열 폭이 같이 커진다. */
 @media (min-width: 1200px) {
   .grid { grid-template-columns: repeat(4, 1fr); }
 }
@@ -220,14 +219,14 @@ a { color: inherit; text-decoration: none; }
 .category.is-open .more { display: none; }
 
 .empty {
-  max-width: var(--max);
-  margin: 0 auto;
   padding: 80px var(--gutter);
   color: var(--muted);
   text-align: center;
 }
 
-/* 게시물 */
+/* 게시물 — 여기만 폭을 묶어 가운데 둔다. 갤러리 이미지를 가로 1600px로
+   만들기 때문에, 본문까지 창 전체로 늘리면 넓은 모니터에서 이미지가
+   확대되어 부드러워진다. 목록의 커버와 달리 여기는 크게 보는 화면이다. */
 .post, .page {
   max-width: 1000px;
   margin: 0 auto;
@@ -294,10 +293,8 @@ a { color: inherit; text-decoration: none; }
 }
 .page p { max-width: 34rem; color: var(--muted); }
 
-/* 푸터 */
+/* 푸터 — Contact 페이지에만 있다 */
 .footer {
-  max-width: var(--max);
-  margin: 0 auto;
   padding: 40px var(--gutter) 64px;
   border-top: 1px solid var(--line);
   font-size: .8125rem;
