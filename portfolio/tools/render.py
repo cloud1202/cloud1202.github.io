@@ -159,20 +159,6 @@ def _nav_html(rel: str, current: str) -> str:
     return "\n    ".join(links)
 
 
-def _footer_html(config: dict) -> str:
-    """연락처 푸터. Contact 페이지에만 들어간다.
-
-    이름과 연락처를 모든 페이지 아래에 반복해서 깔지 않고, 그것을 보러
-    오는 한 페이지에만 둔다. 다른 페이지에서는 마크업 자체가 없다.
-    """
-    return (
-        '<footer class="footer">\n'
-        f'  <p class="footer-name">{escape(config.get("siteName", ""))}</p>\n'
-        f'  <p class="footer-links">{_footer_links(config)}</p>\n'
-        "</footer>"
-    )
-
-
 def _page(
     templates_dir: Path,
     config: dict,
@@ -181,7 +167,6 @@ def _page(
     title: str,
     meta: str,
     content: str,
-    footer: bool = False,
     current: str = "",
 ) -> str:
     rel = relative_prefix(depth)
@@ -194,7 +179,6 @@ def _page(
             "SITE_NAME": escape(config.get("siteName", "")),
             "NAV": _nav_html(rel, current),
             "CONTENT": content,
-            "FOOTER": _footer_html(config) if footer else "",
         },
     )
 
@@ -264,30 +248,32 @@ def _render_index(manifest: dict, config: dict, site_root: Path, templates_dir: 
     return _write(site_root / "index.html", html)
 
 
-def _render_simple_page(
-    filename: str,
-    heading: str,
-    body_text: str,
-    config: dict,
-    site_root: Path,
-    templates_dir: Path,
-    footer: bool = False,
-    current: str = "",
-) -> Path:
-    body = body_to_html(body_text or "")
-    content = f'<article class="page"><h1 class="page-title">{escape(heading)}</h1>\n{body}</article>'
-    meta = _meta_block(config, f"{heading} — {config.get('siteName','')}", "", None)
+def _render_contact(config: dict, site_root: Path, templates_dir: Path) -> Path:
+    """Contact 페이지.
+
+    이메일·인스타그램 링크는 여기 본문에 들어간다. 푸터가 내용 없는 띠로
+    바뀌면서 그 링크들이 실릴 곳이 사이트에 이 페이지밖에 없다.
+    """
+    title = f"Contact — {config.get('siteName','')}"
+    body = body_to_html(config.get("contactNote", "") or "")
+    links = _footer_links(config)
+    links_html = f'\n<p class="page-contact-links">{links}</p>' if links else ""
+    content = (
+        '<article class="page page-contact">'
+        '<h1 class="page-title">Contact</h1>\n'
+        f"{body}{links_html}"
+        "</article>"
+    )
     html = _page(
         templates_dir,
         config,
         depth=0,
-        title=f"{heading} — {config.get('siteName','')}",
-        meta=meta,
+        title=title,
+        meta=_meta_block(config, title, "", None),
         content=content,
-        footer=footer,
-        current=current,
+        current="contact.html",
     )
-    return _write(site_root / filename, html)
+    return _write(site_root / "contact.html", html)
 
 
 def _render_post(
@@ -373,17 +359,7 @@ def render_site(
     warnings: list[str] = []
     pages = [
         _render_index(manifest, config, site_root, templates_dir),
-        # 연락처 푸터는 이 페이지에만 붙는다
-        _render_simple_page(
-            "contact.html",
-            "Contact",
-            config.get("contactNote", ""),
-            config,
-            site_root,
-            templates_dir,
-            footer=True,
-            current="contact.html",
-        ),
+        _render_contact(config, site_root, templates_dir),
     ]
 
     for category in manifest["categories"]:
