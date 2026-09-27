@@ -291,12 +291,15 @@ a { color: inherit; text-decoration: none; }
 /* 제목 띠 — Contact와 같은 처리다. 어두운 면 위에 제목만 가운데 둔다.
    카테고리와 날짜는 화면에서 빼기로 했다. */
 .post-head {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 250px;
   margin-bottom: 64px;
-  padding: 56px var(--gutter);
+  /* 좌우는 화살표(44px) + 여유만큼 비워둔다. 그렇지 않으면 긴 제목이
+     가운데 정렬된 채 화살표 아래로 깔린다. */
+  padding: 56px calc(var(--gutter) + 56px);
   background: var(--deep);
   text-align: center;
 }
@@ -319,13 +322,12 @@ a { color: inherit; text-decoration: none; }
 }
 .post-body p { margin: 0 0 1.2em; }
 
-/* 이전·다음 화살표 — 창 좌우 끝에 고정한다. 아래쪽 이동 링크를 없앤
-   자리를 대신하므로, 갤러리를 한참 내려본 뒤에도 손이 닿아야 한다. */
+/* 이전·다음 화살표 — 제목 띠 안의 좌우 끝에 둔다. 띠와 함께 스크롤되어
+   올라가므로, 갤러리를 다 본 뒤에는 아래쪽 작업물 그리드로 넘어간다. */
 .post-arrow {
-  position: fixed;
+  position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 40;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -334,16 +336,11 @@ a { color: inherit; text-decoration: none; }
   font-size: 1.75rem;
   line-height: 1;
   color: var(--muted);
-  background: rgba(11, 11, 12, .82);
   border: 1px solid var(--line);
-  backdrop-filter: blur(6px);
 }
 .post-arrow:hover { color: var(--text); border-color: var(--faint); }
-.post-arrow-prev { left: 0; border-left: 0; }
-.post-arrow-next { right: 0; border-right: 0; }
-
-/* 라이트박스가 열리면 그 위로 뜨지 않게 비운다 */
-body.lb-open .post-arrow { display: none; }
+.post-arrow-prev { left: var(--gutter); }
+.post-arrow-next { right: var(--gutter); }
 
 .page-title {
   margin: 0 0 24px;
