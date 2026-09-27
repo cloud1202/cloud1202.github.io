@@ -257,12 +257,15 @@ def _render_contact(config: dict, site_root: Path, templates_dir: Path) -> Path:
     title = f"Contact — {config.get('siteName','')}"
     body = body_to_html(config.get("contactNote", "") or "")
     links = _footer_links(config)
-    links_html = f'\n<p class="page-contact-links">{links}</p>' if links else ""
+    links_html = f'\n  <p class="page-contact-links">{links}</p>' if links else ""
+    # article에는 제목만 두고(어두운 블록), 본문과 연락처는 그 다음 섹션에 온다.
     content = (
         '<article class="page page-contact">'
-        '<h1 class="page-title">Contact</h1>\n'
-        f"{body}{links_html}"
-        "</article>"
+        '<h1 class="page-title">Contact</h1>'
+        "</article>\n"
+        '<section class="contact-body">\n'
+        f"  {body}{links_html}\n"
+        "</section>"
     )
     html = _page(
         templates_dir,
