@@ -9,7 +9,41 @@
   // 이 클래스가 붙은 뒤에만 CSS가 초과 카드를 숨긴다.
   document.documentElement.classList.add('js');
 
-  // 1) 스크롤이 바닥에 가까워지면 한 묶음씩 더 보여준다.
+  // 1) 메이슨리 — 카드 높이를 1px 행 span으로 바꿔 열을 틈 없이 채운다.
+  //    카드 높이는 img의 width/height 속성에서 바로 나오므로 이미지가
+  //    실리기를 기다릴 필요가 없다.
+  var grid = document.querySelector('.grid');
+
+  function applyMasonry() {
+    if (!grid) return;
+    var gap = parseFloat(getComputedStyle(grid).columnGap) || 0;
+    var cards = grid.querySelectorAll('.card');
+    var heights = [];
+    var i;
+    // 읽기를 먼저 몰아서 하고 쓰기를 뒤로 미뤄, 카드마다 레이아웃을
+    // 다시 계산하게 만드는 스래싱을 피한다.
+    for (i = 0; i < cards.length; i++) {
+      heights.push(cards[i].getBoundingClientRect().height);
+    }
+    grid.classList.add('is-masonry');
+    for (i = 0; i < cards.length; i++) {
+      // 숨은 카드는 높이가 0이다. 풀릴 때 다시 계산한다.
+      if (heights[i]) {
+        cards[i].style.gridRowEnd = 'span ' + Math.ceil(heights[i] + gap);
+      }
+    }
+  }
+
+  applyMasonry();
+
+  // 열 폭이 바뀌면 카드 높이도 바뀌므로 다시 계산한다.
+  var resizeTimer = null;
+  window.addEventListener('resize', function () {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(applyMasonry, 150);
+  });
+
+  // 2) 스크롤이 바닥에 가까워지면 한 묶음씩 더 보여준다.
   var BATCH = 12;
   var LOOKAHEAD = 600; // 바닥에 닿기 전에 미리 풀어 빈 화면을 안 만든다
 
@@ -20,6 +54,7 @@
     if (button) {
       button.addEventListener('click', function () {
         section.classList.add('is-open');
+        applyMasonry();
       });
     }
 
@@ -47,6 +82,8 @@
       for (var i = 0; i < BATCH && i < hidden.length; i++) {
         hidden[i].classList.add('shown');
       }
+      // 방금 풀린 카드는 높이가 0이었으므로 span이 없다. 지금 계산한다.
+      applyMasonry();
       // 카드를 풀어도 sentinel이 여전히 화면 안에 있으면 옵저버는 다시
       // 울리지 않는다(교차 상태가 안 바뀌므로). 다음 프레임에 직접 확인한다.
       requestAnimationFrame(function () {
