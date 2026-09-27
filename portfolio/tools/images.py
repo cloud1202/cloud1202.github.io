@@ -14,7 +14,6 @@ from PIL import Image, ImageOps
 COVER_WIDTH = 600
 GALLERY_WIDTH = 1600
 WEBP_QUALITY = 82
-COVER_RATIO = (16, 9)
 
 _YOUTUBE_THUMBNAILS = (
     "https://i.ytimg.com/vi/{id}/maxresdefault.jpg",
@@ -47,27 +46,27 @@ def _save(image: Image.Image, dest: Path) -> tuple[int, int]:
     return image.size
 
 
+def _resize_to_width(image: Image.Image, width: int) -> Image.Image:
+    """가로만 맞추고 비율은 건드리지 않는다. 원본보다 크게 늘리지 않는다."""
+    if image.width <= width:
+        return image
+    height = max(1, round(image.height * width / image.width))
+    return image.resize((width, height), Image.LANCZOS)
+
+
 def make_cover(source: Path, dest: Path, width: int = COVER_WIDTH) -> tuple[int, int]:
-    """16:9로 가운데를 잘라 저장한다. 원본보다 크게 늘리지 않는다."""
-    image = _load(source)
-    target_width = min(width, image.width)
-    target_height = max(1, round(target_width * COVER_RATIO[1] / COVER_RATIO[0]))
-    fitted = ImageOps.fit(
-        image,
-        (target_width, target_height),
-        method=Image.LANCZOS,
-        centering=(0.5, 0.5),
-    )
-    return _save(fitted, dest)
+    """가로 600px로만 줄이고 원본 비율을 지킨다.
+
+    목록 그리드는 열 폭만 같고 높이는 작업물마다 다르다. 그래서 커버를
+    한 비율로 잘라내지 않는다 — 세로 사진은 세로로, 파노라마는 납작하게
+    그리드에 놓인다. 잘라내면 작가가 잡은 구도가 사라진다.
+    """
+    return _save(_resize_to_width(_load(source), width), dest)
 
 
 def make_gallery(source: Path, dest: Path, width: int = GALLERY_WIDTH) -> tuple[int, int]:
     """비율을 유지한 채 가로를 맞춘다. 원본보다 크게 늘리지 않는다."""
-    image = _load(source)
-    if image.width > width:
-        height = max(1, round(image.height * width / image.width))
-        image = image.resize((width, height), Image.LANCZOS)
-    return _save(image, dest)
+    return _save(_resize_to_width(_load(source), width), dest)
 
 
 def fetch_youtube_cover(video_id: str, dest: Path, opener=None) -> bool:
@@ -83,17 +82,11 @@ def fetch_youtube_cover(video_id: str, dest: Path, opener=None) -> bool:
             with Image.open(io.BytesIO(payload)) as downloaded:
                 downloaded.load()
                 image = ImageOps.exif_transpose(downloaded).convert("RGB")
-            target_height = max(1, round(COVER_WIDTH * COVER_RATIO[1] / COVER_RATIO[0]))
-            fitted = ImageOps.fit(
-                image,
-                (COVER_WIDTH, target_height),
-                method=Image.LANCZOS,
-                centering=(0.5, 0.5),
-            )
+            # 유튜브 썸네일은 이미 16:9이므로 가로만 맞추면 된다.
             # 저장 실패(디스크 부족, 권한 등)도 이 함수의 다른 모든 실패처럼
             # False를 돌려줘야 한다 — try 밖에 있으면 이 함수를 감싸지 않는
             # 호출부(manifest.py)까지 예외가 그대로 새어나간다.
-            _save(fitted, dest)
+            _save(_resize_to_width(image, COVER_WIDTH), dest)
         except (OSError, ValueError):
             continue
         return True

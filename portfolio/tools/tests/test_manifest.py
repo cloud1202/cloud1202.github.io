@@ -78,7 +78,8 @@ def test_커버와_갤러리_이미지가_실제로_생성된다(tmp_path):
 
     cover_path = tmp_path / entry["cover"]["src"]
     assert cover_path.exists()
-    assert (entry["cover"]["w"], entry["cover"]["h"]) == (600, 338)
+    # 원본 2400x1600의 비율을 지킨 채 가로만 600으로 줄인다 — 잘라내지 않는다
+    assert (entry["cover"]["w"], entry["cover"]["h"]) == (600, 400)
 
     gallery_path = tmp_path / entry["images"][0]["src"]
     assert gallery_path.exists()
@@ -113,9 +114,9 @@ def test_manifest를_UTF8_JSON으로_쓴다(tmp_path):
 def test_이미_받은_유튜브_커버는_다시_받지_않고_실제_크기를_읽는다(tmp_path, monkeypatch):
     # 커버가 이미 디스크에 있는데도 무조건 다시 받으면, i.ytimg.com이 잠깐
     # 응답하지 않는 순간 멀쩡한 커버가 목록에서 사라진다. 파일이 있으면
-    # 네트워크를 아예 타지 않아야 하고, 크기는 (16:9로 다시 계산하지 않고)
-    # 실제 저장된 파일에서 읽어야 한다 — 여기서는 16:9가 아닌 600x400으로
-    # 만들어 계산값(338)과 실제값(400)을 구분한다.
+    # 네트워크를 아예 타지 않아야 하고, 크기는 실제 저장된 파일에서 읽어야
+    # 한다 — 여기서는 유튜브 썸네일의 16:9(600x338)가 아닌 600x400으로
+    # 만들어, 어딘가에서 비율을 가정해 계산하면 드러나게 한다.
     category = _fixture_category(tmp_path)
     work = category.works[0]
     work.cover = None  # 로컬 이미지가 없어야 유튜브 분기를 탄다

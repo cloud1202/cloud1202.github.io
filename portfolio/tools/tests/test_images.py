@@ -19,16 +19,25 @@ def _write_image(path, size, color=(120, 90, 60)):
     return path
 
 
-def test_커버는_16대9로_잘린다(tmp_path):
+def test_커버는_자르지_않고_원본_비율을_지킨다(tmp_path):
+    # 목록 그리드가 열 폭만 맞추고 높이는 작업물마다 다르게 두므로,
+    # 커버를 한 비율로 잘라내면 작가가 잡은 구도가 사라진다.
     source = _write_image(tmp_path / "src.jpg", (2000, 2000))
     dest = tmp_path / "out" / "cover-600.webp"
 
     size = make_cover(source, dest)
 
-    assert size == (600, 338)
+    assert size == (600, 600)
     with Image.open(dest) as image:
-        assert image.size == (600, 338)
+        assert image.size == (600, 600)
         assert image.format == "WEBP"
+
+
+def test_커버는_세로_사진도_세로로_남긴다(tmp_path):
+    source = _write_image(tmp_path / "tall.jpg", (1200, 1800))
+    dest = tmp_path / "out" / "cover-600.webp"
+
+    assert make_cover(source, dest) == (600, 900)
 
 
 def test_커버는_원본보다_크게_늘리지_않는다(tmp_path):
@@ -74,7 +83,7 @@ def test_이미_만든_산출물의_크기를_읽는다(tmp_path):
     dest = tmp_path / "out" / "cover-600.webp"
     make_cover(source, dest)
 
-    assert image_size(dest) == (600, 338)
+    assert image_size(dest) == (600, 400)
 
 
 def test_산출물이_원본보다_새것이면_건너뛴다(tmp_path):

@@ -158,55 +158,52 @@ def _render_index(manifest: dict, config: dict, site_root: Path, templates_dir: 
     section_template = _load(templates_dir, "partials/section.html")
     page_size = int(config.get("gridPageSize") or 8)
 
-    sections = []
-    for category in manifest["categories"]:
-        cards = []
-        for index, work in enumerate(category["works"]):
-            cover = _cover_or_placeholder(work)
-            badge = '<span class="badge">VIDEO</span>' if work.get("video") else ""
-            classes = "" if index < page_size else " extra"
-            card = render_template(
-                card_template,
-                {
-                    "REL": "",
-                    "URL": _url_path(work["url"]),
-                    "COVER": _url_path(cover.get("src", "")),
-                    "COVER_W": str(cover.get("w", 600)),
-                    "COVER_H": str(cover.get("h", 338)),
-                    "TITLE": escape(work["title"]),
-                    "BADGE": badge,
-                },
-            )
-            if classes:
-                card = card.replace('class="card"', 'class="card extra"', 1)
-            cards.append("    " + card.strip())
+    # 카테고리는 폴더 규칙(작가가 업로드를 정리하는 단위)이자 게시물 주소의
+    # 일부로만 남고, 목록 화면에서는 구분되지 않는다. 카테고리별로 섹션을
+    # 쪼개면 그리드가 덩어리로 끊기고 사이에 큰 여백이 생긴다.
+    # 순서는 카테고리 순서 안에서 게시물 순서를 그대로 이어붙인 것이다.
+    works = [work for category in manifest["categories"] for work in category["works"]]
 
-        has_more = len(category["works"]) > page_size
+    cards = []
+    for index, work in enumerate(works):
+        cover = _cover_or_placeholder(work)
+        badge = '<span class="badge">VIDEO</span>' if work.get("video") else ""
+        card = render_template(
+            card_template,
+            {
+                "REL": "",
+                "URL": _url_path(work["url"]),
+                "COVER": _url_path(cover.get("src", "")),
+                "COVER_W": str(cover.get("w", 600)),
+                "COVER_H": str(cover.get("h", 338)),
+                "TITLE": escape(work["title"]),
+                "BADGE": badge,
+            },
+        )
+        if index >= page_size:
+            card = card.replace('class="card"', 'class="card extra"', 1)
+        cards.append("    " + card.strip())
+
+    if works:
+        has_more = len(works) > page_size
         more_button = (
             '<button class="more" type="button">Show more</button>' if has_more else ""
         )
-        sections.append(
-            render_template(
-                section_template,
-                {
-                    "TITLE": escape(category["title"]),
-                    "CARDS": "\n".join(cards),
-                    "HAS_MORE": "true" if has_more else "false",
-                    "MORE_BUTTON": more_button,
-                },
-            )
+        content = render_template(
+            section_template,
+            {
+                "CARDS": "\n".join(cards),
+                "HAS_MORE": "true" if has_more else "false",
+                "MORE_BUTTON": more_button,
+            },
         )
+    else:
+        content = '<p class="empty">작업물 준비 중입니다.</p>'
 
-    if not sections:
-        sections.append('<p class="empty">작업물 준비 중입니다.</p>')
-
-    tagline = config.get("tagline", "")
-    hero = f'<p class="tagline">{escape(tagline)}</p>' if tagline else ""
-    content = hero + "\n" + "\n".join(sections)
     meta = _meta_block(
         config,
         config.get("siteName", ""),
-        tagline,
+        config.get("tagline", ""),
         _absolute(config, _url_path(config.get("ogImage") or "")),
     )
     html = _page(

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T11:51:28.667046+09:00",
+  "generatedAt": "2026-09-27T12:03:04.666798+09:00",
   "categories": [
     {
       "title": "샘플",
@@ -15,7 +15,7 @@
           "cover": {
             "src": "media/샘플/첫번째작업/cover-600.webp",
             "w": 600,
-            "h": 338
+            "h": 400
           },
           "video": null,
           "images": [
