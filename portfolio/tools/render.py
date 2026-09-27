@@ -138,6 +138,28 @@ def _write(path: Path, html: str) -> Path:
     return path
 
 
+# 상단 메뉴. About은 탭에서 빠졌다 — about.html은 계속 생성되지만
+# 어디서도 링크되지 않는다.
+_NAV_ITEMS = (("index.html", "Works"), ("contact.html", "Contact"))
+
+
+def _nav_html(rel: str, current: str) -> str:
+    """현재 페이지의 탭에 표시를 남긴다.
+
+    색만으로 상태를 알리지 않도록 aria-current도 같이 넣는다 —
+    화면을 못 보는 사람에게 색은 아무 정보가 아니다.
+    """
+    links = []
+    for href, label in _NAV_ITEMS:
+        if href == current:
+            links.append(
+                f'<a class="is-current" aria-current="page" href="{rel}{href}">{label}</a>'
+            )
+        else:
+            links.append(f'<a href="{rel}{href}">{label}</a>')
+    return "\n    ".join(links)
+
+
 def _footer_html(config: dict) -> str:
     """연락처 푸터. Contact 페이지에만 들어간다.
 
@@ -161,6 +183,7 @@ def _page(
     meta: str,
     content: str,
     footer: bool = False,
+    current: str = "",
 ) -> str:
     rel = relative_prefix(depth)
     return render_template(
@@ -170,6 +193,7 @@ def _page(
             "TITLE": escape(title),
             "META": meta,
             "SITE_NAME": escape(config.get("siteName", "")),
+            "NAV": _nav_html(rel, current),
             "CONTENT": content,
             "FOOTER": _footer_html(config) if footer else "",
         },
@@ -236,6 +260,7 @@ def _render_index(manifest: dict, config: dict, site_root: Path, templates_dir: 
         title=config.get("siteName", ""),
         meta=meta,
         content=content,
+        current="index.html",
     )
     return _write(site_root / "index.html", html)
 
@@ -248,6 +273,7 @@ def _render_simple_page(
     site_root: Path,
     templates_dir: Path,
     footer: bool = False,
+    current: str = "",
 ) -> Path:
     body = body_to_html(body_text or "")
     content = f'<article class="page"><h1 class="page-title">{escape(heading)}</h1>\n{body}</article>'
@@ -260,6 +286,7 @@ def _render_simple_page(
         meta=meta,
         content=content,
         footer=footer,
+        current=current,
     )
     return _write(site_root / filename, html)
 
@@ -331,6 +358,8 @@ def _render_post(
         title=f"{work['title']} — {config.get('siteName','')}",
         meta=meta,
         content=content,
+        # 게시물은 Works에 속하므로 그 탭을 켠 상태로 둔다
+        current="index.html",
     )
     return _write(site_root / "works" / category["slug"] / work["slug"] / "index.html", html)
 
@@ -355,6 +384,7 @@ def render_site(
             site_root,
             templates_dir,
             footer=True,
+            current="contact.html",
         ),
     ]
 

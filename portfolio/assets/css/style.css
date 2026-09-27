@@ -10,6 +10,11 @@
   --text: #ededed;
   --muted: #8a8a8f;
   --faint: #5c5c61;
+  /* 현재 탭에만 쓰는 검붉은색. 거의 검정 배경에서 대비 4.23:1 이다
+     (본문 크기 텍스트 권장치는 4.5:1). 더 어둡게 내리면 급격히 읽기
+     어려워지고, 권장치를 넘기려면 #d2555a(4.86:1)까지 밝혀야 해서
+     "검붉은"에서 멀어진다. UI에서 색을 가진 유일한 요소다. */
+  --current: #c9484d;
   /* 좌우 여백은 화면 폭과 무관하게 고정이다. 가운데 정렬(margin auto)로
      폭을 묶지 않으므로 그리드가 창 전체를 쓴다. */
   --gutter: 30px;
@@ -55,24 +60,29 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
-  padding: 28px var(--gutter) 20px;
+  /* 아래 여백 100px — 메뉴와 본문 사이 간격이다 */
+  padding: 28px var(--gutter) 100px;
 }
 
-/* 메뉴를 기존 .8125rem의 2.5배(2.03rem)까지 키운다. 다만 그 크기로
-   세 항목을 좁은 폰 화면에 한 줄로 넣으면 가로 넘침이 생기므로,
-   clamp로 화면이 좁을 때는 줄어들게 한다. 그래도 모자라면 줄바꿈된다. */
+/* 2.03125rem의 절반. 이 크기에서는 두 항목이 좁은 폰 화면에도 한 줄로
+   들어가므로 clamp가 필요 없다. */
 .nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px 32px;
-  font-size: clamp(1.125rem, 5.2vw, 2.03125rem);
+  font-size: 1.015625rem;
   letter-spacing: .08em;
   line-height: 1.2;
   text-transform: uppercase;
   color: var(--muted);
 }
 .nav a:hover { color: var(--text); }
+
+/* 현재 보고 있는 탭. 색만으로 상태를 알리지 않도록 마크업에
+   aria-current도 함께 넣는다(render.py). */
+.nav a.is-current,
+.nav a.is-current:hover { color: var(--current); }
 
 /* 목록 */
 .category {
