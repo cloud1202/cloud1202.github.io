@@ -138,7 +138,30 @@ def _write(path: Path, html: str) -> Path:
     return path
 
 
-def _page(templates_dir: Path, config: dict, *, depth: int, title: str, meta: str, content: str) -> str:
+def _footer_html(config: dict) -> str:
+    """연락처 푸터. Contact 페이지에만 들어간다.
+
+    이름과 연락처를 모든 페이지 아래에 반복해서 깔지 않고, 그것을 보러
+    오는 한 페이지에만 둔다. 다른 페이지에서는 마크업 자체가 없다.
+    """
+    return (
+        '<footer class="footer">\n'
+        f'  <p class="footer-name">{escape(config.get("siteName", ""))}</p>\n'
+        f'  <p class="footer-links">{_footer_links(config)}</p>\n'
+        "</footer>"
+    )
+
+
+def _page(
+    templates_dir: Path,
+    config: dict,
+    *,
+    depth: int,
+    title: str,
+    meta: str,
+    content: str,
+    footer: bool = False,
+) -> str:
     rel = relative_prefix(depth)
     return render_template(
         _load(templates_dir, "page.html"),
@@ -148,7 +171,7 @@ def _page(templates_dir: Path, config: dict, *, depth: int, title: str, meta: st
             "META": meta,
             "SITE_NAME": escape(config.get("siteName", "")),
             "CONTENT": content,
-            "FOOTER_LINKS": _footer_links(config),
+            "FOOTER": _footer_html(config) if footer else "",
         },
     )
 
@@ -224,6 +247,7 @@ def _render_simple_page(
     config: dict,
     site_root: Path,
     templates_dir: Path,
+    footer: bool = False,
 ) -> Path:
     body = body_to_html(body_text or "")
     content = f'<article class="page"><h1 class="page-title">{escape(heading)}</h1>\n{body}</article>'
@@ -235,6 +259,7 @@ def _render_simple_page(
         title=f"{heading} — {config.get('siteName','')}",
         meta=meta,
         content=content,
+        footer=footer,
     )
     return _write(site_root / filename, html)
 
@@ -321,7 +346,16 @@ def render_site(
     pages = [
         _render_index(manifest, config, site_root, templates_dir),
         _render_simple_page("about.html", "About", config.get("about", ""), config, site_root, templates_dir),
-        _render_simple_page("contact.html", "Contact", config.get("contactNote", ""), config, site_root, templates_dir),
+        # 연락처 푸터는 이 페이지에만 붙는다
+        _render_simple_page(
+            "contact.html",
+            "Contact",
+            config.get("contactNote", ""),
+            config,
+            site_root,
+            templates_dir,
+            footer=True,
+        ),
     ]
 
     for category in manifest["categories"]:

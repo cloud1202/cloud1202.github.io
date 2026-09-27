@@ -1,6 +1,7 @@
 /* 포트폴리오 동작 — 의존성 없음.
    JS가 없어도 그리드와 게시물은 정적 HTML로 전부 보인다.
-   여기서 하는 일은 (1) 스크롤에 따라 카드 풀기 (2) 이미지 확대뿐이다.
+   여기서 하는 일은 메이슨리 배치, 스크롤에 따라 카드 풀기, 맨 위로
+   버튼, 이미지 확대다.
    카드는 모두 이미 HTML에 들어 있고, 여기서는 숨김만 걷어낸다 —
    네트워크 요청도, 가져올 데이터도 없다. */
 (function () {
@@ -97,7 +98,30 @@
     observer.observe(sentinel);
   });
 
-  // 2) 이미지 확대
+  // 3) 맨 위로 — 조금 내려간 뒤부터 보인다.
+  var toTop = document.querySelector('.to-top');
+  if (toTop) {
+    var SHOW_AFTER = 300;
+    var ticking = false;
+
+    function syncToTop() {
+      ticking = false;
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      toTop.classList.toggle('is-visible', y > SHOW_AFTER);
+    }
+
+    window.addEventListener('scroll', function () {
+      // 스크롤 이벤트마다 클래스를 만지지 않고 프레임당 한 번만 정리한다.
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(syncToTop);
+      }
+    }, { passive: true });
+
+    syncToTop();
+  }
+
+  // 4) 이미지 확대
   var zoomable = Array.prototype.slice.call(document.querySelectorAll('.shot img[data-zoom]'));
   if (!zoomable.length) return;
 
