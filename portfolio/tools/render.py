@@ -8,7 +8,6 @@
 from __future__ import annotations
 
 import re
-from datetime import datetime
 from html import escape
 from pathlib import Path
 from urllib.parse import quote
@@ -123,15 +122,6 @@ def _video_html(video: dict | None, rel: str, title: str, cover: dict) -> str:
     return ""
 
 
-def _format_date(iso: str | None) -> str:
-    if not iso:
-        return ""
-    try:
-        return datetime.fromisoformat(iso).strftime("%Y.%m")
-    except ValueError:
-        return ""
-
-
 def _write(path: Path, html: str) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(html, encoding="utf-8")
@@ -183,17 +173,26 @@ def _page(
     )
 
 
-def _render_index(manifest: dict, config: dict, site_root: Path, templates_dir: Path) -> Path:
+def _flatten(manifest: dict) -> list[dict]:
+    """카테고리를 무너뜨려 게시물을 한 줄로 만든다.
+
+    카테고리는 폴더 규칙(작가가 업로드를 정리하는 단위)이자 게시물 주소의
+    일부로만 남고, 화면에서는 구분되지 않는다. 순서는 카테고리 순서 안에서
+    게시물 순서를 그대로 이어붙인 것이다.
+    """
+    return [work for category in manifest["categories"] for work in category["works"]]
+
+
+def _grid_html(works: list[dict], rel: str, page_size: int, templates_dir: Path) -> str:
+    """작업물 카드 그리드. 목록 페이지와 게시물 페이지 아래쪽이 같이 쓴다.
+
+    page_size를 넘는 카드에는 extra를 붙여 처음에는 숨긴다 — 스크롤이
+    내려오면 JS가 한 묶음씩 풀고, JS가 없으면 전부 보인다.
+    """
+    if not works:
+        return '<p class="empty">작업물 준비 중입니다.</p>'
+
     card_template = _load(templates_dir, "partials/card.html")
-    section_template = _load(templates_dir, "partials/section.html")
-    page_size = int(config.get("gridPageSize") or 8)
-
-    # 카테고리는 폴더 규칙(작가가 업로드를 정리하는 단위)이자 게시물 주소의
-    # 일부로만 남고, 목록 화면에서는 구분되지 않는다. 카테고리별로 섹션을
-    # 쪼개면 그리드가 덩어리로 끊기고 사이에 큰 여백이 생긴다.
-    # 순서는 카테고리 순서 안에서 게시물 순서를 그대로 이어붙인 것이다.
-    works = [work for category in manifest["categories"] for work in category["works"]]
-
     cards = []
     for index, work in enumerate(works):
         cover = _cover_or_placeholder(work)
@@ -201,7 +200,7 @@ def _render_index(manifest: dict, config: dict, site_root: Path, templates_dir: 
         card = render_template(
             card_template,
             {
-                "REL": "",
+                "REL": rel,
                 "URL": _url_path(work["url"]),
                 "COVER": _url_path(cover.get("src", "")),
                 "COVER_W": str(cover.get("w", 600)),
@@ -214,21 +213,22 @@ def _render_index(manifest: dict, config: dict, site_root: Path, templates_dir: 
             card = card.replace('class="card"', 'class="card extra"', 1)
         cards.append("    " + card.strip())
 
-    if works:
-        has_more = len(works) > page_size
-        more_button = (
-            '<button class="more" type="button">Show more</button>' if has_more else ""
-        )
-        content = render_template(
-            section_template,
-            {
-                "CARDS": "\n".join(cards),
-                "HAS_MORE": "true" if has_more else "false",
-                "MORE_BUTTON": more_button,
-            },
-        )
-    else:
-        content = '<p class="empty">작업물 준비 중입니다.</p>'
+    has_more = len(works) > page_size
+    return render_template(
+        _load(templates_dir, "partials/section.html"),
+        {
+            "CARDS": "\n".join(cards),
+            "HAS_MORE": "true" if has_more else "false",
+            "MORE_BUTTON": (
+                '<button class="more" type="button">Show more</button>' if has_more else ""
+            ),
+        },
+    )
+
+
+def _render_index(manifest: dict, config: dict, site_root: Path, templates_dir: Path) -> Path:
+    page_size = int(config.get("gridPageSize") or 8)
+    content = _grid_html(_flatten(manifest), "", page_size, templates_dir)
 
     meta = _meta_block(
         config,
@@ -283,6 +283,7 @@ def _render_post(
     work: dict,
     category: dict,
     neighbours: tuple[dict | None, dict | None],
+    all_works: list[dict],
     config: dict,
     site_root: Path,
     templates_dir: Path,
@@ -308,28 +309,35 @@ def _render_post(
             ).strip()
         )
 
+    # 좌우 끝 화살표. 화면에 고정돼 있어 갤러리를 한참 내려본 뒤에도
+    # 이웃 게시물로 넘어갈 수 있다 — 아래쪽 이동 링크를 없앤 자리를 대신한다.
     previous_work, next_work = neighbours
-    nav_parts = []
+    arrows = []
     if previous_work:
-        nav_parts.append(
-            f'<a class="prev" href="{rel}{_url_path(previous_work["url"])}">← {escape(previous_work["title"])}</a>'
+        arrows.append(
+            f'<a class="post-arrow post-arrow-prev" href="{rel}{_url_path(previous_work["url"])}"'
+            f' aria-label="이전 작업물: {escape(previous_work["title"])}">‹</a>'
         )
-    nav_parts.append(f'<a class="up" href="{rel}index.html">전체 보기</a>')
     if next_work:
-        nav_parts.append(
-            f'<a class="next" href="{rel}{_url_path(next_work["url"])}">{escape(next_work["title"])} →</a>'
+        arrows.append(
+            f'<a class="post-arrow post-arrow-next" href="{rel}{_url_path(next_work["url"])}"'
+            f' aria-label="다음 작업물: {escape(next_work["title"])}">›</a>'
         )
+    nav_html = f'<nav class="post-arrows">{"".join(arrows)}</nav>' if arrows else ""
+
+    # 아래쪽에는 Works와 같은 그리드를 둔다. 보고 있는 게시물은 뺀다.
+    others = [other for other in all_works if other["url"] != work["url"]]
+    related = _grid_html(others, rel, int(config.get("gridPageSize") or 8), templates_dir)
 
     content = render_template(
         _load(templates_dir, "partials/post.html"),
         {
             "VIDEO": _video_html(work.get("video"), rel, work["title"], cover),
             "TITLE": escape(work["title"]),
-            "CATEGORY": escape(category["title"]),
-            "DATE": _format_date(work.get("date")),
             "GALLERY": "\n".join(figures),
             "BODY": work.get("body", ""),
-            "POST_NAV": "\n".join(nav_parts),
+            "POST_NAV": nav_html,
+            "RELATED": related,
         },
     )
 
@@ -365,21 +373,30 @@ def render_site(
         _render_contact(config, site_root, templates_dir),
     ]
 
-    for category in manifest["categories"]:
-        works = category["works"]
-        for index, work in enumerate(works):
-            previous_work = works[index - 1] if index > 0 else None
-            next_work = works[index + 1] if index + 1 < len(works) else None
-            if work.get("cover") is None:
-                warnings.append(f"{category['title']}/{work['title']}: 커버 이미지가 없습니다")
-            pages.append(
-                _render_post(
-                    work,
-                    category,
-                    (previous_work, next_work),
-                    config,
-                    site_root,
-                    templates_dir,
-                )
+    # 화살표 순서는 목록 그리드의 순서와 같아야 한다. 카테고리는 화면에
+    # 드러나지 않으므로 카테고리 안에서만 이웃을 찾으면 그리드에서 나란히
+    # 있던 작업물이 서로 이웃이 아니게 된다.
+    pairs = [
+        (category, work)
+        for category in manifest["categories"]
+        for work in category["works"]
+    ]
+    all_works = [work for _, work in pairs]
+
+    for index, (category, work) in enumerate(pairs):
+        previous_work = all_works[index - 1] if index > 0 else None
+        next_work = all_works[index + 1] if index + 1 < len(all_works) else None
+        if work.get("cover") is None:
+            warnings.append(f"{category['title']}/{work['title']}: 커버 이미지가 없습니다")
+        pages.append(
+            _render_post(
+                work,
+                category,
+                (previous_work, next_work),
+                all_works,
+                config,
+                site_root,
+                templates_dir,
             )
+        )
     return pages, warnings

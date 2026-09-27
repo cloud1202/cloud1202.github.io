@@ -140,7 +140,9 @@ def test_개수가_적으면_더보기_버튼이_없다(tmp_path):
     assert "Show more" not in html
 
 
-def test_영상_게시물은_영상이_본문보다_먼저_온다(tmp_path):
+def test_영상_게시물은_영상이_갤러리와_본문보다_먼저_온다(tmp_path):
+    # 제목은 Contact처럼 어두운 헤더 띠가 되어 맨 위에 온다. 영상은 그
+    # 헤더 아래에서 첫 콘텐츠다 — 갤러리와 본문보다 앞이다.
     manifest = _manifest()
     manifest["categories"][0]["works"][0]["video"] = {
         "kind": "youtube",
@@ -151,7 +153,8 @@ def test_영상_게시물은_영상이_본문보다_먼저_온다(tmp_path):
     render_site(manifest, CONFIG, tmp_path, TEMPLATES)
     html = (tmp_path / "works" / "화보" / "작업1" / "index.html").read_text(encoding="utf-8")
 
-    assert html.index("youtube-nocookie") < html.index("post-title")
+    assert html.index("youtube-nocookie") < html.index('class="gallery"')
+    assert html.index("youtube-nocookie") < html.index('class="post-body"')
 
 
 def test_작업물이_없으면_빈_상태를_보여준다(tmp_path):
@@ -203,8 +206,31 @@ def test_로컬_영상은_커버를_포스터로_쓴다(tmp_path):
     assert f'poster="../../../{encoded_cover}"' in html
 
 
-def test_이전_다음_링크가_연결된다(tmp_path):
+def test_좌우_화살표가_이웃_게시물로_연결된다(tmp_path):
+    # 제목만으로 단정하면 아래쪽 작업물 그리드에도 그 제목이 있어서
+    # 화살표가 깨져도 통과한다. href를 직접 확인한다.
     render_site(_manifest(2), CONFIG, tmp_path, TEMPLATES)
     first = (tmp_path / "works" / "화보" / "작업1" / "index.html").read_text(encoding="utf-8")
+    second = (tmp_path / "works" / "화보" / "작업2" / "index.html").read_text(encoding="utf-8")
 
-    assert "작업2" in first
+    next_url = quote("works/화보/작업2/", safe="/-_.~")
+    prev_url = quote("works/화보/작업1/", safe="/-_.~")
+
+    # 첫 게시물에는 다음만, 마지막에는 이전만 있다
+    assert f'class="post-arrow post-arrow-next" href="../../../{next_url}"' in first
+    assert "post-arrow-prev" not in first
+    assert f'class="post-arrow post-arrow-prev" href="../../../{prev_url}"' in second
+    assert "post-arrow-next" not in second
+
+
+def test_게시물_아래에_다른_작업물_그리드가_온다(tmp_path):
+    # 하단 이동 링크를 없앤 자리에 Works와 같은 그리드가 들어간다.
+    # 보고 있는 게시물은 그 그리드에서 빠진다.
+    render_site(_manifest(3), CONFIG, tmp_path, TEMPLATES)
+    first = (tmp_path / "works" / "화보" / "작업1" / "index.html").read_text(encoding="utf-8")
+
+    assert '<div class="grid">' in first
+    own_url = quote("works/화보/작업1/", safe="/-_.~")
+    assert f'href="../../../{own_url}"' not in first
+    for other in ("작업2", "작업3"):
+        assert f'href="../../../{quote(f"works/화보/{other}/", safe="/-_.~")}"' in first
